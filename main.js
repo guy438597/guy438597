@@ -256,20 +256,29 @@ module.exports.loop = function() {
     minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 20), 3);
     minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 20), 3);
 
-    var totalRequiredEnergyTransporters = 0;
-    for (let i in Memory.energy.energySources) {
-        let source = Game.getObjectById(Memory.energy.energySources[i][0]);
-        let nearbyContainer = findEnergy(source, -1, 3, STRUCTURE_CONTAINER, "transfer");
-        if (nearbyContainer != undefined){
-            let tempDistance = getDistance(source, Game.spawns.Spawn1);
-            let requiredEnergyTransporter = _.ceil(tempDistance / energyTransporterConstant);
-            totalRequiredEnergyTransporters += requiredEnergyTransporter;
-            if (Memory.energy.energySourceTransporters != undefined){
-                cleanListOfDeadCreeps(Memory.energy.energySourceTransporters[i]);
+    if (Memory.energy.totalTransportersRequired == undefined){
+        Memory.energy.totalTransportersRequired = 0;
+    }
 
+    if (Game.time % 10 == 0){
+        var totalRequiredEnergyTransporters = 0;
+        for (let i in Memory.energy.energySources) {
+            let source = Game.getObjectById(Memory.energy.energySources[i][0]);
+            let nearbyContainer = findEnergy(source, -1, 3, STRUCTURE_CONTAINER, "transfer");
+            if (nearbyContainer != undefined){
+                let tempDistance = getDistance(source, Game.spawns.Spawn1);
+                let requiredEnergyTransporter = _.ceil(tempDistance / energyTransporterConstant);
+                //console.log(source.pos, tempDistance, requiredEnergyTransporter);
+                totalRequiredEnergyTransporters += requiredEnergyTransporter;
+                if (Memory.energy.energySourceTransporters != undefined){
+                    cleanListOfDeadCreeps(Memory.energy.energySourceTransporters[i]);
+                }
             }
         }
+        Memory.energy.totalTransportersRequired = totalRequiredEnergyTransporters;
+        //console.log(totalRequiredEnergyTransporters);
     }
+
 
 
     var name;
@@ -331,7 +340,7 @@ module.exports.loop = function() {
                 console.log(numberOfEnergyRefillers + 1, "/ 2", "Spawning new energyRefiller!", name);
             }
 
-        } else if (numberOfEnergyTransporters < totalRequiredEnergyTransporters) {
+        } else if (numberOfEnergyTransporters < Memory.energy.totalTransportersRequired) {
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
                 var sourceID = array[0];
@@ -362,7 +371,7 @@ module.exports.loop = function() {
                 }
             }
             if (name != undefined && isNaN(name)) {
-                console.log(numberOfEnergyTransporters + 1, "/", totalRequiredEnergyTransporters, "Spawning new energyTransporter!", name);
+                console.log(numberOfEnergyTransporters + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
             }
         } else if (makeAttackUnits) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);

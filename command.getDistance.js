@@ -16,12 +16,13 @@ module.exports = function(creep, target) {
     if (creep == undefined || target == undefined) {
         console.log("Warning, undefined in getDistance function", creep, target);
     }
-    var path = creep.room.findPath(creep.pos, target.pos);
     //console.log(creep.pos, target.pos, path);
     if (creep.room == target.room) {
         return creep.pos.getRangeTo(target.pos);
     }
-    var distance = Object.keys(path).length;
+    var path = creep.room.findPath(creep.pos, target.pos, {ignoreCreeps: true});
+    var distance = path.length;
+    //console.log(creep, creep.room, target.room, creep.pos, target.pos, distance);
     if (distance == undefined) {
         return 0;
     }
