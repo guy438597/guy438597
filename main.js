@@ -31,6 +31,7 @@ module.exports.loop = function() {
     }
 
 
+
     //some settings that can be changed quickly
     var makeAttackUnits = false; //spawn an army? have higher priority than repairer-spawn
     Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
@@ -265,6 +266,7 @@ module.exports.loop = function() {
         for (let i in Memory.energy.energySources) {
             let source = Game.getObjectById(Memory.energy.energySources[i][0]);
             let nearbyContainer = findEnergy(source, -1, 3, STRUCTURE_CONTAINER, "transfer");
+            //console.log(nearbyContainer);
             if (nearbyContainer != undefined){
                 let tempDistance = getDistance(source, Game.spawns.Spawn1);
                 let requiredEnergyTransporter = _.ceil(tempDistance / energyTransporterConstant);
@@ -425,6 +427,11 @@ module.exports.loop = function() {
     if (Game.time % 600 == 0) {
         console.log("CPU used to run roles:", _.ceil(j2 - j1), "CPU used by other:", _.floor(Game.cpu.getUsed()) - _.ceil(j2-j1));
     }
+
+    i1 = Game.cpu.getUsed();
+    //console.log(Game.spawns.Spawn1.room.lookForAtArea(LOOK_STRUCTURES, 0, 0, 49, 49, true).length);
+    //console.log(Game.spawns.Spawn1.room.find(FIND_STRUCTURES).length);
+    //console.log("CPUtest", Game.cpu.getUsed() - i1);
 
     //Memory.tempbuildList = undefined;
     Memory.tempbuildList = [];

@@ -1,5 +1,6 @@
 /*jshint esversion: 6, -W041, -W080, -W018, -W083, -W004 */
 var getDistance = require('command.getDistance');
+var chooseClosest = require('command.chooseClosest');
 
 // uses approx 0.1-0.3 cpu
 module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransfer, excludeListIDs) {
@@ -21,31 +22,25 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
         minEnergyInObject = minEnergyInObject || creep.carryCapacity;
         if (creep.carry.energy == creep.carryCapacity) {
             withdrawOrTransfer = typeof withdrawOrTransfer !== 'undefined' ? withdrawOrTransfer : "transfer";
-            //withdrawOrTransfer = withdrawOrTransfer || "transfer";
         } else {
             withdrawOrTransfer = typeof withdrawOrTransfer !== 'undefined' ? withdrawOrTransfer : "withdraw";
-            //withdrawOrTransfer = withdrawOrTransfer || "withdraw";
         }
     } else {
         minEnergyInObject = typeof minEnergyInObject !== 'undefined' ? minEnergyInObject : 0;
-        //minEnergyInObject = minEnergyInObject || 0;
         withdrawOrTransfer = typeof withdrawOrTransfer !== 'undefined' ? withdrawOrTransfer : "transfer";
-        //withdrawOrTransfer = withdrawOrTransfer || "transfer";
     }
     maxRange = typeof maxRange !== 'undefined' ? maxRange : 1000;
-    //maxRange = maxRange || 1000;
     type = typeof type !== 'undefined' ? type : STRUCTURE_STORAGE;
-    //type = type || STRUCTURE_STORAGE;
     excludeListIDs = typeof excludeListIDs !== 'undefined' ? excludeListIDs : [];
-    //excludeListIDs = excludeListIDs || [];
-
+    distanceFromEdge = Math.min(creep.pos.x, creep.pos.y, 49-creep.pos.x, 49 - creep.pos.y);
+    distanceFromEdge = Math.min(distanceFromEdge, maxRange);
 
     var target;
 
     //recover target from memory to avoid additional pathfinding CPU calculation, if target type and distance is same as preference
     if (creep.memory != undefined && creep.memory.target != undefined) {
         target = Game.getObjectById(creep.memory.target);
-        if (target == null) {
+        if (target === null) {
             target = undefined;
         } else {
             if (target.structureType == type) {
@@ -70,86 +65,54 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
     if (target == undefined) {
         //if you only want to pick up energy nearby in the same room only
         if (type == "pickupEnergy") {
-            target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, {
-                filter: (s) => s.amount >= minEnergyInObject && s.pos.getRangeTo(creep.pos) <= maxRange
-            });
+            if (distanceFromEdge <= 10){
+                target = chooseClosest(creep.room.lookForAtArea(LOOK_RESOURCES, creep.pos.y - maxRange, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((s) => s.resourceType == RESOURCE_ENERGY && s.amount >= minEnergyInObject && s.pos.getRangeTo(creep) <= distanceFromEdge));
+            }
+            if (target == undefined){
+                target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, {filter: (s) => s.amount >= minEnergyInObject && s.pos.getRangeTo(creep) <= maxRange});
+            }
         }
         // else if type is anything else, so like container or storage
-        else {
-            // if you want to withdraw energy from container/storage
-            if (withdrawOrTransfer == "withdraw") {
-                //target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && s.pos.getRangeTo(creep.pos) <= maxRange});
-                if (target == undefined) {
-                    //loop over all rooms to find storages to drop stuff to
-                    var targets = [];
-                    for (let room in Game.rooms) {
-                        targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
-                            filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject
-                        }));
-                    }
-                    //console.log(creep.memory.role, targets);
-                    if (targets) {
-                        for (let i in targets) {
-                            if (excludeListIDs != undefined && excludeListIDs.indexOf(targets[i].id) != -1) {
-                                continue;
-                            }
-                            /*if (includeMiningContainers == 0 && Memory.structures != undefined && Memory.structures.miningContainers != undefined && Memory.structures.miningContainers.indexOf(targets[i].id) != -1) {
-                                continue;
-                            }*/
-                            tempTarget = targets[i];
-                            tempDistance = getDistance(creep, tempTarget);
-                            if (target == undefined) {
-                                target = tempTarget;
-                                distance = tempDistance;
-                            } else if (tempDistance < distance && tempDistance <= maxRange) {
-                                target = tempTarget;
-                                distance = tempDistance;
-                            }
-                        }
-                    }
-                }
+        // if you want to withdraw energy from container/storage
+        else if (withdrawOrTransfer == "withdraw") {
+            if (distanceFromEdge <= 10){
+                target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange));
             }
-
-            // if you want to put energy to container / storage
-            else if (withdrawOrTransfer == "transfer") {
-                //target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.storeCapacity - _.sum(s.store) > minEnergyInObject && s.pos.getRangeTo(creep.pos) <= maxRange});
-                if (target == undefined) {
-                    //loop over all rooms to find containers/storages to drop stuff to
-                    var targets = [];
-                    for (let room in Game.rooms) {
-                        targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
-                            filter: (s) => (s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject)
-                        }));
-                    }
-                    //console.log(targets);
-                    //console.log("testo", creep.memory.role, targets);
-                    if (targets.length > 0) {
-                        for (let i in targets) {
-                            if (excludeListIDs != undefined && excludeListIDs.indexOf(targets[i].id) != -1) {
-                                continue;
-                            }
-                            /*if (includeMiningContainers == 0 && Memory.structures != undefined && Memory.structures.miningContainers != undefined && Memory.structures.miningContainers.indexOf(targets[i].id) != -1) {
-                                continue;
-                            }*/
-                            tempTarget = targets[i];
-                            if (tempTarget.ticksToRegeneration != undefined) {
-                                continue;
-                            }
-                            tempDistance = getDistance(creep, tempTarget);
-                            if (target == undefined) {
-                                target = tempTarget;
-                                distance = tempDistance;
-                            } else if (tempDistance < distance && tempDistance <= maxRange) {
-                                target = tempTarget;
-                                distance = tempDistance;
-                            }
-                        }
-                    }
+            else{
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange});
+            }
+            if (target == undefined){
+                var targets = [];
+                for (let room in Game.rooms) {
+                    targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
+                        filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1
+                    }));
                 }
+
+                target = chooseClosest(creep, targets);
+            }
+        }
+
+        // if you want to put energy to container / storage
+        else if (withdrawOrTransfer == "transfer") {
+            if (distanceFromEdge <= 10){
+                target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - maxRange, creep.pos.x - maxRange, creep.pos.y + maxRange, creep.pos.x + maxRange, true).filter((s) => s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange));
+            }
+            else {
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange});
+            }
+            if (target == undefined){
+                var targets = [];
+                for (let room in Game.rooms) {
+                    targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
+                        filter: (s) => s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1
+                    }));
+                }
+                target = chooseClosest(creep, targets);
             }
         }
     }
-    if (target == null) {
+    if (target === null) {
         target = undefined;
     }
 

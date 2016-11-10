@@ -36,8 +36,9 @@ module.exports = {
             creep.memory.state = "pickupEnergy";
         }
 
-        if (creep.memory.state != "dying" && creep.ticksToLive <= 50 && getDistanceInTicks(creep, findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer")) < 50) {
+        if (creep.memory.state != "dying" && creep.ticksToLive == 50 && getDistanceInTicks(creep, findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer")) < 50) {
             creep.memory.target = undefined;
+            creep.memory.state = "dying";
         } else if (creep.memory.state != "dying" && creep.memory.state != "working" && creep.carry.energy == creep.carryCapacity) {
             creep.memory.target = undefined;
             creep.memory.state = "working";
@@ -125,7 +126,9 @@ module.exports = {
                 target = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_CONTAINER, "withdraw");
                 target2 = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_STORAGE, "withdraw", Memory.structures.miningContainers);
                 //choose the closest one out of target and target2
+                //console.log(target, target2);
                 target = chooseClosest(creep, [target, target2]);
+                //console.log(target);
                 if (target == undefined) {
                     target = findEnergy(creep, 200, 100, "pickupEnergy");
                 }

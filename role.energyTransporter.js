@@ -138,6 +138,7 @@ module.exports = {
             if (target == undefined) {
                 target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer", Memory.structures.miningContainers);
                 target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
+                //console.log(target, target2);
                 target = chooseClosest(creep, [target, target2]);
                 //console.log(creep, creep.carry.energy, 300, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
                 //console.log(target);
