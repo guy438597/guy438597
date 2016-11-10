@@ -124,7 +124,7 @@ module.exports = function() {
                     role: roleName,
                     state: 'idle'
                 });
-            } else if (roleName == "fighter" && energy >= 300) {
+            } else if (roleName == "fighter" && energy >= 380) {/*
                 numberOfToughParts = arg1;
                 numberOfMoveParts = arg2;
                 numberOfAttackParts = arg3;
@@ -151,15 +151,15 @@ module.exports = function() {
                             body.push(ATTACK);
                         }
                     }
-                } else {
-                    numberOfParts = _.floor((energy - 0) / 150);
+                } else {*/{
+                    numberOfParts = _.floor((energy - 0) / 190);
                     for (let i = 0; i < numberOfParts; i++) {
-                        body.push(TOUGH);
                         body.push(TOUGH);
                     }
                     for (let i = 0; i < numberOfParts; i++) {
                         body.push(MOVE);
                         body.push(ATTACK);
+                        body.push(MOVE);
                     }
 
                 }

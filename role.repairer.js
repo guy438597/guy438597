@@ -60,8 +60,12 @@ module.exports = {
 
         //if enemy in room -> retreat
         if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
-            creep.say("RETREAT!");
-            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            //console.log(creep.room.safeMode);
+            if (creep.room.safeMode != undefined){
+                creep.say("RETREAT!");
+                creep.memory.target = undefined;
+                costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            }
         }
         //creep.memory.target = undefined;
         // if creep is supposed to transfer energy to a structure
@@ -75,9 +79,10 @@ module.exports = {
                 if (Memory.structures != undefined && Memory.structures.repairTargets != undefined) {
                     for (let tempTargetID of Memory.structures.repairTargets) {
                         tempTarget = Game.getObjectById(tempTargetID);
-                        if (tempTarget == null) {
-                            if (Memory.structures.repairTargets.indexOf(tempTarget.id) != -1) {
-                                Memory.structures.repairTargets.splice(tempTarget.id, 1);
+                        //console.log(tempTarget);
+                        if (tempTarget == undefined) {
+                            if (Memory.structures.repairTargets.indexOf(tempTargetID) != -1) {
+                                Memory.structures.repairTargets.splice(tempTargetID, 1);
                             }
                             creep.memory.target = undefined;
                             continue;

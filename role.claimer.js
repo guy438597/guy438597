@@ -7,6 +7,10 @@ var findClosestEnergyStorage = require('command.findClosestEnergyStorage');
 module.exports = {
     // a function to run the logic for this role
     run: function(creep) {
+        if (creep.memory.retreatRoom == undefined) {
+            creep.memory.retreatRoom = Game.spawns.Spawn1.room.name;
+        }
+
         var target;
         //old version:
         if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {

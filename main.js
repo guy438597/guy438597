@@ -26,18 +26,18 @@ var roleUpgrader = require('role.upgrader');
 var roleWallRepairer = require('role.wallRepairer');
 
 module.exports.loop = function() {
-    if (Memory.offense == undefined){
+    if (Memory.offense == undefined) {
         Memory.offense = {};
     }
 
-
-
     //some settings that can be changed quickly
-    var makeAttackUnits = false; //spawn an army? have higher priority than repairer-spawn
+    var makeAttackUnitsHighPriority = false; //spawn an army? have higher priority than repairer-spawn
+    var makeAttackUnitsLowPriority = true; //for constant attack
     Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
 
-    var energyTransporterConstant = 8;
-    var minimumNumberOfUpgraders = 7; //spawn more if you bank up energy in containers
+    var energyTransporterConstant = 15;
+    var minimumNumberOfUpgraders = 3; //spawn more if you bank up energy in containers
+
 
     if (Memory.claims == undefined) {
         Memory.claims = {};
@@ -45,7 +45,7 @@ module.exports.loop = function() {
     // rooms i want to reserve or claim
     Memory.claims.claimLocations = [
         ["E61S49", "r"], //west of Spawn1
-        ["E62S48", "r"], //north of Spawn1
+        //["E62S48", "r"], //north of Spawn1
     ];
 
     // sources i mine energy from
@@ -57,15 +57,16 @@ module.exports.loop = function() {
         ["57ef9e7a86f108ae6e60f5c5", 4, 5, "E62S49"],
         ["57ef9e6786f108ae6e60f3f9", 2, 5, "E61S49"], //west of Spawn1
         ["57ef9e6786f108ae6e60f3fb", 1, 5, "E61S49"],
-        ["57ef9e7a86f108ae6e60f5c0", 2, 5, "E62S48"], //west of Spawn1
-        //["57ef9e3286f108ae6e60ef3a", 4, 5, "E48N64"],
+        //["57ef9e7a86f108ae6e60f5c0", 2, 5, "E62S48"], //north of Spawn1
     ];
 
-
+    // adjust number of builders and repairers according to how many buildingsites and repairtargets there are
+    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 3), 5);
+    minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 10), 3);
 
     var moreMinersRequired = false;
     for (let i in Memory.energy.energySources) {
-        if (Memory.energy.energySourceMiners[i] != undefined){
+        if (Memory.energy.energySourceMiners[i] != undefined) {
             cleanListOfDeadCreeps(Memory.energy.energySourceMiners[i]);
             var countBodyParts = 0;
             var maxMiners = Memory.energy.energySources[i][1];
@@ -78,8 +79,7 @@ module.exports.loop = function() {
                 moreMinersRequired = true;
                 break;
             }
-        }
-        else{
+        } else {
             Memory.energy.energySourceMiners.push([]);
         }
     }
@@ -99,16 +99,15 @@ module.exports.loop = function() {
     for (let i in Memory.claims.claimLocations) {
         var loc = Memory.claims.claimLocations[i];
         var roomName2 = loc[0];
-        if (Game.rooms[roomName2] != undefined){
-            if (Game.rooms[roomName2].controller.reservation == undefined || Game.rooms[roomName2].controller.reservation ==  "Burny" && Game.rooms[roomName2].controller.reservation.ticksToEnd < 200){
-                newClaimerRequired = true;
+        //console.log(Game.rooms[roomName2].controller.reservation.username, Game.rooms[roomName2].controller.reservation.ticksToEnd);
+        if (Game.rooms[roomName2] != undefined) {
+            if (Game.rooms[roomName2].controller.my != undefined) {
+                if (Game.rooms[roomName2].controller.reservation == undefined || Game.rooms[roomName2].controller.reservation.username == "Burny" && Game.rooms[roomName2].controller.reservation.ticksToEnd < 200) {
+                    newClaimerRequired = true;
+                }
             }
         } else {
             newClaimerRequired = true;
-        }
-        if (name != undefined && isNaN(name)) {
-            Memory.claims.claimClaimers[i].push(name);
-            console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
         }
     }
 
@@ -129,6 +128,7 @@ module.exports.loop = function() {
     var spawning = Game.spawns.Spawn1.spawning != null;
     var energy = Game.spawns.Spawn1.room.energyAvailable;
     var energyMax = Game.spawns.Spawn1.room.energyCapacityAvailable;
+    var minimumNumberOfEnergyRefillers = _.ceil(energyMax / 300);
 
 
     var towers = Game.spawns.Spawn1.room.find(FIND_STRUCTURES, {
@@ -181,7 +181,6 @@ module.exports.loop = function() {
     // all the roles take up about 4-10 cpu
     // bigger creeps = less cpu usage i guess
     var combinedTicksEnergyRefiller = 0;
-    var newClaimerRequired = false;
     for (let name in Game.creeps) {
         var creep = Game.creeps[name];
         if (creep.memory.role == 'harvester') {
@@ -230,6 +229,9 @@ module.exports.loop = function() {
         Memory.structures.repairTargets = [];
         Memory.structures.buildingSites = [];
         for (let room in Game.rooms) {
+            if (Game.rooms[room].my != undefined){
+                continue;
+            }
             // update repairsites
             // update targets that need repair (below 50% hp)
             var targets = Game.rooms[room].find(FIND_STRUCTURES);
@@ -249,6 +251,8 @@ module.exports.loop = function() {
                 }
             }
         }
+        //console.log(Memory.structures.buildingSites);
+        //console.log(Memory.structures.repairTargets);
     }
 
     // if buildings and creeps are no longer existing but still in memory
@@ -267,26 +271,24 @@ module.exports.loop = function() {
         }
     }
 
-    // adjust number of builders and repairers according to how many buildingsites and repairtargets there are
-    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 3), 5);
-    minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 20), 3);
 
-    if (Memory.energy.totalTransportersRequired == undefined){
+
+    if (Memory.energy.totalTransportersRequired == undefined) {
         Memory.energy.totalTransportersRequired = 0;
     }
-
-    if (Game.time % 30 == 0){
+    //Object.keys(myArray).length
+    if (Game.time % 30 == 0) {
         var totalRequiredEnergyTransporters = 0;
         for (let i in Memory.energy.energySources) {
             let source = Game.getObjectById(Memory.energy.energySources[i][0]);
             let nearbyContainer = findEnergy(source, -1, 3, STRUCTURE_CONTAINER, "transfer");
             //console.log(nearbyContainer);
-            if (nearbyContainer != undefined){
+            if (nearbyContainer != undefined) {
                 let tempDistance = getDistance(source, Game.spawns.Spawn1);
                 let requiredEnergyTransporter = _.ceil(tempDistance / energyTransporterConstant);
                 //console.log(source.pos, tempDistance, requiredEnergyTransporter);
                 totalRequiredEnergyTransporters += requiredEnergyTransporter;
-                if (Memory.energy.energySourceTransporters != undefined){
+                if (Memory.energy.energySourceTransporters != undefined) {
                     cleanListOfDeadCreeps(Memory.energy.energySourceTransporters[i]);
                 }
             }
@@ -306,15 +308,15 @@ module.exports.loop = function() {
         }
     }
 
-    //console.log(requiredTransporters);
 
-    //console.log(numberOfRepairers, minimumNumberOfRepairers, Memory.energy.energySources.length);
-    //console.log(numberOfEnergyTransporters);
-    //console.log(moreMinersRequired);
-    if ((energy >= energyMax || energy >= 700) && !spawning || (numberOfEnergyRefillers < 2 && !spawning)) {
-        if ((numberOfSourceMiners < Memory.energy.energySources.length || moreMinersRequired) && numberOfEnergyRefillers >= 2) {
-            //console.log("test");
-            //console.log("test", numberOfSourceMiners, Memory.energy.energySources.length);
+    if ((energy >= energyMax) && !spawning || (numberOfEnergyRefillers < 2 && !spawning)) {
+        if (makeAttackUnitsHighPriority) {
+            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
+            if (name != undefined && isNaN(name)) {
+                console.log(numberOfFighters + 1, "/", "Spawning new fighter!", name);
+            }
+        }
+        else if ((numberOfSourceMiners < Memory.energy.energySources.length || moreMinersRequired) && numberOfEnergyRefillers >= 2) {
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
                 var sourceID = array[0];
@@ -332,10 +334,8 @@ module.exports.loop = function() {
                         for (let i2 of Memory.energy.energySourceMiners[i]) {
                             let creep = Game.creeps[i2];
                             tempBodyPartsCount += creep.getActiveBodyparts(WORK);
-                            //console.log(creep);
                         }
-                        //console.log(Memory.energy.energySourceMiners[i].length, maxMiners, tempBodyPartsCount, maxWorkBodyParts);
-                        if (workerCount < maxMiners && tempBodyPartsCount < maxWorkBodyParts) {
+                        if (workerCount < maxMiners && tempBodyPartsCount <= maxWorkBodyParts) {
                             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'sourceMiner', sourceID, roomName);
                             if (name != undefined && isNaN(name)) {
                                 Memory.energy.energySourceMiners[i].push(name);
@@ -350,19 +350,19 @@ module.exports.loop = function() {
                     Memory.energy.energySourceMiners = [];
                 }
             }
-        } else if (((combinedTicksEnergyRefiller < 300 || numberOfEnergyRefillers < 2) && Memory.energy.energySources.length > 0) || numberOfEnergyRefillers < 2 && energy >= 300) {
+        } else if (((combinedTicksEnergyRefiller < 300 || numberOfEnergyRefillers < minimumNumberOfEnergyRefillers) && Memory.energy.energySources.length > 0) || numberOfEnergyRefillers < minimumNumberOfEnergyRefillers && energy >= 300) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyRefiller');
             if (name != undefined && isNaN(name)) {
-                console.log(numberOfEnergyRefillers + 1, "/ 2", "Spawning new energyRefiller!", name);
+                console.log(numberOfEnergyRefillers + 1, "/", minimumNumberOfEnergyRefillers, "Spawning new energyRefiller!", name);
             }
 
         } else if (numberOfEnergyTransporters < Memory.energy.totalTransportersRequired) {
-            //console.log("test");
+            //console.log("Blocking spawn: energyTransporter");
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
                 var sourceID = array[0];
                 if (Memory.energy.energySourceTransporters != undefined) {
-                    if (Memory.energy.energySourceTransporters[i] != undefined){
+                    if (Memory.energy.energySourceTransporters[i] != undefined) {
                         /**so a miner mines 10 energy per tick on average
                         a transporter with 10 carry bodyparts can carry 500 energy ->
                         need to maintain a distance of 50 TO the mining container, but on the way back the transporter is slowed down to 1/5th ?
@@ -374,56 +374,49 @@ module.exports.loop = function() {
                         */
                         let source = Game.getObjectById(Memory.energy.energySources[i][0]);
                         let nearbyContainer = findEnergy(source, -1, 3, STRUCTURE_CONTAINER, "transfer");
-                        //console.log(nearbyContainer);
-                        if (nearbyContainer != undefined){
+                        if (nearbyContainer != undefined) {
                             let tempDistance = getDistance(source, Game.spawns.Spawn1);
                             let requiredEnergyTransporter = _.ceil(tempDistance / energyTransporterConstant);
-                            //console.log(source.pos, tempDistance, requiredEnergyTransporter);
-                            if (Memory.energy.energySourceTransporters != undefined){
+                            if (Memory.energy.energySourceTransporters != undefined) {
                                 cleanListOfDeadCreeps(Memory.energy.energySourceTransporters[i]);
                             }
-                            if (Memory.energy.energySourceTransporters[i].length < requiredEnergyTransporter){
+                            if (Memory.energy.energySourceTransporters[i].length < requiredEnergyTransporter) {
                                 name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID);
                                 Memory.energy.energySourceTransporters[i].push(name);
                                 break;
                             }
                         }
-                    }
-                    else {
+                    } else {
                         Memory.energy.energySourceTransporters.push([]);
                     }
-                }
-                else {
+                } else {
                     Memory.energy.energySourceTransporters = [];
                 }
             }
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfEnergyTransporters + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
             }
-        }
-        else if (makeAttackUnits) {
-            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
-            if (name != undefined && isNaN(name)) {
-                console.log(numberOfFighters + 1, "/", "Spawning new fighter!", name);
-            }
         } else if (energy >= 650 && newClaimerRequired) {
-            for (let i in Memory.claim.claimLocations) {
-                var loc = Memory.claim.claimLocations[i];
+            for (let i in Memory.claims.claimLocations) {
+                var loc = Memory.claims.claimLocations[i];
                 var roomName2 = loc[0];
-                if (Game.rooms[roomName2] != undefined){
-                    if (Game.rooms[roomName2].controller.reservation == undefined || Game.rooms[roomName2].controller.reservation ==  "Burny" && Game.rooms[roomName2].controller.reservation.ticksToEnd < 200){
-                        name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
-                        if (name != undefined && isNaN(name)) {
-                            Memory.claims.claimClaimers[i].push(name);
-                            console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+                if (Game.rooms[roomName2] != undefined) {
+                    if (Game.rooms[roomName2].controller.my != undefined) {
+                        if (Game.rooms[roomName2].controller.reservation == undefined || Game.rooms[roomName2].controller.reservation == "Burny" && Game.rooms[roomName2].controller.reservation.ticksToEnd < 200) {
+                            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
+                            if (name != undefined && isNaN(name)) {
+                                Memory.claims.claimClaimers[i].push(name);
+                                console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+                                break;
+                            }
                         }
                     }
                 } else {
                     name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
-                }
-                if (name != undefined && isNaN(name)) {
-                    Memory.claims.claimClaimers[i].push(name);
-                    console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+                    if (name != undefined && isNaN(name)) {
+                        Memory.claims.claimClaimers[i].push(name);
+                        console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+                    }
                 }
             }
         } else if (numberOfRepairers < minimumNumberOfRepairers && Memory.energy.energySources.length > 0) {
@@ -441,14 +434,17 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfUpgraders + 1, "/", minimumNumberOfUpgraders, "Spawning new upgrader!", name);
             }
-        }
-        else{
 
+        } else if (makeAttackUnitsLowPriority) {
+            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
+            if (name != undefined && isNaN(name)) {
+                console.log(numberOfFighters + 1, "/", "Spawning new fighter!", name);
+            }
         }
     }
 
     if (Game.time % 600 == 0) {
-        console.log("CPU used to run roles:", _.ceil(j2 - j1), "CPU used by other:", _.floor(Game.cpu.getUsed()) - _.ceil(j2-j1));
+        console.log("CPU used to run roles:", _.ceil(j2 - j1), "CPU used by other:", _.floor(Game.cpu.getUsed()) - _.ceil(j2 - j1));
     }
 
     i1 = Game.cpu.getUsed();
@@ -456,7 +452,6 @@ module.exports.loop = function() {
     //console.log(Game.spawns.Spawn1.room.find(FIND_STRUCTURES).length);
     //console.log("CPUtest", Game.cpu.getUsed() - i1);
 
-    //Memory.tempbuildList = undefined;
     Memory.tempbuildList = [];
     grid = [25, 18, 36, 10];
     if (Game.time % 500 == 0) {
@@ -471,7 +466,9 @@ module.exports.loop = function() {
         for (let i of Memory.tempbuildList) {
             Game.spawns.Spawn1.room.createConstructionSite(i[0], i[1], i[2]);
         }
-        Game.spawns.Spawn1.room.createConstructionSite(26, 3, STRUCTURE_TOWER);
         Game.spawns.Spawn1.room.createConstructionSite(27, 20, STRUCTURE_STORAGE);
+    }
+    if (Game.time > 15189983){
+        Game.spawns.Spawn1.room.createConstructionSite(28, 19, STRUCTURE_TOWER);
     }
 };

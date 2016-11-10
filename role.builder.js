@@ -54,8 +54,13 @@ module.exports = {
 
         //if enemy in room -> retreat
         if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
-            creep.say("RETREAT!");
-            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            //console.log(creep.room.safeMode);
+            if (creep.room.safeMode != undefined){
+                creep.say("RETREAT!");
+                creep.memory.target = undefined;
+                costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            }
+
         } else if (creep.memory.state == "working") {
             if (target == undefined) {
                 var tempTarget;
@@ -123,8 +128,8 @@ module.exports = {
             }
             // find closest container / storage to pick up energy from
             if (target == undefined) {
-                target = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_CONTAINER, "withdraw");
-                target2 = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_STORAGE, "withdraw", Memory.structures.miningContainers);
+                target = findEnergy(creep, 300, undefined, STRUCTURE_CONTAINER, "withdraw");
+                target2 = findEnergy(creep, 300, undefined, STRUCTURE_STORAGE, "withdraw", Memory.structures.miningContainers);
                 //choose the closest one out of target and target2
                 //console.log(target, target2);
                 target = chooseClosest(creep, [target, target2]);

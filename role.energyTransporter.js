@@ -65,8 +65,12 @@ module.exports = {
 
         //if enemy in room -> retreat
         if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
-            creep.say("RETREAT!");
-            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            //console.log(creep.room.safeMode);
+            if (creep.room.safeMode != undefined){
+                creep.say("RETREAT!");
+                creep.memory.target = undefined;
+                costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            }
         }
         // go near the energySource and find nearby dropped energy and miningContainer near mining source
         else if (creep.memory.state == "pickupEnergy") {
@@ -151,7 +155,31 @@ module.exports = {
                     costEfficientMove(creep, target);
                 }
             } else {
-                creep.memory.target = undefined;
+                if (target == undefined) {
+                    target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                        filter: (s) => (s.structureType == STRUCTURE_EXTENSION) && s.energy < s.energyCapacity
+                    });
+                }
+                if (target == undefined) {
+                    target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                        filter: (s) => (s.structureType == STRUCTURE_SPAWN) && s.energy < s.energyCapacity
+                    });
+                }
+                if (target == undefined) {
+                    target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                        filter: (s) => (s.structureType == STRUCTURE_TOWER) && s.energy < s.energyCapacity
+                    });
+                }
+                if (target != undefined) {
+                    if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.say("ENRGY " + target.structureType);
+                        creep.memory.target = target.id;
+                        costEfficientMove(creep, target);
+                    }
+                } else {
+                    creep.say("AVOIDING");
+                    moveOutOfTheWay(creep);
+                }
             }
         }
 

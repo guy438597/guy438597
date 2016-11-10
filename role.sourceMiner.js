@@ -59,8 +59,12 @@ module.exports = {
 
         //if enemy in room -> retreat
         if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
-            creep.say("RETREAT!");
-            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            //console.log(creep.room.safeMode);
+            if (creep.room.safeMode != undefined){
+                creep.say("RETREAT!");
+                creep.memory.target = undefined;
+                costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            }
         }
         // go mining
         else if (creep.memory.state == 'miningEnergy') {
