@@ -32,7 +32,7 @@ module.exports = {
 
 
         //settings states, depending on ticksToLive and how much energy the creep is carrying
-        if (creep.memory.state != "dying" && creep.ticksToLive <= 50) {
+        if (creep.memory.state != "dying" && creep.ticksToLive == 50) {
             creep.memory.target = undefined;
             creep.memory.state = "dying";
         } else if (creep.memory.state != "dying" && creep.memory.state != "deliverEnergy" && creep.carry.energy == creep.carryCapacity) {

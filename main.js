@@ -37,7 +37,7 @@ module.exports.loop = function() {
     Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
 
     var energyTransporterConstant = 8;
-    var minimumNumberOfUpgraders = 5; //spawn more if you bank up energy in containers
+    var minimumNumberOfUpgraders = 7; //spawn more if you bank up energy in containers
 
     if (Memory.claims == undefined) {
         Memory.claims = {};
@@ -57,8 +57,8 @@ module.exports.loop = function() {
         ["57ef9e7a86f108ae6e60f5c5", 4, 5, "E62S49"],
         ["57ef9e6786f108ae6e60f3f9", 2, 5, "E61S49"], //west of Spawn1
         ["57ef9e6786f108ae6e60f3fb", 1, 5, "E61S49"],
-        //4: ["57ef9e3286f108ae6e60ef3c", 4, 5, "E48N64"], //west of Spawn1
-        //5: ["57ef9e3286f108ae6e60ef3a", 4, 5, "E48N64"]
+        ["57ef9e7a86f108ae6e60f5c0", 2, 5, "E62S48"], //west of Spawn1
+        //["57ef9e3286f108ae6e60ef3a", 4, 5, "E48N64"],
     ];
 
 
@@ -193,7 +193,7 @@ module.exports.loop = function() {
             roleUpgrader.run(creep);
         } //uses about 0.0007 cpu
         else if (creep.memory.role == 'claimer') {
-            if (creep.ticksToLive < getDistanceInTicks(creep, Game.spawns.Spawn1) - 10) {
+            if (creep.ticksToLive < getDistanceInTicks(creep, Game.spawns.Spawn1) - 50) {
                 console.log(getDistanceInTicks(creep, Game.spawns.Spawn1));
                 newClaimerRequired = true;
             }
@@ -254,7 +254,7 @@ module.exports.loop = function() {
     }
 
     // adjust number of builders and repairers according to how many buildingsites and repairtargets there are
-    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 20), 3);
+    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 3), 5);
     minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 20), 3);
 
     if (Memory.energy.totalTransportersRequired == undefined){
@@ -343,7 +343,7 @@ module.exports.loop = function() {
             }
 
         } else if (numberOfEnergyTransporters < Memory.energy.totalTransportersRequired) {
-            console.log("test");
+            //console.log("test");
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
                 var sourceID = array[0];
@@ -413,9 +413,10 @@ module.exports.loop = function() {
                         var creep = Game.creeps[name];
                         countClaimerTicks += creep.ticksToLive;
                     }
-                    if (countClaimerTicks < getDistanceInTicks(Game.rooms[roomName2].controller, Game.spawns.Spawn1) - 10) {
+                    if (countClaimerTicks < getDistanceInTicks(Game.rooms[roomName2].controller, Game.spawns.Spawn1) - 50) {
                         name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
                         if (name != undefined && isNaN(name)) {
+                            Memory.claims.claimClaimers[i].push(name);
                             console.log(numberOfClaimers + 1, "/", Memory.claims.claimLocations.length, "Spawning new claimer!", name);
                         }
 
@@ -447,7 +448,7 @@ module.exports.loop = function() {
 
     //Memory.tempbuildList = undefined;
     Memory.tempbuildList = [];
-    grid = [25, 18, 36, 9];
+    grid = [25, 18, 36, 10];
     if (Game.time % 500 == 0) {
         //creates a grid from bottom left to top right
         for (let i = grid[0]; i < grid[2]; i += 2) {
