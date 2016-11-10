@@ -128,8 +128,11 @@ module.exports = {
 
         // now the transporter has full energy loaded, now its trying to find first a storage, then a container which is not a miningContainer
         else if (creep.memory.state == "deliverEnergy") {
-            if (target != undefined && target.energyCapacity - target.energy < creep.carry.energy) {
-                target = undefined;
+            if (target != undefined) {
+                //console.log(target.pos, target.storeCapacity, _.sum(target.store), creep.carry.energy);
+                if(target.storeCapacity - _.sum(target.store) < creep.carry.energy){
+                    target = undefined;
+                }
             }
             //always try to deliver energy to storage first, before trying to deliver to container
             if (target == undefined) {

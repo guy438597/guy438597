@@ -35,7 +35,7 @@ module.exports.loop = function() {
     Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
 
     var energyTransporterConstant = 10;
-    var minimumNumberOfUpgraders = 3; //spawn more if you bank up energy in containers
+    var minimumNumberOfUpgraders = 5; //spawn more if you bank up energy in containers
 
     if (Memory.claims == undefined) {
         Memory.claims = {};
@@ -71,7 +71,7 @@ module.exports.loop = function() {
                 let creep = Game.creeps[name];
                 countBodyParts += creep.getActiveBodyparts(WORK);
             }
-            if (countBodyParts <= maxBodyParts && maxMiners < Memory.energy.energySourceMiners[i].length ) {
+            if (countBodyParts <= maxBodyParts && Memory.energy.energySourceMiners[i].length < maxMiners) {
                 moreMinersRequired = true;
                 break;
             }
@@ -281,7 +281,7 @@ module.exports.loop = function() {
     //console.log(numberOfEnergyTransporters);
     //console.log(moreMinersRequired);
     if ((energy >= energyMax || energy >= 700) && !spawning || (numberOfEnergyRefillers < 2 && !spawning)) {
-        if (numberOfSourceMiners < Memory.energy.energySources.length || moreMinersRequired && numberOfEnergyRefillers >= 2) {
+        if ((numberOfSourceMiners < Memory.energy.energySources.length || moreMinersRequired) && numberOfEnergyRefillers >= 2) {
             //console.log("test");
             //console.log("test", numberOfSourceMiners, Memory.energy.energySources.length);
             for (let i in Memory.energy.energySources) {
@@ -410,7 +410,7 @@ module.exports.loop = function() {
 
     //Memory.tempbuildList = undefined;
     Memory.tempbuildList = [];
-    grid = [25, 18, 36, 10];
+    grid = [25, 18, 36, 9];
     if (Game.time % 500 == 0) {
         //creates a grid from bottom left to top right
         for (let i = grid[0]; i < grid[2]; i += 2) {
