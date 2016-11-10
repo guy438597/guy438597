@@ -1,0 +1,2 @@
+http://stackoverflow.com/questions/7632454/how-do-you-use-git-bare-init-repository/31590993#31590993
+^nice guideeeeee
