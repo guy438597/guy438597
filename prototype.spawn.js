@@ -31,10 +31,11 @@ module.exports = function() {
             var body = [];
             var numberOfParts = 0;
             var hitpoints = 0;
-            if (roleName == "harvester"){
-                return this.createCreep([WORK, MOVE, CARRY], undefined, { role: roleName});
-            }
-            else if (roleName == "sourceMiner" && energy >= 200){
+            if (roleName == "harvester") {
+                return this.createCreep([WORK, MOVE, CARRY], undefined, {
+                    role: roleName
+                });
+            } else if (roleName == "sourceMiner" && energy >= 200) {
                 numberOfParts = _.floor((energy - 100) / 100);
                 numberOfParts = Math.min(6, numberOfParts);
                 body.push(CARRY);
@@ -42,9 +43,13 @@ module.exports = function() {
                 for (let i = 0; i < numberOfParts; i++) {
                     body.push(WORK);
                 }
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle', source: arg1, energySourceRoom: arg2});
-            }
-            else if (roleName == "worker" && energy >= 300){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle',
+                    source: arg1,
+                    energySourceRoom: arg2
+                });
+            } else if (roleName == "worker" && energy >= 300) {
                 numberOfParts = _.floor((energy - 50) / 250);
                 numberOfParts = Math.min(3, numberOfParts);
                 body.push(WORK);
@@ -52,9 +57,11 @@ module.exports = function() {
                     body.push(CARRY);
                     body.push(MOVE);
                 }
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle' });
-            }
-            else if (roleName == "builder" && energy >= 200){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle'
+                });
+            } else if (roleName == "builder" && energy >= 200) {
                 numberOfParts = _.floor((energy - 0) / 200);
                 numberOfParts = Math.min(3, numberOfParts);
                 for (let i = 0; i < numberOfParts; i++) {
@@ -62,9 +69,11 @@ module.exports = function() {
                     body.push(CARRY);
                     body.push(MOVE);
                 }
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle' });
-            }
-            else if (roleName == "upgrader" && energy >= 200){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle'
+                });
+            } else if (roleName == "upgrader" && energy >= 200) {
                 numberOfParts = _.floor((energy - 100) / 100);
                 //console.log(energy, numberOfParts);
                 numberOfParts = Math.min(4, numberOfParts);
@@ -73,9 +82,11 @@ module.exports = function() {
                 for (let i = 0; i < numberOfParts; i++) {
                     body.push(WORK);
                 }
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle' });
-            }
-            else if (roleName == "energyRefiller" && energy >= 300){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle'
+                });
+            } else if (roleName == "energyRefiller" && energy >= 300) {
                 numberOfParts = _.floor((energy - 100) / 200);
                 numberOfParts = Math.min(2, numberOfParts);
                 body.push(MOVE);
@@ -86,18 +97,23 @@ module.exports = function() {
                     body.push(CARRY);
                     body.push(CARRY);
                 }
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle' });
-            }
-            else if (roleName == "energyTransporter" && energy >= 100){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle'
+                });
+            } else if (roleName == "energyTransporter" && energy >= 100) {
                 numberOfParts = _.floor((energy - 50) / 50);
                 numberOfParts = Math.min(10, numberOfParts);
                 body.push(MOVE);
                 for (let i = 0; i < numberOfParts; i++) {
                     body.push(CARRY);
                 }
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle', source: arg1});
-            }
-            else if (roleName == "repairer" && energy >= 200){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle',
+                    source: arg1
+                });
+            } else if (roleName == "repairer" && energy >= 200) {
                 numberOfParts = _.floor((energy - 100) / 100);
                 numberOfParts = Math.min(1, numberOfParts);
                 body.push(WORK);
@@ -106,14 +122,16 @@ module.exports = function() {
                     body.push(MOVE);
                 }
                 //Game.spawns.Spawn1.createCreep([WORK,MOVE,CARRY], undefined, {role: 'repairer', state: 'idle'})
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle' });
-            }
-            else if (roleName == "defender" && energy >= 300){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle'
+                });
+            } else if (roleName == "defender" && energy >= 300) {
                 numberOfToughParts = arg1;
                 numberOfMoveParts = arg2;
                 numberOfAttackParts = arg3;
                 var cost = costDictionary[ATTACK] * numberOfAttackParts + costDictionary[MOVE] * numberOfMoveParts + costDictionary[TOUGH] * numberOfToughParts;
-                if (energy < cost){
+                if (energy < cost) {
                     for (let i = 0; i < numberOfToughParts; i++) {
                         body.push(TOUGH);
                     }
@@ -125,8 +143,7 @@ module.exports = function() {
                         for (let i = 0; i < numberOfMoveParts - numberOfAttackParts; i++) {
                             body.push(MOVE);
                         }
-                    }
-                    else {
+                    } else {
                         for (let i = 0; i < numberOfAttackParts; i++) {
                             body.push(ATTACK);
                             body.push(MOVE);
@@ -135,7 +152,7 @@ module.exports = function() {
                             body.push(ATTACK);
                         }
                     }
-                }else {
+                } else {
                     numberOfParts = _.floor((energy - 0) / 150);
                     for (let i = 0; i < numberOfParts; i++) {
                         body.push(TOUGH);
@@ -147,17 +164,28 @@ module.exports = function() {
                     }
 
                 }
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle', roomToDefend: arg4, retreatRoom: arg5 });
-            }
-            else if (roleName == "claimer" && energy >= 650){
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle',
+                    roomToDefend: arg4,
+                    retreatRoom: arg5
+                });
+            } else if (roleName == "claimer" && energy >= 650) {
                 numberOfParts = _.floor((energy - 650) / 1);
                 numberOfParts = Math.min(48, numberOfParts);
                 body.push(CLAIM);
                 body.push(MOVE);
-                return this.createCreep(body, undefined, { role: roleName, state: 'idle', claimRoomName: arg1, claimOption: arg2 });
-            }
-            else if (roleName == "wallRepairer"){
-                return this.createCreep([WORK, MOVE, CARRY], undefined, { role: roleName, state: 'idle' });
+                return this.createCreep(body, undefined, {
+                    role: roleName,
+                    state: 'idle',
+                    claimRoomName: arg1,
+                    claimOption: arg2
+                });
+            } else if (roleName == "wallRepairer") {
+                return this.createCreep([WORK, MOVE, CARRY], undefined, {
+                    role: roleName,
+                    state: 'idle'
+                });
             }
 
 

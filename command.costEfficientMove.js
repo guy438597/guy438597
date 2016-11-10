@@ -5,11 +5,12 @@ module.exports = function(creep, roomPosition) {
     //how to use:
     // noError = costEfficientMove(creep, target)
     // this will hopefully reduce CPU usage
-    if (creep.moveTo(roomPosition, {noPathFinding: false}) == ERR_NOT_FOUND){
+    if (creep.moveTo(roomPosition, {
+            noPathFinding: false
+        }) == ERR_NOT_FOUND) {
         creep.moveTo(roomPosition);
         return 1;
-    }
-    else {
+    } else {
         return 0;
     }
 };

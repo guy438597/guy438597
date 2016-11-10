@@ -11,12 +11,12 @@ module.exports = {
     run: function(creep) {
         var target;
         //old version:
-        if (creep.memory.target != undefined){
+        if (creep.memory.target != undefined) {
             target = Game.getObjectById(creep.memory.target);
         }
 
-        if (target != undefined){
-            if (getDistance(creep, target) > 0){
+        if (target != undefined) {
+            if (getDistance(creep, target) > 0) {
                 costEfficientMove(creep, target);
             }
         }

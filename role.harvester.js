@@ -12,24 +12,24 @@ module.exports = {
         // if creep is bringing energy to a structure but has no energy left
         var target;
 
-        if (creep.memory.state == undefined){
+        if (creep.memory.state == undefined) {
             creep.memory.state = "mining";
         }
-        if (creep.memory.target != undefined){
+        if (creep.memory.target != undefined) {
             target = Game.getObjectById(creep.memory.target);
         }
 
-        if (creep.memory.state != "findingTarget" && creep.carry.energy == creep.carryCapacity){
+        if (creep.memory.state != "findingTarget" && creep.carry.energy == creep.carryCapacity) {
             creep.memory.state = "findingTarget";
             creep.memory.target = undefined;
         }
-        if (creep.memory.state != "mining" && creep.carry.energy == 0){
+        if (creep.memory.state != "mining" && creep.carry.energy == 0) {
             creep.memory.state = "mining";
             creep.memory.target = undefined;
         }
 
-        if (creep.memory.state == "mining"){
-            if (target == undefined){
+        if (creep.memory.state == "mining") {
+            if (target == undefined) {
                 target = creep.pos.findClosestByPath(FIND_SOURCES);
             }
             if (target != undefined) {
@@ -41,15 +41,18 @@ module.exports = {
             }
         }
 
-        if (creep.memory.state == "findingTarget"){
-            if (target == undefined){
-                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) && s.energy < s.energyCapacity});
+        if (creep.memory.state == "findingTarget") {
+            if (target == undefined) {
+                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: (s) => (s.structureType == STRUCTURE_SPAWN || s.structureType == STRUCTURE_EXTENSION) && s.energy < s.energyCapacity
+                });
                 if (target != undefined) {
                     creep.memory.state = "transferingEnergy";
                 }
-            }
-            else if (target == undefined) {
-                target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {filter: (s) => (s.structureType != STRUCTURE_ROAD)});
+            } else if (target == undefined) {
+                target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {
+                    filter: (s) => (s.structureType != STRUCTURE_ROAD)
+                });
                 if (target != undefined) {
                     creep.memory.state = "building";
                 }
@@ -57,24 +60,22 @@ module.exports = {
         }
 
         if (creep.memory.state == "transferingEnergy") {
-            if (target != undefined){
+            if (target != undefined) {
                 if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.say("TRNSFR " + target.structureType);
                     costEfficientMove(creep, target);
                 }
-            }
-            else{
+            } else {
                 creep.memory.state = undefined;
             }
         }
         if (creep.memory.state == "building") {
-            if (target != undefined){
+            if (target != undefined) {
                 if (creep.build(target) == ERR_NOT_IN_RANGE) {
                     creep.say("BUILD " + target.structureType);
                     costEfficientMove(creep, target);
                 }
-            }
-            else{
+            } else {
                 creep.memory.state = undefined;
             }
         }

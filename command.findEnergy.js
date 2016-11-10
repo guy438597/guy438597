@@ -19,16 +19,14 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
 
     if (creep.ticksToLive != undefined) {
         minEnergyInObject = minEnergyInObject || creep.carryCapacity;
-        if (creep.carry.energy == creep.carryCapacity){
+        if (creep.carry.energy == creep.carryCapacity) {
             withdrawOrTransfer = typeof withdrawOrTransfer !== 'undefined' ? withdrawOrTransfer : "transfer";
             //withdrawOrTransfer = withdrawOrTransfer || "transfer";
-        }
-        else{
+        } else {
             withdrawOrTransfer = typeof withdrawOrTransfer !== 'undefined' ? withdrawOrTransfer : "withdraw";
             //withdrawOrTransfer = withdrawOrTransfer || "withdraw";
         }
-    }
-    else{
+    } else {
         minEnergyInObject = typeof minEnergyInObject !== 'undefined' ? minEnergyInObject : 0;
         //minEnergyInObject = minEnergyInObject || 0;
         withdrawOrTransfer = typeof withdrawOrTransfer !== 'undefined' ? withdrawOrTransfer : "transfer";
@@ -45,26 +43,23 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
     var target;
 
     //recover target from memory to avoid additional pathfinding CPU calculation, if target type and distance is same as preference
-    if (creep.memory != undefined && creep.memory.target != undefined){
+    if (creep.memory != undefined && creep.memory.target != undefined) {
         target = Game.getObjectById(creep.memory.target);
-        if (target == null){
+        if (target == null) {
             target = undefined;
-        }
-        else {
-            if (target.structureType == type){
-                if (withdrawOrTransfer == "withdraw"){
+        } else {
+            if (target.structureType == type) {
+                if (withdrawOrTransfer == "withdraw") {
                     if (target.store[RESOURCE_ENERGY] >= minEnergyInObject || target.pos.getRangeTo(creep.pos) > maxRange) {
                         target = undefined;
                     }
-                }
-                else if (withdrawOrTransfer == "transfer"){
+                } else if (withdrawOrTransfer == "transfer") {
                     if (target.storeCapacity - _.sum(target.store) >= minEnergyInObject || target.pos.getRangeTo(creep.pos) > maxRange) {
                         target = undefined;
                     }
                 }
-            }
-            else {
-                if (target.amount < minEnergyInObject || target.pos.getRangeTo(creep.pos) > maxRange){
+            } else {
+                if (target.amount < minEnergyInObject || target.pos.getRangeTo(creep.pos) > maxRange) {
                     target = undefined;
                 }
             }
@@ -72,26 +67,30 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
     }
 
     //find new target
-    if (target == undefined){
+    if (target == undefined) {
         //if you only want to pick up energy nearby in the same room only
-        if (type == "pickupEnergy"){
-            target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, {filter: (s) => s.amount >= minEnergyInObject && s.pos.getRangeTo(creep.pos) <= maxRange});
+        if (type == "pickupEnergy") {
+            target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, {
+                filter: (s) => s.amount >= minEnergyInObject && s.pos.getRangeTo(creep.pos) <= maxRange
+            });
         }
         // else if type is anything else, so like container or storage
         else {
             // if you want to withdraw energy from container/storage
-            if (withdrawOrTransfer == "withdraw"){
+            if (withdrawOrTransfer == "withdraw") {
                 //target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && s.pos.getRangeTo(creep.pos) <= maxRange});
-                if (target == undefined){
+                if (target == undefined) {
                     //loop over all rooms to find storages to drop stuff to
                     var targets = [];
-                    for (let room in Game.rooms){
-                        targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject}));
+                    for (let room in Game.rooms) {
+                        targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
+                            filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject
+                        }));
                     }
                     //console.log(creep.memory.role, targets);
-                    if (targets){
-                        for (let i in targets){
-                            if (excludeListIDs != undefined && excludeListIDs.indexOf(targets[i].id) != -1){
+                    if (targets) {
+                        for (let i in targets) {
+                            if (excludeListIDs != undefined && excludeListIDs.indexOf(targets[i].id) != -1) {
                                 continue;
                             }
                             /*if (includeMiningContainers == 0 && Memory.structures != undefined && Memory.structures.miningContainers != undefined && Memory.structures.miningContainers.indexOf(targets[i].id) != -1) {
@@ -99,11 +98,10 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
                             }*/
                             tempTarget = targets[i];
                             tempDistance = getDistance(creep, tempTarget);
-                            if (target == undefined){
+                            if (target == undefined) {
                                 target = tempTarget;
                                 distance = tempDistance;
-                            }
-                            else if (tempDistance < distance && tempDistance <= maxRange){
+                            } else if (tempDistance < distance && tempDistance <= maxRange) {
                                 target = tempTarget;
                                 distance = tempDistance;
                             }
@@ -115,32 +113,33 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
             // if you want to put energy to container / storage
             else if (withdrawOrTransfer == "transfer") {
                 //target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.storeCapacity - _.sum(s.store) > minEnergyInObject && s.pos.getRangeTo(creep.pos) <= maxRange});
-                if (target == undefined){
+                if (target == undefined) {
                     //loop over all rooms to find containers/storages to drop stuff to
                     var targets = [];
-                    for (let room in Game.rooms){
-                        targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {filter: (s) => (s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject)}));
+                    for (let room in Game.rooms) {
+                        targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
+                            filter: (s) => (s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject)
+                        }));
                     }
                     //console.log(targets);
                     //console.log("testo", creep.memory.role, targets);
-                    if (targets.length > 0){
-                        for (let i in targets){
-                            if (excludeListIDs != undefined && excludeListIDs.indexOf(targets[i].id) != -1){
+                    if (targets.length > 0) {
+                        for (let i in targets) {
+                            if (excludeListIDs != undefined && excludeListIDs.indexOf(targets[i].id) != -1) {
                                 continue;
                             }
                             /*if (includeMiningContainers == 0 && Memory.structures != undefined && Memory.structures.miningContainers != undefined && Memory.structures.miningContainers.indexOf(targets[i].id) != -1) {
                                 continue;
                             }*/
                             tempTarget = targets[i];
-                            if (tempTarget.ticksToRegeneration != undefined){
+                            if (tempTarget.ticksToRegeneration != undefined) {
                                 continue;
                             }
                             tempDistance = getDistance(creep, tempTarget);
-                            if (target == undefined){
+                            if (target == undefined) {
                                 target = tempTarget;
                                 distance = tempDistance;
-                            }
-                            else if (tempDistance < distance && tempDistance <= maxRange){
+                            } else if (tempDistance < distance && tempDistance <= maxRange) {
                                 target = tempTarget;
                                 distance = tempDistance;
                             }
@@ -150,7 +149,7 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
             }
         }
     }
-    if (target == null){
+    if (target == null) {
         target = undefined;
     }
 

@@ -31,15 +31,15 @@ module.exports = function(creep, minEnergyInObject, maxContainerRange) {
                 //console.log("hi1", objectWithDraw);
             }
         }*/
-        /*if (objectWithDraw == undefined){
-            var temp = (creep.pos.findClosestByPath(Game.structures));
-            if (temp != undefined && temp != null) {
-                objectWithDraw = temp;
-                console.log("hi2", objectWithDraw);
-            }
-        }*/
+    /*if (objectWithDraw == undefined){
+        var temp = (creep.pos.findClosestByPath(Game.structures));
+        if (temp != undefined && temp != null) {
+            objectWithDraw = temp;
+            console.log("hi2", objectWithDraw);
+        }
+    }*/
     var temp;
-    if (target == undefined){
+    if (target == undefined) {
         temp = creep.room.storage;
 
         if (temp != undefined && temp != null && temp.store[RESOURCE_ENERGY] >= minEnergyInObject) {
@@ -49,32 +49,34 @@ module.exports = function(creep, minEnergyInObject, maxContainerRange) {
         }
     }
     if (target == undefined) {
-        if (Memory.structures != undefined){
-            if (Memory.structures.miningContainers != undefined){
+        if (Memory.structures != undefined) {
+            if (Memory.structures.miningContainers != undefined) {
                 var targets = [];
-                for (let room in Game.rooms){
-                    targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_STORAGE && s.my || s.structureType == STRUCTURE_CONTAINER && Memory.structures.miningContainers.indexOf(s.id) == -1 && s.store[RESOURCE_ENERGY] > minEnergyInObject}));
+                for (let room in Game.rooms) {
+                    targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
+                        filter: (s) => s.structureType == STRUCTURE_STORAGE && s.my || s.structureType == STRUCTURE_CONTAINER && Memory.structures.miningContainers.indexOf(s.id) == -1 && s.store[RESOURCE_ENERGY] > minEnergyInObject
+                    }));
                 }
-                for (let tempTargetID in targets){
+                for (let tempTargetID in targets) {
                     tempTarget = Game.getObjectById(tempTargetID);
-                    if (tempTarget != undefined){
+                    if (tempTarget != undefined) {
                         tempDistance = getDistance(creep, tempTarget);
-                        if (tempDistance < distance){
+                        if (tempDistance < distance) {
                             target = tempTarget;
                             distance = tempDistance;
                         }
                     }
                 }
-                if (target != undefined && temp != null){
+                if (target != undefined && temp != null) {
                     return target;
                 }
             }
         }
     }
-    if (target == undefined){
+    if (target == undefined) {
         temp = creep.pos.findClosestByPath(FIND_STRUCTURES, {
             filter: (s) => (s.structureType == STRUCTURE_CONTAINER) &&
-            s.store[RESOURCE_ENERGY] >= minEnergyInObject && s.pos.getRangeTo(creep.pos) < maxContainerRange// s.energyCapacity
+                s.store[RESOURCE_ENERGY] >= minEnergyInObject && s.pos.getRangeTo(creep.pos) < maxContainerRange // s.energyCapacity
         });
         if (temp != undefined && temp != null) {
             target = temp;

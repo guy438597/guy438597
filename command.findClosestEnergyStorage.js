@@ -9,20 +9,22 @@ module.exports = function(creep) {
     var targets = [];
     var distance = 1000;
     var target, tempDistance, tempTarget;
-    if (Memory.structures != undefined && Memory.structures.miningContainers != undefined){
-        for (let room in Game.rooms){
+    if (Memory.structures != undefined && Memory.structures.miningContainers != undefined) {
+        for (let room in Game.rooms) {
             //console.log(creep);
-            targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_STORAGE && s.my && s.store[RESOURCE_ENERGY] < 1000000 || s.structureType == STRUCTURE_CONTAINER && Memory.structures.miningContainers.indexOf(s.id) == -1 && s.store[RESOURCE_ENERGY] < 2000}));
+            targets = targets.concat(Game.rooms[room].find(FIND_STRUCTURES, {
+                filter: (s) => s.structureType == STRUCTURE_STORAGE && s.my && s.store[RESOURCE_ENERGY] < 1000000 || s.structureType == STRUCTURE_CONTAINER && Memory.structures.miningContainers.indexOf(s.id) == -1 && s.store[RESOURCE_ENERGY] < 2000
+            }));
         }
-        for (let i in targets){
+        for (let i in targets) {
             tempTarget = targets[i];
             tempDistance = getDistance(creep, tempTarget);
-            if (tempTarget != undefined && tempTarget != null && tempDistance < distance){
+            if (tempTarget != undefined && tempTarget != null && tempDistance < distance) {
                 target = tempTarget;
                 distance = tempDistance;
             }
         }
-        if (target != undefined && target != null){
+        if (target != undefined && target != null) {
             return target;
         }
     }

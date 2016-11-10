@@ -21,31 +21,29 @@ module.exports = {
         var state;
 
         //transition from old system:
-        if (creep.memory.state == "idle"){
+        if (creep.memory.state == "idle") {
             creep.memory.state = undefined;
         }
 
 
         // load the one from memory - if memory inaccessable (probably newly spawned creep) -> load default one
-        if (creep.memory.state == undefined){
+        if (creep.memory.state == undefined) {
             creep.memory.target = undefined;
             creep.memory.state = "pickupEnergy";
         }
 
-        if (creep.memory.state != "dying" && creep.ticksToLive <= 50){
+        if (creep.memory.state != "dying" && creep.ticksToLive <= 50) {
             creep.memory.target = undefined;
             creep.memory.state = "dying";
-        }
-        else if (creep.memory.state != "dying" && creep.memory.state != "deliverEnergy" && creep.carry.energy == creep.carryCapacity){
+        } else if (creep.memory.state != "dying" && creep.memory.state != "deliverEnergy" && creep.carry.energy == creep.carryCapacity) {
             creep.memory.target = undefined;
             creep.memory.state = "deliverEnergy";
-        }
-        else if (creep.memory.state != "dying" && creep.memory.state != "pickupEnergy" && creep.carry.energy == 0) {
+        } else if (creep.memory.state != "dying" && creep.memory.state != "pickupEnergy" && creep.carry.energy == 0) {
             creep.memory.target = undefined;
             creep.memory.state = "pickupEnergy";
         }
 
-        if (creep.memory.target != undefined){
+        if (creep.memory.target != undefined) {
             target = Game.getObjectById(creep.memory.target);
             //console.log(target);
         }
@@ -58,23 +56,23 @@ module.exports = {
             }*/
             // ALWAYS try to pick up energy from nearby, because it expires
             var temp = findEnergy(creep, 50, 5, "pickupEnergy");
-            if (temp != undefined){
+            if (temp != undefined) {
                 target = temp;
             }
             // find closest container / storage to pick up energy from
-            if (target == undefined){
+            if (target == undefined) {
                 target = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_CONTAINER, "withdraw");
                 target2 = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_STORAGE, "withdraw");
                 //choose the closest one out of target and target2
                 target = chooseClosest(creep, [target, target2]);
-                if (target == undefined){
+                if (target == undefined) {
                     target = findEnergy(creep, 100, 100, "pickupEnergy");
                 }
             }
             //if we found a target obviously -> move to it and grab energy
-            if (target != undefined){
+            if (target != undefined) {
                 //trying to find out if its dropped energy -> then pick it up
-                if (target.structureType == undefined){
+                if (target.structureType == undefined) {
                     if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
                         creep.memory.target = target.id;
                         creep.say(target.amount + " PICKUP");
@@ -84,11 +82,10 @@ module.exports = {
                 //we already know that it is a structure (container / storage) so we are gonna withdraw from it
                 else if (creep.withdraw(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.memory.target = target.id;
-                    creep.say("GRAB E " +target.pos);
+                    creep.say("GRAB E " + target.pos);
                     costEfficientMove(creep, target);
                 }
-            }
-            else{
+            } else {
                 creep.say("AVOIDING");
                 moveOutOfTheWay(creep);
             }
@@ -96,47 +93,51 @@ module.exports = {
         // if we have energy in inventory -> deliver energy to extension / spawn / tower in this order
         else if (creep.memory.state == "deliverEnergy") {
             // if target is already full, choose new target
-            if (target != undefined && target.energy == target.energyCapacity){
+            if (target != undefined && target.energy == target.energyCapacity) {
                 target = undefined;
             }
             if (target == undefined) {
-                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_EXTENSION) && s.energy < s.energyCapacity});
-            }
-            if (target == undefined){
-                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_SPAWN) && s.energy < s.energyCapacity});
+                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: (s) => (s.structureType == STRUCTURE_EXTENSION) && s.energy < s.energyCapacity
+                });
             }
             if (target == undefined) {
-                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_TOWER) && s.energy < s.energyCapacity});
+                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: (s) => (s.structureType == STRUCTURE_SPAWN) && s.energy < s.energyCapacity
+                });
+            }
+            if (target == undefined) {
+                target = creep.pos.findClosestByPath(FIND_MY_STRUCTURES, {
+                    filter: (s) => (s.structureType == STRUCTURE_TOWER) && s.energy < s.energyCapacity
+                });
             }
 
             if (target != undefined) {
                 if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.say("ENRGY " +target.structureType);
+                    creep.say("ENRGY " + target.structureType);
                     creep.memory.target = target.id;
                     costEfficientMove(creep, target);
                 }
-            }
-            else {
+            } else {
                 creep.say("AVOIDING");
                 moveOutOfTheWay(creep);
             }
         }
         // if creep is dying, we want to transfer the remaining energy to a nearby storage / container before it gets put to the ground
-        if (creep.memory.state == "dying"){
+        if (creep.memory.state == "dying") {
             // when dying, try to transfer energy to nearby storage
-            if (creep.carry.energy == 0){
+            if (creep.carry.energy == 0) {
                 creep.say("DYING");
                 moveOutOfTheWay(creep);
-            }
-            else if (target == undefined){
+            } else if (target == undefined) {
                 target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
                 target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer", Memory.structures.miningContainers);
                 target = chooseClosest(creep, [target, target2]);
             }
-            if (target != undefined){
+            if (target != undefined) {
                 creep.say("DYING");
                 var error = creep.transfer(target);
-                if (error == ERR_NOT_IN_RANGE){
+                if (error == ERR_NOT_IN_RANGE) {
                     costEfficientMove(creep, target);
                 }
             }

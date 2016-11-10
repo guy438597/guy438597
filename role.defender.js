@@ -14,28 +14,27 @@ module.exports = {
         //console.log(room);
         //old version:
 
-        if (creep.room.name != room.name && creep.hits >= creep.hitsMax * 0.9){
+        if (creep.room.name != room.name && creep.hits >= creep.hitsMax * 0.9) {
             creep.say("Defend!");
             //console.log(creep.pos);
             costEfficientMove(creep, new RoomPosition(25, 25, room.name));
-        }
-        else{
+        } else {
             target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             //console.log(target);
-            if (target){
-                if (creep.attack(target) == ERR_NOT_IN_RANGE){
+            if (target) {
+                if (creep.attack(target) == ERR_NOT_IN_RANGE) {
                     costEfficientMove(creep, target);
                 }
-            }
-            else {
+            } else {
                 if (creep.hits < creep.hitsMax) {
-                    if (creep.room != retreatRoom){
+                    if (creep.room != retreatRoom) {
                         //console.log(creep.room.name, room.name);
                         creep.say("Retreat!");
                         costEfficientMove(creep, new RoomPosition(25, 25, retreatRoom.name));
-                    }
-                    else{
-                        target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {fitler: (s) => s.structureType = STRUCTURE_TOWER});
+                    } else {
+                        target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                            fitler: (s) => s.structureType = STRUCTURE_TOWER
+                        });
                         costEfficientMove(creep, target.pos);
                     }
                 }

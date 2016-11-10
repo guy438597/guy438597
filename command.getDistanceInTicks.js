@@ -2,7 +2,7 @@
 var getDistance = require('command.getDistance');
 
 module.exports = function(creep, target) {
-    if (creep == undefined || target == undefined){
+    if (creep == undefined || target == undefined) {
         console.log("Warning, undefined in getDistanceInTicks function", creep, target);
     }
     var countBodyParts = _.ceil(creep.hits / 100);
@@ -14,13 +14,13 @@ module.exports = function(creep, target) {
     var distance = getDistance(creep, target);
 
     // if no bodyparts generate fatigue, the result is the same as distance to target
-    if (countGenerateFatigueParts == 0){
+    if (countGenerateFatigueParts == 0) {
         return distance;
     }
 
     //
     var countTicks = -1;
-    if (countMoveParts > 0){
+    if (countMoveParts > 0) {
         countTicks = distance * Math.max(1, _.ceil(countGenerateFatigueParts / (countMoveParts * 2)));
     }
     return countTicks;

@@ -10,16 +10,15 @@ module.exports = function(creep, targets) {
     var distance;
     var tempTarget;
     var tempDistance;
-    for (let i in targets){
+    for (let i in targets) {
         tempTarget = targets[i];
-        if (tempTarget != undefined){
-            if (target == undefined){
+        if (tempTarget != undefined) {
+            if (target == undefined) {
                 target = tempTarget;
                 distance = getDistance(creep, target);
-            }
-            else {
+            } else {
                 tempDistance = getDistance(creep, target);
-                if (distance > tempDistance){
+                if (distance > tempDistance) {
                     target = tempTarget;
                     distance = getDistance(creep, tempTarget);
                 }

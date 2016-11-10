@@ -18,9 +18,9 @@ module.exports = {
 
 
         // when the creep just spawned
-        if (creep.memory.state == undefined){
+        if (creep.memory.state == undefined) {
             creep.memory.state = "miningEnergy";
-            if (creep.memory.target != undefined){
+            if (creep.memory.target != undefined) {
                 target = Game.getObjectById(creep.memory.target);
                 creep.memory.target = target.id;
             }
@@ -29,12 +29,11 @@ module.exports = {
         //console.log(creep,creep.memory.state, creep.carry.energy >= creep.carryCapacity);
 
         //console.log(creep.carry.energy, creep.carryCapacity);
-        if (creep.memory.state != "puttingEnergyInContainer" && creep.memory.state != "lookingForNearbyEnergy" && creep.carry.energy >= creep.carryCapacity){
+        if (creep.memory.state != "puttingEnergyInContainer" && creep.memory.state != "lookingForNearbyEnergy" && creep.carry.energy >= creep.carryCapacity) {
             creep.memory.state = "puttingEnergyInContainer";
             creep.memory.target = undefined;
             //target = undefined;
-        }
-        else if (creep.memory.state != "miningEnergy" && creep.memory.state != "lookingForNearbyEnergy" && creep.carry.energy == 0){
+        } else if (creep.memory.state != "miningEnergy" && creep.memory.state != "lookingForNearbyEnergy" && creep.carry.energy == 0) {
             creep.memory.state = "miningEnergy";
             creep.memory.target = creep.memory.source;
             //target = undefined;
@@ -44,11 +43,10 @@ module.exports = {
         //console.log("yolo", creep.memory.state, creep.memory.target);
 
 
-        if (creep.memory.state == "miningEnergy"){
-            if (creep.memory.target != undefined){
+        if (creep.memory.state == "miningEnergy") {
+            if (creep.memory.target != undefined) {
                 target = Game.getObjectById(creep.memory.target);
-            }
-            else{
+            } else {
                 creep.memory.target = creep.memory.source;
                 target = Game.getObjectById(creep.memory.source);
             }
@@ -57,13 +55,12 @@ module.exports = {
         // go mining
         if (creep.memory.state == 'miningEnergy') {
             // if target available -> go to room, if not already in room -> go mining
-            if (target != undefined){
-                if (target.room.name != creep.room.name){
+            if (target != undefined) {
+                if (target.room.name != creep.room.name) {
                     creep.memory.target = target.id;
                     creep.say("GOING MINING");
                     costEfficientMove(creep, target);
-                }
-                else {
+                } else {
                     if (creep.harvest(target) == ERR_NOT_IN_RANGE || creep.harvest(target) == ERR_NOT_ENOUGH_RESOURCES) {
                         // move towards the source
                         creep.memory.target = target.id;
@@ -73,7 +70,7 @@ module.exports = {
                 }
             }
             // if target unavailable??????? wait i guess
-            else{
+            else {
                 //creep.memory.state = 'puttingEnergyInContainer';
                 //console.log("MINER TARGET UNDEFINED!");
             }
@@ -81,8 +78,10 @@ module.exports = {
         // pick up nearby energy until none found or full inventory
         if (creep.memory.state == "lookingForNearbyEnergy") {
             //console.log("testerino");
-            var temp = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, {filter: (s) => creep.pos.getRangeTo(s.pos) <= 2});
-            if (temp != undefined){
+            var temp = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, {
+                filter: (s) => creep.pos.getRangeTo(s.pos) <= 2
+            });
+            if (temp != undefined) {
                 target = temp;
             }
             //target = findEnergy(creep, 1, 2, "pickupEnergy");
@@ -97,64 +96,62 @@ module.exports = {
             }
             //if nothing found, then put target back to undefined, and change states to mining
             else {
-                if (creep.carry.energy >= creep.carryCapacity){
+                if (creep.carry.energy >= creep.carryCapacity) {
                     creep.memory.state = 'puttingEnergyInContainer';
-                }
-                else{
+                } else {
                     creep.memory.state = "miningEnergy";
                 }
             }
         }
         // full inventory -> want to drop energy to container or on ground
-        if (creep.memory.state == 'puttingEnergyInContainer'){
+        if (creep.memory.state == 'puttingEnergyInContainer') {
             //try find a container
-            target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_CONTAINER) && s.pos.getRangeTo(creep.pos) <= 2});
+            target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                filter: (s) => (s.structureType == STRUCTURE_CONTAINER) && s.pos.getRangeTo(creep.pos) <= 2
+            });
             // if one is found -> if it is full, then drop to ground, else drop it to container
             if (target != undefined) {
-                if (_.sum(target.store) < target.storeCapacity){
+                if (_.sum(target.store) < target.storeCapacity) {
                     if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         //console.log(creep.pos.getRangeTo(structure));
                         // move towards it
                         creep.say("PUT CONTR");
                         costEfficientMove(creep, target);
                     }
-                }
-                else{
+                } else {
                     //console.log(creep.carry.energy, creep.pos, target, creep.memory.state);
                     creep.say("CNTNR FULL");
                     creep.drop(RESOURCE_ENERGY);
                     creep.memory.target = undefined;
                     creep.memory.state = 'miningEnergy';
                 }
-                if (Memory.structures != undefined){
-                    if (Memory.structures.miningContainers != undefined){
+                if (Memory.structures != undefined) {
+                    if (Memory.structures.miningContainers != undefined) {
                         //console.log(typeof objectWithDraw.id);
-                        if (target.structureType == STRUCTURE_CONTAINER){
-                            if (Memory.structures.miningContainers.indexOf(target.id) == -1){
+                        if (target.structureType == STRUCTURE_CONTAINER) {
+                            if (Memory.structures.miningContainers.indexOf(target.id) == -1) {
                                 Memory.structures.miningContainers.push(target.id);
                                 console.log("Added container structure to memory!", target.id);
                             }
                         }
-                    }
-                    else{
+                    } else {
                         Memory.structures.miningContainers = [];
                     }
-                }
-                else{
+                } else {
                     Memory.structures = {};
                 }
 
-            }
-            else if (target == undefined) {
-                target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {filter: (s) => s.pos.getRangeTo(creep.pos) <= 1});
-                if (target != undefined){
+            } else if (target == undefined) {
+                target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES, {
+                    filter: (s) => s.pos.getRangeTo(creep.pos) <= 1
+                });
+                if (target != undefined) {
                     if (creep.build(target) == ERR_NOT_IN_RANGE) {
                         creep.say("BLD " + target.pos.x + " " + target.pos.y);
                         //creep.memory.target = target.id;
                         costEfficientMove(creep, target);
                     }
-                }
-                else{
+                } else {
                     creep.say("NO CONTNR");
                     creep.drop(RESOURCE_ENERGY);
                     creep.memory.target = undefined;
