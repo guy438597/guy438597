@@ -33,7 +33,7 @@ module.exports.loop = function() {
     //some settings that can be changed quickly
     var makeAttackUnitsHighPriority = false; //spawn an army? have higher priority than repairer-spawn
     var makeAttackUnitsLowPriority = true; //for constant attack
-    Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
+    Memory.offense.attackRoom = "E62S47"; //where should the army go to? army will be on a-move
 
     var energyTransporterConstant = 15;
     var minimumNumberOfUpgraders = 3; //spawn more if you bank up energy in containers
@@ -61,7 +61,7 @@ module.exports.loop = function() {
     ];
 
     // adjust number of builders and repairers according to how many buildingsites and repairtargets there are
-    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 3), 5);
+    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 5), 3);
     minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 10), 3);
 
     var moreMinersRequired = false;
@@ -139,6 +139,8 @@ module.exports.loop = function() {
         let healTarget;
         let repairTarget;
         if (attackTarget == undefined) {
+            attackTarget = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (s) => s.getActiveBodyparts(HEAL) > 0});
+        } if (attackTarget == undefined) {
             attackTarget = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         }
         if (healTarget == undefined) {
@@ -146,7 +148,7 @@ module.exports.loop = function() {
         }
         if (repairTarget == undefined) {
             repairTarget = tower.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                filter: (r) => r.pos.getRangeTo(tower.pos) <= 5
+                filter: (r) => r.hits < r.hitsMax * 0.75
             });
         }
         if (attackTarget != undefined) {
@@ -229,7 +231,7 @@ module.exports.loop = function() {
         Memory.structures.repairTargets = [];
         Memory.structures.buildingSites = [];
         for (let room in Game.rooms) {
-            if (Game.rooms[room].my != undefined){
+            if (Game.rooms[room].my != undefined) {
                 continue;
             }
             // update repairsites
@@ -315,8 +317,7 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfFighters + 1, "/", "Spawning new fighter!", name);
             }
-        }
-        else if ((numberOfSourceMiners < Memory.energy.energySources.length || moreMinersRequired) && numberOfEnergyRefillers >= 2) {
+        } else if ((numberOfSourceMiners < Memory.energy.energySources.length || moreMinersRequired) && numberOfEnergyRefillers >= 2) {
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
                 var sourceID = array[0];
@@ -454,7 +455,9 @@ module.exports.loop = function() {
 
     Memory.tempbuildList = [];
     grid = [25, 18, 36, 10];
-    if (Game.time % 500 == 0) {
+
+    // rebuild structures like walls automatically
+    if (Game.time % 300 == 0) {
         //creates a grid from bottom left to top right
         for (let i = grid[0]; i < grid[2]; i += 2) {
             for (let j = grid[1]; j > grid[3]; j -= 2) {
@@ -466,9 +469,27 @@ module.exports.loop = function() {
         for (let i of Memory.tempbuildList) {
             Game.spawns.Spawn1.room.createConstructionSite(i[0], i[1], i[2]);
         }
+        for (let i = 7; i < 19; i+=1) {
+            if (i != 16){
+                Game.spawns.Spawn1.room.createConstructionSite(2, i, STRUCTURE_WALL);
+            }
+        }
+        for (let i = 16; i < 20; i+=1) {
+            if (i != 15){
+                Game.spawns.Spawn1.room.createConstructionSite(i, 10, STRUCTURE_WALL);
+            }
+        }
+        for (let i = 7; i < 10; i-=1) {
+            if (i != 16){
+                Game.spawns.Spawn1.room.createConstructionSite(i, 10, STRUCTURE_WALL);
+            }
+        }
+        Game.spawns.Spawn1.room.createConstructionSite(2, 16, STRUCTURE_RAMPART);
+        Game.spawns.Spawn1.room.createConstructionSite(19, 9, STRUCTURE_RAMPART);
+
         Game.spawns.Spawn1.room.createConstructionSite(27, 20, STRUCTURE_STORAGE);
-    }
-    if (Game.time > 15189983){
-        Game.spawns.Spawn1.room.createConstructionSite(28, 19, STRUCTURE_TOWER);
+        if (Game.time > 15189983) {
+            Game.spawns.Spawn1.room.createConstructionSite(28, 19, STRUCTURE_TOWER);
+        }
     }
 };

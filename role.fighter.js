@@ -21,33 +21,38 @@ module.exports = {
 
         if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && (creep.room.controller.safeMode == undefined || creep.room.controller.my)){
             creep.say("attack");
-            target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-            //console.log(target);
+            target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {filter: (s) => s.getActiveBodyparts(HEAL) > 0});
             if (target == undefined){
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+                target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+                //console.log(target);
                 if (target == undefined){
-                    target = creep.pos.findClosestByPath(FIND_HOSTILE_CONSTRUCTION_SITES);
+                    target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+                    if (target == undefined){
+                        target = creep.pos.findClosestByPath(FIND_HOSTILE_CONSTRUCTION_SITES);
+                    }
                 }
             }
             if (creep.attack(target) == ERR_NOT_IN_RANGE) {
                 costEfficientMove(creep, target);
             }
         }
-        else if (creep.room.name != roomName && creep.hits >= creep.hitsMax * 0.5) {
+        else if (creep.hits >= creep.hitsMax * 0.6) {
             creep.say("Defend!");
-            //console.log(creep.pos);
             costEfficientMove(creep, new RoomPosition(25, 25, roomName));
-        } else {
-            if (creep.hits < creep.hitsMax) {
-                if (creep.room != retreatRoom) {
-                    //console.log(creep.room.name, room.name);
-                    creep.say("Retreat!");
+        } else if (creep.hits < creep.hitsMax * 0.6) {
+            //console.log("hi",creep.pos);
+            if (creep.room != retreatRoom) {
+                //console.log(creep.room.name, room.name);
+                creep.say("Retreat!");
+                costEfficientMove(creep, new RoomPosition(25, 25, retreatRoom));
+            } else {
+                target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                    fitler: (s) => s.structureType = STRUCTURE_TOWER
+                });
+                if (target != undefined){
+                    costEfficientMove(creep, target);
+                }else {
                     costEfficientMove(creep, new RoomPosition(25, 25, retreatRoom));
-                } else {
-                    target = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                        fitler: (s) => s.structureType = STRUCTURE_TOWER
-                    });
-                    costEfficientMove(creep, target.pos);
                 }
             }
         }
