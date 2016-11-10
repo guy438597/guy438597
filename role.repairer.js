@@ -27,6 +27,10 @@ module.exports = {
         };
 
         // load the one from memory - if memory inaccessable (probably newly spawned creep) -> load default one
+        if (creep.memory.retreatRoom == undefined) {
+            creep.memory.retreatRoom = Game.spawns.Spawn1.room.name;
+        }
+        
         if (creep.memory.state != undefined) {
             state = creep.memory.state;
         } else {
@@ -51,9 +55,14 @@ module.exports = {
         }
 
 
+        //if enemy in room -> retreat
+        if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
+            creep.say("RETREAT!");
+            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+        }
         //creep.memory.target = undefined;
         // if creep is supposed to transfer energy to a structure
-        if (creep.memory.state == "working") {
+        else if (creep.memory.state == "working") {
             if (target == undefined) {
                 var tempTarget;
                 var distance;
@@ -107,10 +116,7 @@ module.exports = {
                 creep.say("AVOIDING");
                 moveOutOfTheWay(creep);
             }
-        }
-
-
-        if (creep.memory.state == "pickupEnergy") {
+        } else if (creep.memory.state == "pickupEnergy") {
             if (target != undefined && target.structureType != undefined && target.energy < creep.carryCapacity - creep.carry.energy) {
                 target = undefined;
             }
@@ -146,9 +152,7 @@ module.exports = {
                     costEfficientMove(creep, target);
                 }
             }
-        }
-
-        if (creep.memory.state == "dying") {
+        } else if (creep.memory.state == "dying") {
             // when dying, try to transfer energy to nearby storage
             if (creep.carry.energy == 0) {
                 creep.say("DYING");

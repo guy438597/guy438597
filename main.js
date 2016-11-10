@@ -10,6 +10,7 @@ var costEfficientMove = require('command.costEfficientMove');
 var findClosestEnergyStorage = require('command.findClosestEnergyStorage');
 var findEnergy = require('command.findEnergy');
 var getDistance = require('command.getDistance');
+var getDistanceInTicks = require('command.getDistanceInTicks');
 var moveOutOfTheWay = require('command.moveOutOfTheWay');
 
 var roleBuilder = require('role.builder');
@@ -68,8 +69,8 @@ module.exports.loop = function() {
         Memory.claims = {};
     }
     Memory.claims.claimLocations = [
-        //["E49N63", "r"], //south of Spawn1
-        //1: ["E48N64", "r"], //west of Spawn1
+        ["E61S49", "r"], //west of Spawn1
+        //1: ["E61S48", "r"], //north of Spawn1
     ];
     if (Memory.claims.claimClaimers == undefined) {
         Memory.claims.claimClaimers = [];
@@ -144,6 +145,7 @@ module.exports.loop = function() {
     // all the roles take up about 4-10 cpu
     // bigger creeps = less cpu usage i guess
     var combinedTicksEnergyRefiller = 0;
+    var newClaimerRequired = false;
     for (let name in Game.creeps) {
         var creep = Game.creeps[name];
         if (creep.memory.role == 'harvester') {
@@ -173,6 +175,9 @@ module.exports.loop = function() {
             roleUpgrader.run(creep);
         } //uses about 0.0007 cpu
         else if (creep.memory.role == 'claimer') {
+            if (creep.ticksToLive < getDistanceInTicks(creep, Game.spawns.Spawn1) - 10) {
+                newClaimerRequired = true;
+            }
             roleClaimer.run(creep);
         } else if (creep.memory.role == 'defender') {
             roleDefender.run(creep);
@@ -335,8 +340,27 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfBuilders + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
             }
-        } else if (false && numberOfClaimers < 0 && Memory.energy.energySources.length > 0) { //minimumNumberOfClaimers) {
-            for (let i in claimLocations) {
+        } else if (false && numberOfClaimers < Memory.claims.claimLocations.length || newClaimerRequired) { //minimumNumberOfClaimers) {
+            for (let i in Memory.claim.claimLocations) {
+                var loc = Memory.claim.claimLocations[i];
+                var roomName2 = loc[0];
+                if (Memory.claim.claimClaimers.length > 0){
+                    var countClaimerTicks = 0;
+                    for (var j in Memory.claim.claimClaimers) {
+                        var name = Memory.claim.claimClaimers[j];
+                        var creep = Game.creeps[name];
+                        countClaimerTicks += creep.ticksToLive;
+                    }
+                    if (countClaimerTicks < getDistanceInTicks(Game.rooms[roomName2].controller, Game.spawns.Spawn1) - 10) {
+                        name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
+                        if (name != undefined && isNaN(name)) {
+                            console.log(numberOfClaimers + 1, "/", Memory.claims.claimLocations.length, "Spawning new claimer!", name);
+                        }
+
+                    } else {
+
+                    }
+                }
 
             }
         } else if (numberOfUpgraders < minimumNumberOfUpgraders && Memory.energy.energySources.length > 0 && Memory.structures.miningContainers.length > 0) {

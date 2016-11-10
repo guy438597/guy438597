@@ -16,6 +16,10 @@ module.exports = {
             creep.memory.state = "miningEnergy";
         }
 
+        if (creep.memory.retreatRoom == undefined) {
+            creep.memory.retreatRoom = Game.spawns.Spawn1.room.name;
+        }
+
 
         // when the creep just spawned
         if (creep.memory.state == undefined) {
@@ -43,6 +47,7 @@ module.exports = {
         //console.log("yolo", creep.memory.state, creep.memory.target);
 
 
+
         if (creep.memory.state == "miningEnergy") {
             if (creep.memory.target != undefined) {
                 target = Game.getObjectById(creep.memory.target);
@@ -52,8 +57,13 @@ module.exports = {
             }
         }
 
+        //if enemy in room -> retreat
+        if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
+            creep.say("RETREAT!");
+            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+        }
         // go mining
-        if (creep.memory.state == 'miningEnergy') {
+        else if (creep.memory.state == 'miningEnergy') {
             // if target available -> go to room, if not already in room -> go mining
             if (target != undefined) {
                 if (target.room.name != creep.room.name) {
@@ -76,7 +86,7 @@ module.exports = {
             }
         }
         // pick up nearby energy until none found or full inventory
-        if (creep.memory.state == "lookingForNearbyEnergy") {
+        else if (creep.memory.state == "lookingForNearbyEnergy") {
             //console.log("testerino");
             var temp = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, {
                 filter: (s) => creep.pos.getRangeTo(s.pos) <= 2
@@ -104,7 +114,7 @@ module.exports = {
             }
         }
         // full inventory -> want to drop energy to container or on ground
-        if (creep.memory.state == 'puttingEnergyInContainer') {
+        else if (creep.memory.state == 'puttingEnergyInContainer') {
             //try find a container
             target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 filter: (s) => (s.structureType == STRUCTURE_CONTAINER) && s.pos.getRangeTo(creep.pos) <= 2

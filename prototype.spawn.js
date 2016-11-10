@@ -179,7 +179,8 @@ module.exports = function() {
                     role: roleName,
                     state: 'idle',
                     claimRoomName: arg1,
-                    claimOption: arg2
+                    claimOption: arg2,
+                    retreatRoomName: arg3
                 });
             } else if (roleName == "wallRepairer") {
                 return this.createCreep([WORK, MOVE, CARRY], undefined, {

@@ -20,11 +20,9 @@ module.exports = {
         var target;
         var state;
 
-        //transition from old system:
-        if (creep.memory.state == "idle") {
-            creep.memory.state = undefined;
+        if (creep.memory.retreatRoom == undefined) {
+            creep.memory.retreatRoom = Game.spawns.Spawn1.room.name;
         }
-
 
         // load the one from memory - if memory inaccessable (probably newly spawned creep) -> load default one
         if (creep.memory.state == undefined) {

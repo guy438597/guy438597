@@ -9,7 +9,10 @@ module.exports = {
     run: function(creep) {
         var target;
         //old version:
-        if (creep.room.name != creep.memory.claimRoomName) {
+        if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
+            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+            creep.say("RETREAT");
+        } else if (creep.room.name != creep.memory.claimRoomName) {
             //console.log("hi");
             creep.say("Claimer");
             costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.claimRoomName));
@@ -30,10 +33,7 @@ module.exports = {
                         }
                     }
                 }
-
             }
-
         }
-
     }
 };

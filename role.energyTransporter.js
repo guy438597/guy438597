@@ -19,14 +19,11 @@ module.exports = {
         var source;
         var target;
 
-        //transition from old system:
-        if (creep.memory.state == "idle") {
-            creep.memory.state = undefined;
-        }
-        if (creep.memory.withdrawingContainer != undefined) {
-            creep.memory.source = creep.memory.withdrawingContainer;
-        }
 
+        if (creep.memory.retreatRoom == undefined) {
+            creep.memory.retreatRoom = Game.spawns.Spawn1.room.name;
+        }
+        
         // load the one from memory - if memory inaccessable (probably newly spawned creep) -> load default one
         if (creep.memory.state == undefined) {
             creep.memory.target = undefined;
@@ -68,8 +65,13 @@ module.exports = {
         }
 
 
+        //if enemy in room -> retreat
+        if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
+            creep.say("RETREAT!");
+            costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoom));
+        }
         // go near the energySource and find nearby dropped energy and miningContainer near mining source
-        if (creep.memory.state == "pickupEnergy") {
+        else if (creep.memory.state == "pickupEnergy") {
             if (target != undefined) {
                 var temp = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, {
                     filter: (s) => creep.pos.getRangeTo(s.pos) <= 2
@@ -105,7 +107,7 @@ module.exports = {
         }
 
         // if nearby dropped energy is found, do this
-        if (creep.memory.state == "grabbingNearbyEnergy") {
+        else if (creep.memory.state == "grabbingNearbyEnergy") {
             if (target == undefined) {
                 creep.memory.state = "pickupEnergy";
             }
@@ -123,7 +125,7 @@ module.exports = {
         }
 
         // now the transporter has full energy loaded, now its trying to find first a storage, then a container which is not a miningContainer
-        if (creep.memory.state == "deliverEnergy") {
+        else if (creep.memory.state == "deliverEnergy") {
             if (target != undefined && target.energy == target.energyCapacity) {
                 target = undefined;
             }
@@ -146,7 +148,7 @@ module.exports = {
         }
 
         // in case the creep is dying, we dont want him to die and leave energy on the ground - instead bring all the energy to nearest storage
-        if (creep.memory.state == "dying") {
+        else if (creep.memory.state == "dying") {
             // when dying, try to transfer energy to nearby storage
             if (creep.carry.energy == 0) {
                 creep.say("DYING");
