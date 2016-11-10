@@ -158,15 +158,18 @@ module.exports = {
                 creep.say("DYING");
                 moveOutOfTheWay(creep);
             } else if (target == undefined) {
-                target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
-                target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer", Memory.structures.miningContainers);
+                target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer");
+                target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer");
                 target = chooseClosest(creep, [target, target2]);
             }
             if (target != undefined) {
+                console.log(creep.pos, "dying, moving to", target.pos, "to deliver energy before rip", target);
                 creep.say("DYING");
-                var error = creep.transfer(target);
-                if (error == ERR_NOT_IN_RANGE) {
+                //var error = ;
+                if (creep.pos.getRangeTo(target) <= 1) {
                     costEfficientMove(creep, target);
+                }else {
+                    creep.transfer(target);
                 }
             }
         }

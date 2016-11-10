@@ -65,18 +65,17 @@ module.exports = {
         // go mining
         else if (creep.memory.state == 'miningEnergy') {
             // if target available -> go to room, if not already in room -> go mining
-            if (target != undefined) {
-                if (target.room.name != creep.room.name) {
+            //console.log(creep.name, creep.room.name, creep.memory.energySourceRoom);
+            if (creep.memory.energySourceRoom != creep.room.name) {
+                //creep.memory.target = target.id;
+                creep.say("MINE "+ creep.memory.energySourceRoom);
+                costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoom));
+            }
+            else if (target != undefined) {
+                if (creep.harvest(target) == ERR_NOT_IN_RANGE || creep.harvest(target) == ERR_NOT_ENOUGH_RESOURCES) {
+                    // move towards the source
                     creep.memory.target = target.id;
-                    creep.say("GOING MINING");
                     costEfficientMove(creep, target);
-                } else {
-                    if (creep.harvest(target) == ERR_NOT_IN_RANGE || creep.harvest(target) == ERR_NOT_ENOUGH_RESOURCES) {
-                        // move towards the source
-                        creep.memory.target = target.id;
-                        costEfficientMove(creep, target);
-                    }
-                    //console.log("hi2");
                 }
             }
             // if target unavailable??????? wait i guess
