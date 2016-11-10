@@ -75,12 +75,9 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
         // else if type is anything else, so like container or storage
         // if you want to withdraw energy from container/storage
         else if (withdrawOrTransfer == "withdraw") {
-            if (distanceFromEdge <= 10){
-                target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange));
-            }
-            else{
-                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange});
-            }
+            target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange));
+            /*else target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange});
+            */
             if (target == undefined){
                 var targets = [];
                 for (let room in Game.rooms) {
@@ -95,12 +92,8 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
 
         // if you want to put energy to container / storage
         else if (withdrawOrTransfer == "transfer") {
-            if (distanceFromEdge <= 10){
-                target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - maxRange, creep.pos.x - maxRange, creep.pos.y + maxRange, creep.pos.x + maxRange, true).filter((s) => s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange));
-            }
-            else {
-                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (s) => s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange});
-            }
+            target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - maxRange, creep.pos.x - maxRange, creep.pos.y + maxRange, creep.pos.x + maxRange, true).filter((s) => s.structureType == type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && excludeListIDs.indexOf(s.id) == -1 && s.pos.getRangeTo(creep) <= maxRange));
+            //console.log(creep.memory.type, target);
             if (target == undefined){
                 var targets = [];
                 for (let room in Game.rooms) {
