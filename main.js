@@ -10,7 +10,7 @@ var findEnergy = require('command.findEnergy');
 var moveOutOfTheWay = require('command.moveOutOfTheWay');
 var chooseClosest = require('command.chooseClosest');
 
-require('prototype.spawnV2')();
+require('prototype.spawn')();
 var roleHarvester = require('role.harvester');
 var roleSourceMiner = require('role.sourceMiner');
 var roleWallRepairer = require('role.wallRepairer');
