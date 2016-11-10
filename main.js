@@ -36,7 +36,7 @@ module.exports.loop = function() {
     var makeAttackUnits = false; //spawn an army? have higher priority than repairer-spawn
     Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
 
-    var energyTransporterConstant = 10;
+    var energyTransporterConstant = 8;
     var minimumNumberOfUpgraders = 5; //spawn more if you bank up energy in containers
 
     if (Memory.claims == undefined) {
@@ -212,7 +212,7 @@ module.exports.loop = function() {
     if (Memory.structures == undefined) {
         Memory.structures = {};
     }
-    if ((Game.time) % 20 == 0) {
+    if ((Game.time) % 30 == 0) {
         Memory.structures.repairTargets = [];
         Memory.structures.buildingSites = [];
         for (let room in Game.rooms) {
@@ -261,7 +261,7 @@ module.exports.loop = function() {
         Memory.energy.totalTransportersRequired = 0;
     }
 
-    if (Game.time % 10 == 0){
+    if (Game.time % 30 == 0){
         var totalRequiredEnergyTransporters = 0;
         for (let i in Memory.energy.energySources) {
             let source = Game.getObjectById(Memory.energy.energySources[i][0]);
@@ -343,39 +343,51 @@ module.exports.loop = function() {
             }
 
         } else if (numberOfEnergyTransporters < Memory.energy.totalTransportersRequired) {
+            console.log("test");
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
                 var sourceID = array[0];
                 if (Memory.energy.energySourceTransporters != undefined) {
-                    /**so a miner mines 10 energy per tick on average
-                    a transporter with 10 carry bodyparts can carry 500 energy ->
-                    need to maintain a distance of 50 TO the mining container, but on the way back the transporter is slowed down to 1/5th ?
-                    so transporter constant should be around ((distance * 7) / 50);  (7 = 1 to the source, 6 per tick back)
-                    1 carry part generates 1 fatigue if loaded, 1 move part decreases fatigue by 2 each tick
-                    non loaded: 1 move distance per tick
-                    loaded with 10 carry parts: move -> 10 fatigue -> 5 ticks to reduce -> wait 1 more tick -> move
-                    so i need one transporter every around 10 distance?! at least
-                    */
-                    var distance = getDistance(Game.spawns.Spawn1, Game.getObjectById(sourceID));
-                    var requiredTransporters = _.ceil(distance / energyTransporterConstant);
-                    if (Memory.energy.energySourceTransporters[i] != undefined) {
-                        //cleanListOfDeadIDs(Memory.energy.energySourceTransporters[i]);
-                        if (Memory.energy.energySourceTransporters[i].length < requiredTransporters) {
-                            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID);
-                            Memory.energy.energySourceTransporters[i].push(name);
-                            break;
+                    if (Memory.energy.energySourceTransporters[i] != undefined){
+                        /**so a miner mines 10 energy per tick on average
+                        a transporter with 10 carry bodyparts can carry 500 energy ->
+                        need to maintain a distance of 50 TO the mining container, but on the way back the transporter is slowed down to 1/5th ?
+                        so transporter constant should be around ((distance * 7) / 50);  (7 = 1 to the source, 6 per tick back)
+                        1 carry part generates 1 fatigue if loaded, 1 move part decreases fatigue by 2 each tick
+                        non loaded: 1 move distance per tick
+                        loaded with 10 carry parts: move -> 10 fatigue -> 5 ticks to reduce -> wait 1 more tick -> move
+                        so i need one transporter every around 10 distance?! at least
+                        */
+                        let source = Game.getObjectById(Memory.energy.energySources[i][0]);
+                        let nearbyContainer = findEnergy(source, -1, 3, STRUCTURE_CONTAINER, "transfer");
+                        //console.log(nearbyContainer);
+                        if (nearbyContainer != undefined){
+                            let tempDistance = getDistance(source, Game.spawns.Spawn1);
+                            let requiredEnergyTransporter = _.ceil(tempDistance / energyTransporterConstant);
+                            //console.log(source.pos, tempDistance, requiredEnergyTransporter);
+                            if (Memory.energy.energySourceTransporters != undefined){
+                                cleanListOfDeadCreeps(Memory.energy.energySourceTransporters[i]);
+                            }
+                            if (Memory.energy.energySourceTransporters[i].length < requiredEnergyTransporter){
+                                name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID);
+                                Memory.energy.energySourceTransporters[i].push(name);
+                                break;
+                            }
                         }
-                    } else {
+                    }
+                    else {
                         Memory.energy.energySourceTransporters.push([]);
                     }
-                } else {
+                }
+                else {
                     Memory.energy.energySourceTransporters = [];
                 }
             }
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfEnergyTransporters + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
             }
-        } else if (makeAttackUnits) {
+        }
+        else if (makeAttackUnits) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfFighters + 1, "/", "Spawning new fighter!", name);

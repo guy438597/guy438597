@@ -49,18 +49,6 @@ module.exports = function() {
                     source: arg1,
                     energySourceRoom: arg2
                 });
-            } else if (roleName == "worker" && energy >= 300) {
-                numberOfParts = _.floor((energy - 50) / 250);
-                numberOfParts = Math.min(3, numberOfParts);
-                body.push(WORK);
-                for (let i = 0; i < numberOfParts; i++) {
-                    body.push(CARRY);
-                    body.push(MOVE);
-                }
-                return this.createCreep(body, undefined, {
-                    role: roleName,
-                    state: 'idle'
-                });
             } else if (roleName == "builder" && energy >= 300) {
                 numberOfParts = _.floor((energy - 300) / 50);
                 numberOfParts = Math.min(5, numberOfParts);
@@ -94,9 +82,9 @@ module.exports = function() {
                 numberOfParts = Math.min(2, numberOfParts);
                 body.push(MOVE);
                 body.push(CARRY);
+                body.push(CARRY);
                 for (let i = 0; i < numberOfParts; i++) {
                     body.push(MOVE);
-                    body.push(CARRY);
                     body.push(CARRY);
                     body.push(CARRY);
                 }
@@ -104,11 +92,15 @@ module.exports = function() {
                     role: roleName,
                     state: 'idle'
                 });
-            } else if (roleName == "energyTransporter" && energy >= 100) {
-                numberOfParts = _.floor((energy - 50) / 50);
+            } else if (roleName == "energyTransporter" && energy >= 150) {
+                numberOfParts = _.floor((energy - 150) / 150);
                 numberOfParts = Math.min(10, numberOfParts);
                 body.push(MOVE);
+                body.push(CARRY);
+                body.push(CARRY);
                 for (let i = 0; i < numberOfParts; i++) {
+                    body.push(MOVE);
+                    body.push(CARRY);
                     body.push(CARRY);
                 }
                 return this.createCreep(body, undefined, {
@@ -116,13 +108,16 @@ module.exports = function() {
                     state: 'idle',
                     source: arg1
                 });
-            } else if (roleName == "repairer" && energy >= 200) {
-                numberOfParts = _.floor((energy - 100) / 100);
-                numberOfParts = Math.min(1, numberOfParts);
+            } else if (roleName == "repairer" && energy >= 300) {
+                numberOfParts = _.floor((energy - 300) / 50);
+                numberOfParts = Math.min(5, numberOfParts);
+                body.push(CARRY);
+                body.push(CARRY);
+                body.push(MOVE);
+                body.push(MOVE);
                 body.push(WORK);
                 for (let i = 0; i < numberOfParts; i++) {
                     body.push(CARRY);
-                    body.push(MOVE);
                 }
                 //Game.spawns.Spawn1.createCreep([WORK,MOVE,CARRY], undefined, {role: 'repairer', state: 'idle'})
                 return this.createCreep(body, undefined, {
