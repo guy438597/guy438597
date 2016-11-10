@@ -122,15 +122,16 @@ module.exports = {
             }
         }
         // if creep is dying, we want to transfer the remaining energy to a nearby storage / container before it gets put to the ground
-        if (creep.memory.state == "dying") {
+        else if (creep.memory.state == "dying") {
             // when dying, try to transfer energy to nearby storage
             if (creep.carry.energy == 0) {
                 creep.say("DYING");
                 moveOutOfTheWay(creep);
             } else if (target == undefined) {
-                target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
-                target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer", Memory.structures.miningContainers);
+                target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer");
+                target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer");
                 target = chooseClosest(creep, [target, target2]);
+                console.log("dying, moving to", target.pos, "to deliver energy before rip");
             }
             if (target != undefined) {
                 creep.say("DYING");

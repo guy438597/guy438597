@@ -26,14 +26,24 @@ var roleUpgrader = require('role.upgrader');
 var roleWallRepairer = require('role.wallRepairer');
 
 module.exports.loop = function() {
-
-    var moreMinersRequired = false;
-
-    for (let name in Memory.creeps) {
-        if (Game.creeps[name] == undefined) {
-            delete Memory.creeps[name];
-        }
+    if (Memory.offense == undefined){
+        Memory.offense = {};
     }
+
+    //some settings that can be changed quickly
+    var makeAttackUnits = false; //spawn an army? have higher priority than repairer-spawn
+    Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
+
+    minimumNumberOfUpgraders = 3; //spawn more if you bank up energy in containers
+
+    if (Memory.claims == undefined) {
+        Memory.claims = {};
+    }
+    // rooms i want to reserve or claim
+    Memory.claims.claimLocations = [
+        ["E61S49", "r"], //west of Spawn1
+        //1: ["E61S48", "r"], //north of Spawn1
+    ];
 
     // sources i mine energy from
     if (Memory.energy == undefined) {
@@ -65,13 +75,6 @@ module.exports.loop = function() {
     }
 
 
-    if (Memory.claims == undefined) {
-        Memory.claims = {};
-    }
-    Memory.claims.claimLocations = [
-        ["E61S49", "r"], //west of Spawn1
-        //1: ["E61S48", "r"], //north of Spawn1
-    ];
     if (Memory.claims.claimClaimers == undefined) {
         Memory.claims.claimClaimers = [];
     }
@@ -80,8 +83,6 @@ module.exports.loop = function() {
             Memory.claims.claimClaimers.push([]);
         }
     }
-    minimumNumberOfClaimers = Memory.claims.claimClaimers.length;
-    // rooms i want to reserve or claim
 
 
     if (Memory.defenses == undefined) {
@@ -95,7 +96,6 @@ module.exports.loop = function() {
     if (Memory.defenses.roomsUnderAttack == undefined) {
         Memory.defenses.roomsUnderAttack = [];
     }
-
 
 
     var spawning = Game.spawns.Spawn1.spawning != null;
@@ -141,6 +141,12 @@ module.exports.loop = function() {
     var numberOfRepairers = _.sum(Game.creeps, (c) => c.memory.role == 'repairer');
     var numberOfClaimers = _.sum(Game.creeps, (c) => c.memory.role == 'claimer');
     var numberOfDefenders = _.sum(Game.creeps, (c) => c.memory.role == 'defender');
+
+    for (let name in Memory.creeps) {
+        if (Game.creeps[name] == undefined) {
+            delete Memory.creeps[name];
+        }
+    }
 
     // all the roles take up about 4-10 cpu
     // bigger creeps = less cpu usage i guess
@@ -236,7 +242,7 @@ module.exports.loop = function() {
     // adjust number of builders and repairers according to how many buildingsites and repairtargets there are
     minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 5), 5);
     minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 20), 3);
-    minimumNumberOfUpgraders = 5;
+
 
     var name;
     if (numberOfHarvesters < 2 && (numberOfSourceMiners < 1 || numberOfEnergyRefillers < 1) && energy >= 200 && !spawning) {
@@ -330,6 +336,8 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfEnergyTransporters + 1, "/", totalTransporters, "Spawning new energyTransporter!", name);
             }
+        } else if (makeAttackUnits) {
+
         } else if (numberOfRepairers < minimumNumberOfRepairers && Memory.energy.energySources.length > 0) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'repairer');
             if (name != undefined && isNaN(name)) {
@@ -340,7 +348,7 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfBuilders + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
             }
-        } else if (false && numberOfClaimers < Memory.claims.claimLocations.length || newClaimerRequired) { //minimumNumberOfClaimers) {
+        } else if (energy >= 650 && (numberOfClaimers < Memory.claims.claimLocations.length || newClaimerRequired)) {
             for (let i in Memory.claim.claimLocations) {
                 var loc = Memory.claim.claimLocations[i];
                 var roomName2 = loc[0];

@@ -23,7 +23,7 @@ module.exports = {
         if (creep.memory.retreatRoom == undefined) {
             creep.memory.retreatRoom = Game.spawns.Spawn1.room.name;
         }
-        
+
         // load the one from memory - if memory inaccessable (probably newly spawned creep) -> load default one
         if (creep.memory.state == undefined) {
             creep.memory.target = undefined;
@@ -42,28 +42,26 @@ module.exports = {
             creep.memory.target = undefined;
             creep.memory.state = "pickupEnergy";
         }
-
-
-
         // load the game object
 
-        if (creep.memory.state == "pickupEnergy") {
-            if (creep.memory.target == undefined) {
-                creep.memory.target = creep.memory.source;
-            }
+        if (creep.memory.state == "pickupEnergy" && creep.memory.target == undefined) {
+            creep.memory.target = creep.memory.source;
+            //console.log(Game.getObjectById(creep.memory.target).pos);
         }
+
 
         if (creep.memory.source != undefined) {
             source = Game.getObjectById(creep.memory.source);
         }
+
+
         if (creep.memory.target != undefined) {
             target = Game.getObjectById(creep.memory.target);
-            if (target == null) {
+            if (target == undefined) {
                 creep.memory.target = undefined;
                 target = undefined;
             }
         }
-
 
         //if enemy in room -> retreat
         if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0) {
@@ -100,9 +98,12 @@ module.exports = {
                         moveOutOfTheWay(creep);
                     }
                 } else {
+                    //console.log("hi", target);
                     //console.log(creep.pos, target);
                     costEfficientMove(creep, source);
                 }
+            }else {
+                creep.memory.target = creep.memory.source;
             }
         }
 
@@ -110,8 +111,9 @@ module.exports = {
         else if (creep.memory.state == "grabbingNearbyEnergy") {
             if (target == undefined) {
                 creep.memory.state = "pickupEnergy";
+                creep.memory.target = undefined;
             }
-            if (target != undefined) {
+            else if (target != undefined) {
                 if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
                     creep.memory.target = target.id;
                     creep.say(target.amount + " PICKUP");
@@ -126,15 +128,15 @@ module.exports = {
 
         // now the transporter has full energy loaded, now its trying to find first a storage, then a container which is not a miningContainer
         else if (creep.memory.state == "deliverEnergy") {
-            if (target != undefined && target.energy == target.energyCapacity) {
+            if (target != undefined && target.energyCapacity - target.energy < creep.carry.energy) {
                 target = undefined;
             }
-
             //always try to deliver energy to storage first, before trying to deliver to container
-            target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer", Memory.structures.miningContainers);
             if (target == undefined) {
+                target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer", Memory.structures.miningContainers);
+                target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
+                target = chooseClosest(creep, [target, target2]);
                 //console.log(creep, creep.carry.energy, 300, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
-                target = findEnergy(creep, creep.carry.energy, 300, STRUCTURE_CONTAINER, "transfer", Memory.structures.miningContainers);
                 //console.log(target);
             }
 
@@ -144,6 +146,8 @@ module.exports = {
                     creep.memory.target = target.id;
                     costEfficientMove(creep, target);
                 }
+            } else {
+                creep.memory.target = undefined;
             }
         }
 

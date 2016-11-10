@@ -61,13 +61,15 @@ module.exports = function() {
                     role: roleName,
                     state: 'idle'
                 });
-            } else if (roleName == "builder" && energy >= 200) {
-                numberOfParts = _.floor((energy - 0) / 200);
-                numberOfParts = Math.min(3, numberOfParts);
+            } else if (roleName == "builder" && energy >= 300) {
+                numberOfParts = _.floor((energy - 300) / 50);
+                numberOfParts = Math.min(5, numberOfParts);
+                body.push(CARRY);
+                body.push(MOVE);
+                body.push(WORK);
+                body.push(WORK);
                 for (let i = 0; i < numberOfParts; i++) {
-                    body.push(WORK);
                     body.push(CARRY);
-                    body.push(MOVE);
                 }
                 return this.createCreep(body, undefined, {
                     role: roleName,
