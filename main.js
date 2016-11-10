@@ -157,6 +157,8 @@ module.exports.loop = function() {
         }
     }
 
+    var j1 = Game.cpu.getUsed();
+
     // all the roles take up about 4-10 cpu
     // bigger creeps = less cpu usage i guess
     var combinedTicksEnergyRefiller = 0;
@@ -201,6 +203,8 @@ module.exports.loop = function() {
             roleScout.run(creep);
         }
     }
+    j2 = Game.cpu.getUsed();
+
 
 
 
@@ -409,9 +413,9 @@ module.exports.loop = function() {
         }
     }
 
-    /*
-    var j1 = Game.cpu.getUsed();
-    console.log("CPU", Game.cpu.getUsed() - j1);*/
+    if (Game.time % 600 == 0) {
+        console.log("CPU used to run roles:", _.ceil(j2 - j1), "CPU used by other:", _.floor(Game.cpu.getUsed()) - _.ceil(j2-j1));
+    }
 
     //Memory.tempbuildList = undefined;
     Memory.tempbuildList = [];

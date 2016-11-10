@@ -117,7 +117,7 @@ module.exports = {
                 moveOutOfTheWay(creep);
             }
         } else if (creep.memory.state == "pickupEnergy") {
-            if (target != undefined && target.structureType != undefined && target.energy < creep.carryCapacity - creep.carry.energy) {
+            if (target != undefined && target.structureType != undefined && _.sum(target.store) < creep.carryCapacity - creep.carry.energy) {
                 target = undefined;
             }
             // ALWAYS try to pick up energy from nearby, because it expires

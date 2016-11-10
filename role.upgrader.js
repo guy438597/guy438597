@@ -65,8 +65,9 @@ module.exports = {
 
         // if creep is supposed to harvest energy from source
         else if (creep.memory.state == "pickupEnergy") {
-            if (target != undefined && target.structureType != undefined && target.energy < target.energyCapacity) {
+            if (target != undefined && target.structureType != undefined && _.sum(target.store) < creep.carryCapacity - creep.carry.energy) {
                 target = undefined;
+                creep.memory.target = undefined;
             }
             // find closest container / storage to pick up energy from
             if (target == undefined) {
@@ -77,6 +78,7 @@ module.exports = {
             }
             //if we found a target obviously -> move to it and grab energy
             if (target != undefined) {
+                //console.log(creep.name, target);
                 //trying to find out if its dropped energy -> then pick it up
                 if (target.structureType == undefined) {
                     if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
