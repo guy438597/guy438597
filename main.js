@@ -212,7 +212,7 @@ module.exports.loop = function() {
             // update targets that need repair (below 50% hp)
             var targets = Game.rooms[room].find(FIND_STRUCTURES);
             for (let target of targets) {
-                if ((target.structureType == STRUCTURE_ROAD || target.structureType == STRUCTURE_CONTAINER || target.my == true) && target.hits < target.hitsMax * 0.9) {
+                if ((target.structureType == STRUCTURE_ROAD || target.structureType == STRUCTURE_CONTAINER || target.my == true) && target.hits < target.hitsMax * 0.5) {
                     if ((Memory.structures.repairTargets.indexOf(target.id) == -1)) {
                         Memory.structures.repairTargets.push(target.id);
                     }
@@ -270,10 +270,10 @@ module.exports.loop = function() {
             //console.log("test", numberOfSourceMiners, Memory.energy.energySources.length);
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
-                sourceID = array[0];
-                maxMiners = array[1];
-                maxWorkBodyParts = array[2];
-                roomName = array[3];
+                var sourceID = array[0];
+                var maxMiners = array[1];
+                var maxWorkBodyParts = array[2];
+                var roomName = array[3];
                 if (Memory.energy.energySourceMiners != undefined) {
                     if (Memory.energy.energySourceMiners[i] != undefined) {
                         cleanListOfDeadCreeps(Memory.energy.energySourceMiners[i]);
@@ -313,7 +313,7 @@ module.exports.loop = function() {
             var totalTransporters = 0;
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
-                sourceID = array[0];
+                var sourceID = array[0];
                 if (Memory.energy.energySourceTransporters != undefined) {
                     /**so a miner mines 10 energy per tick on average
                     a transporter with 10 carry bodyparts can carry 500 energy ->

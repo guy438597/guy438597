@@ -102,7 +102,7 @@ module.exports = {
                     //console.log(creep.pos, target);
                     costEfficientMove(creep, source);
                 }
-            }else {
+            } else {
                 creep.memory.target = creep.memory.source;
             }
         }
@@ -113,8 +113,7 @@ module.exports = {
             if (target == undefined) {
                 creep.memory.state = "pickupEnergy";
                 creep.memory.target = undefined;
-            }
-            else if (target != undefined) {
+            } else if (target != undefined) {
                 if (creep.pickup(target) == ERR_NOT_IN_RANGE) {
                     creep.memory.target = target.id;
                     creep.say(target.amount + " PICKUP");
@@ -162,14 +161,13 @@ module.exports = {
                 target = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer");
                 target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer");
                 target = chooseClosest(creep, [target, target2]);
-            }
-            else if (target != undefined) {
+            } else if (target != undefined) {
                 console.log(creep.pos, "dying, moving to", target.pos, "to deliver energy before rip", target);
                 creep.say("DYING");
                 //var error = ;
-                if (creep.pos.getRangeTo(target) > 1) {
+                if (getDistance(creep, target) > 1) {
                     costEfficientMove(creep, target);
-                }else {
+                } else {
                     creep.transfer(target);
                 }
             }

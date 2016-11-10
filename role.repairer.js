@@ -166,7 +166,7 @@ module.exports = {
                 console.log(creep.pos, "dying, moving to", target.pos, "to deliver energy before rip", target);
                 creep.say("DYING");
                 //var error = ;
-                if (creep.pos.getRangeTo(target) > 1) {
+                if (getDistance(creep, target) > 1) {
                     costEfficientMove(creep, target);
                 }else {
                     creep.transfer(target);
