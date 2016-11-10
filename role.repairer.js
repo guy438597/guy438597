@@ -23,7 +23,8 @@ module.exports = {
             "container": 9,
             "spawn": 8,
             "extension": 7,
-            "tower": 6
+            "tower": 6,
+            "rampart": -1,
         };
 
         // load the one from memory - if memory inaccessable (probably newly spawned creep) -> load default one
@@ -44,9 +45,11 @@ module.exports = {
         } else if (creep.memory.state != "dying" && creep.memory.state != "working" && creep.carry.energy == creep.carryCapacity) {
             //creep.memory.target = undefined;
             creep.memory.state = "working";
+            creep.memory.target = undefined;
         } else if (creep.memory.state != "dying" && creep.memory.state != "pickupEnergy" && creep.carry.energy == 0) {
             //creep.memory.target = undefined;
             creep.memory.state = "pickupEnergy";
+            creep.memory.target = undefined;
         }
 
         if (creep.memory.target != undefined && creep.memory.state == "working") {
@@ -86,7 +89,7 @@ module.exports = {
                         } else {
                             tempPriority = typeof priorityDictionary[tempTarget.structureType] !== 'undefined' ? priorityDictionary[tempTarget.structureType] : 0;
                             tempDistance = getDistance(creep, tempTarget);
-                            if (tempPriority >= priority && tempDistance < distance) {
+                            if (tempPriority > priority || (tempPriority >= priority && tempDistance < distance)) {
                                 target = tempTarget;
                                 distance = tempDistance;
                                 priority = tempPriority;

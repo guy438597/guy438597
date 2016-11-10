@@ -17,10 +17,10 @@ module.exports = {
     run: function(creep) {
         var target;
         var priorityDictionary = {
-            "storage": 10,
-            "container": 9,
-            "spawn": 8,
-            "extension": 7,
+            "spawn": 10,
+            "extension": 9,
+            "storage": 8,
+            "container": 7,
             "tower": 6
         };
         //console.log("lul", typeof STRUCTURE_CONTAINER, priorityDictionary[STRUCTURE_CONTAINER]);

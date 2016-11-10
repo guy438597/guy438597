@@ -95,6 +95,24 @@ module.exports.loop = function() {
     }
 
 
+    var newClaimerRequired = false;
+    for (let i in Memory.claims.claimLocations) {
+        var loc = Memory.claims.claimLocations[i];
+        var roomName2 = loc[0];
+        if (Game.rooms[roomName2] != undefined){
+            if (Game.rooms[roomName2].controller.reservation == undefined || Game.rooms[roomName2].controller.reservation ==  "Burny" && Game.rooms[roomName2].controller.reservation.ticksToEnd < 200){
+                newClaimerRequired = true;
+            }
+        } else {
+            newClaimerRequired = true;
+        }
+        if (name != undefined && isNaN(name)) {
+            Memory.claims.claimClaimers[i].push(name);
+            console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+        }
+    }
+
+
     if (Memory.defenses == undefined) {
         Memory.defenses = {};
     }
@@ -193,10 +211,6 @@ module.exports.loop = function() {
             roleUpgrader.run(creep);
         } //uses about 0.0007 cpu
         else if (creep.memory.role == 'claimer') {
-            if (creep.ticksToLive < getDistanceInTicks(creep, Game.spawns.Spawn1) - 50) {
-                console.log(getDistanceInTicks(creep, Game.spawns.Spawn1));
-                newClaimerRequired = true;
-            }
             roleClaimer.run(creep);
         } else if (creep.memory.role == 'fighter') {
             roleFighter.run(creep);
@@ -392,6 +406,26 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfFighters + 1, "/", "Spawning new fighter!", name);
             }
+        } else if (energy >= 650 && newClaimerRequired) {
+            for (let i in Memory.claim.claimLocations) {
+                var loc = Memory.claim.claimLocations[i];
+                var roomName2 = loc[0];
+                if (Game.rooms[roomName2] != undefined){
+                    if (Game.rooms[roomName2].controller.reservation == undefined || Game.rooms[roomName2].controller.reservation ==  "Burny" && Game.rooms[roomName2].controller.reservation.ticksToEnd < 200){
+                        name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
+                        if (name != undefined && isNaN(name)) {
+                            Memory.claims.claimClaimers[i].push(name);
+                            console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+                        }
+                    }
+                } else {
+                    name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
+                }
+                if (name != undefined && isNaN(name)) {
+                    Memory.claims.claimClaimers[i].push(name);
+                    console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+                }
+            }
         } else if (numberOfRepairers < minimumNumberOfRepairers && Memory.energy.energySources.length > 0) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'repairer');
             if (name != undefined && isNaN(name)) {
@@ -401,30 +435,6 @@ module.exports.loop = function() {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'builder');
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfBuilders + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
-            }
-        } else if (energy >= 650 && (numberOfClaimers < Memory.claims.claimLocations.length || newClaimerRequired)) {
-            for (let i in Memory.claim.claimLocations) {
-                var loc = Memory.claim.claimLocations[i];
-                var roomName2 = loc[0];
-                if (Memory.claim.claimClaimers.length > 0){
-                    var countClaimerTicks = 0;
-                    for (var j in Memory.claim.claimClaimers) {
-                        var name = Memory.claim.claimClaimers[j];
-                        var creep = Game.creeps[name];
-                        countClaimerTicks += creep.ticksToLive;
-                    }
-                    if (countClaimerTicks < getDistanceInTicks(Game.rooms[roomName2].controller, Game.spawns.Spawn1) - 50) {
-                        name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
-                        if (name != undefined && isNaN(name)) {
-                            Memory.claims.claimClaimers[i].push(name);
-                            console.log(numberOfClaimers + 1, "/", Memory.claims.claimLocations.length, "Spawning new claimer!", name);
-                        }
-
-                    } else {
-
-                    }
-                }
-
             }
         } else if (numberOfUpgraders < minimumNumberOfUpgraders && Memory.energy.energySources.length > 0 && Memory.structures.miningContainers.length > 0) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'upgrader');
@@ -461,5 +471,7 @@ module.exports.loop = function() {
         for (let i of Memory.tempbuildList) {
             Game.spawns.Spawn1.room.createConstructionSite(i[0], i[1], i[2]);
         }
+        Game.spawns.Spawn1.room.createConstructionSite(26, 3, STRUCTURE_TOWER);
+        Game.spawns.Spawn1.room.createConstructionSite(27, 20, STRUCTURE_STORAGE);
     }
 };
