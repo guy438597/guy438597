@@ -39,6 +39,7 @@ function cleanListOfDeadCreeps(array) {
 }*/
 
 module.exports.loop = function () {
+    //testerino
     var totalTransporters = 0;
     var moreMinersRequired = false;
 
