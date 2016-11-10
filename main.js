@@ -52,8 +52,8 @@ module.exports.loop = function() {
     Memory.energy.energySources = [
         ["57ef9e7a86f108ae6e60f5c3", 3, 5, "E62S49"], //main Spawn1
         ["57ef9e7a86f108ae6e60f5c5", 4, 5, "E62S49"],
-        //["57ef9e6786f108ae6e60f3f9", 2, 5, "E61S49"], //west of Spawn1
-        //["57ef9e6786f108ae6e60f3fb", 1, 5, "E61S49"],
+        ["57ef9e6786f108ae6e60f3f9", 2, 5, "E61S49"], //west of Spawn1
+        ["57ef9e6786f108ae6e60f3fb", 1, 5, "E61S49"],
         //4: ["57ef9e3286f108ae6e60ef3c", 4, 5, "E48N64"], //west of Spawn1
         //5: ["57ef9e3286f108ae6e60ef3a", 4, 5, "E48N64"]
     ];
@@ -61,16 +61,21 @@ module.exports.loop = function() {
 
     var moreMinersRequired = false;
     for (let i in Memory.energy.energySources) {
-        cleanListOfDeadCreeps(Memory.energy.energySourceMiners[i]);
-        var countBodyParts = 0;
-        var maxBodyParts = Memory.energy.energySources[i][2];
-        for (let name of Memory.energy.energySourceMiners[i]) {
-            let creep = Game.creeps[name];
-            countBodyParts += creep.getActiveBodyparts(WORK);
+        if (Memory.energy.energySourceMiners[i] != undefined){
+            cleanListOfDeadCreeps(Memory.energy.energySourceMiners[i]);
+            var countBodyParts = 0;
+            var maxBodyParts = Memory.energy.energySources[i][2];
+            for (let name of Memory.energy.energySourceMiners[i]) {
+                let creep = Game.creeps[name];
+                countBodyParts += creep.getActiveBodyparts(WORK);
+            }
+            if (countBodyParts <= maxBodyParts) {
+                moreMinersRequired = true;
+                break;
+            }
         }
-        if (countBodyParts <= maxBodyParts) {
-            moreMinersRequired = true;
-            break;
+        else{
+            Memory.energy.energySourceMiners.push([]);
         }
     }
 
@@ -240,7 +245,7 @@ module.exports.loop = function() {
     }
 
     // adjust number of builders and repairers according to how many buildingsites and repairtargets there are
-    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 10), 3);
+    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 20), 3);
     minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 20), 3);
 
 
@@ -317,7 +322,7 @@ module.exports.loop = function() {
                     so i need one transporter every around 10 distance?! at least
                     */
                     var distance = getDistance(Game.spawns.Spawn1, Game.getObjectById(sourceID));
-                    var requiredTransporters = _.ceil(distance / 8);
+                    var requiredTransporters = _.ceil(distance / 10);
                     totalTransporters += requiredTransporters;
                     if (Memory.energy.energySourceTransporters[i] != undefined) {
                         cleanListOfDeadIDs(Memory.energy.energySourceTransporters[i]);

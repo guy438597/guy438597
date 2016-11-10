@@ -30,7 +30,7 @@ module.exports = {
         if (creep.memory.retreatRoom == undefined) {
             creep.memory.retreatRoom = Game.spawns.Spawn1.room.name;
         }
-        
+
         if (creep.memory.state != undefined) {
             state = creep.memory.state;
         } else {
@@ -42,14 +42,14 @@ module.exports = {
             creep.memory.target = undefined;
             creep.memory.state = "dying";
         } else if (creep.memory.state != "dying" && creep.memory.state != "working" && creep.carry.energy == creep.carryCapacity) {
-            creep.memory.target = undefined;
+            //creep.memory.target = undefined;
             creep.memory.state = "working";
         } else if (creep.memory.state != "dying" && creep.memory.state != "pickupEnergy" && creep.carry.energy == 0) {
-            creep.memory.target = undefined;
+            //creep.memory.target = undefined;
             creep.memory.state = "pickupEnergy";
         }
 
-        if (creep.memory.target != undefined) {
+        if (creep.memory.target != undefined && creep.memory.state == "working") {
             target = Game.getObjectById(creep.memory.target);
             //console.log(target);
         }
