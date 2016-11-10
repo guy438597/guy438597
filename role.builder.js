@@ -97,9 +97,9 @@ module.exports = {
                     }
                     creep.memory.target = undefined;
                 } else if (target.progress != target.progressTotal && target.room != undefined) {
+                    creep.memory.target = target.id;
                     if (creep.build(target) == ERR_NOT_IN_RANGE) {
                         creep.say("BLD " + target.pos.x + " " + target.pos.y);
-                        creep.memory.target = target.id;
                         costEfficientMove(creep, target);
                     }
                 } else {

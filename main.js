@@ -30,6 +30,7 @@ module.exports.loop = function() {
         Memory.offense = {};
     }
 
+
     //some settings that can be changed quickly
     var makeAttackUnits = false; //spawn an army? have higher priority than repairer-spawn
     Memory.offense.attackRoom = "E61S49"; //where should the army go to? army will be on a-move
@@ -43,7 +44,7 @@ module.exports.loop = function() {
     // rooms i want to reserve or claim
     Memory.claims.claimLocations = [
         ["E61S49", "r"], //west of Spawn1
-        //1: ["E61S48", "r"], //north of Spawn1
+        ["E62S48", "r"], //north of Spawn1
     ];
 
     // sources i mine energy from
@@ -58,6 +59,7 @@ module.exports.loop = function() {
         //4: ["57ef9e3286f108ae6e60ef3c", 4, 5, "E48N64"], //west of Spawn1
         //5: ["57ef9e3286f108ae6e60ef3a", 4, 5, "E48N64"]
     ];
+
 
 
     var moreMinersRequired = false;
@@ -189,6 +191,7 @@ module.exports.loop = function() {
         } //uses about 0.0007 cpu
         else if (creep.memory.role == 'claimer') {
             if (creep.ticksToLive < getDistanceInTicks(creep, Game.spawns.Spawn1) - 10) {
+                console.log(getDistanceInTicks(creep, Game.spawns.Spawn1));
                 newClaimerRequired = true;
             }
             roleClaimer.run(creep);
@@ -198,7 +201,6 @@ module.exports.loop = function() {
             roleScout.run(creep);
         }
     }
-
 
 
 
@@ -407,6 +409,9 @@ module.exports.loop = function() {
         }
     }
 
+    /*
+    var j1 = Game.cpu.getUsed();
+    console.log("CPU", Game.cpu.getUsed() - j1);*/
 
     //Memory.tempbuildList = undefined;
     Memory.tempbuildList = [];

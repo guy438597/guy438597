@@ -102,10 +102,10 @@ module.exports = {
                     }
                     creep.memory.target = undefined;
                 } else if (target.hits < target.hitsMax && target.room != undefined) {
+                    creep.memory.target = target.id;
                     if (creep.repair(target) == ERR_NOT_IN_RANGE) {
                         // move towards it
                         creep.say("REP " + target.pos);
-                        creep.memory.target = target.id;
                         costEfficientMove(creep, target);
                     }
                 } else {
