@@ -38,6 +38,7 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
     var target;
 
     //recover target from memory to avoid additional pathfinding CPU calculation, if target type and distance is same as preference
+    /**
     if (creep.memory != undefined && creep.memory.target != undefined) {
         target = Game.getObjectById(creep.memory.target);
         if (target === null) {
@@ -59,7 +60,7 @@ module.exports = function(creep, minEnergyInObject, maxRange, type, withdrawOrTr
                 }
             }
         }
-    }
+    }*/
 
     //find new target
     if (target == undefined) {
