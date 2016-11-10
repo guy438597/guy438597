@@ -127,8 +127,8 @@ module.exports = {
             }
             // find closest container / storage to pick up energy from
             if (target == undefined) {
-                target = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_CONTAINER, "withdraw", false);
-                target2 = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_STORAGE, "withdraw", false);
+                target = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_CONTAINER, "withdraw", Memory.structures.miningContainers);
+                target2 = findEnergy(creep, creep.carryCapacity - creep.carry.energy, undefined, STRUCTURE_STORAGE, "withdraw", Memory.structures.miningContainers);
                 //choose the closest one out of target and target2
                 target = chooseClosest(creep, [target, target2]);
                 if (target == undefined) {

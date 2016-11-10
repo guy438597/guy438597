@@ -64,12 +64,13 @@ module.exports.loop = function() {
         if (Memory.energy.energySourceMiners[i] != undefined){
             cleanListOfDeadCreeps(Memory.energy.energySourceMiners[i]);
             var countBodyParts = 0;
+            var maxMiners = Memory.energy.energySources[i][1];
             var maxBodyParts = Memory.energy.energySources[i][2];
             for (let name of Memory.energy.energySourceMiners[i]) {
                 let creep = Game.creeps[name];
                 countBodyParts += creep.getActiveBodyparts(WORK);
             }
-            if (countBodyParts <= maxBodyParts) {
+            if (countBodyParts <= maxBodyParts && maxMiners < Memory.energy.energySourceMiners[i].length ) {
                 moreMinersRequired = true;
                 break;
             }
@@ -211,7 +212,7 @@ module.exports.loop = function() {
             // update targets that need repair (below 50% hp)
             var targets = Game.rooms[room].find(FIND_STRUCTURES);
             for (let target of targets) {
-                if ((target.structureType == STRUCTURE_ROAD || target.structureType == STRUCTURE_CONTAINER || target.my == true) && target.hits < target.hitsMax * 0.5) {
+                if ((target.structureType == STRUCTURE_ROAD || target.structureType == STRUCTURE_CONTAINER || target.my == true) && target.hits < target.hitsMax * 0.9) {
                     if ((Memory.structures.repairTargets.indexOf(target.id) == -1)) {
                         Memory.structures.repairTargets.push(target.id);
                     }
@@ -260,10 +261,12 @@ module.exports.loop = function() {
 
     //console.log(requiredTransporters);
 
+    //console.log(numberOfRepairers, minimumNumberOfRepairers, Memory.energy.energySources.length);
     //console.log(numberOfEnergyTransporters);
     //console.log(moreMinersRequired);
     if ((energy >= energyMax || energy >= 700) && !spawning || (numberOfEnergyRefillers < 2 && !spawning)) {
         if (numberOfSourceMiners < Memory.energy.energySources.length || moreMinersRequired && numberOfEnergyRefillers >= 2) {
+            //console.log("test");
             //console.log("test", numberOfSourceMiners, Memory.energy.energySources.length);
             for (let i in Memory.energy.energySources) {
                 array = Memory.energy.energySources[i];
@@ -384,6 +387,9 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfUpgraders + 1, "/", minimumNumberOfUpgraders, "Spawning new upgrader!", name);
             }
+        }
+        else{
+
         }
     }
 
