@@ -140,19 +140,19 @@ module.exports = function() {
                         body.push(TOUGH);
                     }
                     if (numberOfAttackParts <= numberOfMoveParts) {
-                        for (let j = 0; j < numberOfAttackParts; j++) {
+                        for (let i = 0; i < numberOfAttackParts; i++) {
                             body.push(MOVE);
                             body.push(ATTACK);
                         }
-                        for (let j = 0; j < numberOfMoveParts - numberOfAttackParts; j++) {
+                        for (let i = 0; i < numberOfMoveParts - numberOfAttackParts; i++) {
                             body.push(MOVE);
                         }
                     } else {
-                        for (let j = 0; j < numberOfAttackParts; j++) {
+                        for (let i = 0; i < numberOfAttackParts; i++) {
                             body.push(ATTACK);
                             body.push(MOVE);
                         }
-                        for (let j = 0; j < numberOfAttackParts - numberOfMoveParts; j++) {
+                        for (let i = 0; i < numberOfAttackParts - numberOfMoveParts; i++) {
                             body.push(ATTACK);
                         }
                     }
