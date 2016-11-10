@@ -397,7 +397,7 @@ module.exports.loop = function() {
             if (name != undefined && isNaN(name)) {
                 console.log(numberOfEnergyTransporters + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
             }
-        } else if (energy >= 650 && newClaimerRequired) {
+        } else if (energy >= 650 && numberOfClaimers < 1){ // newClaimerRequired) {
             for (let i in Memory.claims.claimLocations) {
                 var loc = Memory.claims.claimLocations[i];
                 var roomName2 = loc[0];
@@ -453,43 +453,55 @@ module.exports.loop = function() {
     //console.log(Game.spawns.Spawn1.room.find(FIND_STRUCTURES).length);
     //console.log("CPUtest", Game.cpu.getUsed() - i1);
 
-    Memory.tempbuildList = [];
-    grid = [25, 18, 36, 10];
 
+    grid = [25, 18, 36, 10];
     // rebuild structures like walls automatically
     if (Game.time % 300 == 0) {
-        //creates a grid from bottom left to top right
+        Memory.tempbuildList = [];
+        //console.log("test");
+        Memory.tempbuildList = [];
         for (let i = grid[0]; i < grid[2]; i += 2) {
             for (let j = grid[1]; j > grid[3]; j -= 2) {
                 Memory.tempbuildList.push([i, j, STRUCTURE_EXTENSION]);
                 Memory.tempbuildList.push([i + 1, j - 1, STRUCTURE_EXTENSION]);
             }
         }
+        //creates a grid from bottom left to top right
+
         //console.log("extensions to build:", Memory.tempbuildList);
-        for (let i of Memory.tempbuildList) {
-            Game.spawns.Spawn1.room.createConstructionSite(i[0], i[1], i[2]);
-        }
+        //for (let i of Memory.tempbuildList) {
+            //Game.spawns.Spawn1.room.createConstructionSite(i[0], i[1], i[2]);
+        //}
         for (let i = 7; i < 19; i+=1) {
             if (i != 16){
-                Game.spawns.Spawn1.room.createConstructionSite(2, i, STRUCTURE_WALL);
+                Memory.tempbuildList.push([2, i, STRUCTURE_WALL]);
+                //Game.spawns.Spawn1.room.createConstructionSite(2, i, STRUCTURE_WALL);
             }
         }
         for (let i = 16; i < 20; i+=1) {
             if (i != 15){
-                Game.spawns.Spawn1.room.createConstructionSite(i, 10, STRUCTURE_WALL);
+                Memory.tempbuildList.push([i, 10, STRUCTURE_WALL]);
+                //Game.spawns.Spawn1.room.createConstructionSite(i, 10, STRUCTURE_WALL);
             }
         }
-        for (let i = 7; i < 10; i-=1) {
+        for (let i = 7; i < 10; i+=1) {
             if (i != 16){
-                Game.spawns.Spawn1.room.createConstructionSite(i, 10, STRUCTURE_WALL);
+                Memory.tempbuildList.push([19, i, STRUCTURE_WALL]);
+                //Game.spawns.Spawn1.room.createConstructionSite(i, 10, STRUCTURE_WALL);
             }
         }
-        Game.spawns.Spawn1.room.createConstructionSite(2, 16, STRUCTURE_RAMPART);
-        Game.spawns.Spawn1.room.createConstructionSite(19, 9, STRUCTURE_RAMPART);
+        Memory.tempbuildList.push([2, 16, STRUCTURE_RAMPART]);
+        Memory.tempbuildList.push([19, 9, STRUCTURE_RAMPART]);
 
-        Game.spawns.Spawn1.room.createConstructionSite(27, 20, STRUCTURE_STORAGE);
+        Memory.tempbuildList.push([27, 20, STRUCTURE_STORAGE]);
         if (Game.time > 15189983) {
-            Game.spawns.Spawn1.room.createConstructionSite(28, 19, STRUCTURE_TOWER);
+            Memory.tempbuildList.push([28, 19, STRUCTURE_TOWER]);
         }
+    }
+
+    if (Memory.tempbuildList != undefined && Memory.tempbuildList.length > 0){
+        //console.log(Memory.tempbuildList.length);
+        Game.spawns.Spawn1.room.createConstructionSite(Memory.tempbuildList[0][0], Memory.tempbuildList[0][1], Memory.tempbuildList[0][2]);
+        Memory.tempbuildList.splice(0, 1);
     }
 };
