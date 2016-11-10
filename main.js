@@ -40,6 +40,7 @@ function cleanListOfDeadCreeps(array) {
 
 module.exports.loop = function () {
     //testerino
+    // more testsssss
     var totalTransporters = 0;
     var moreMinersRequired = false;
 
