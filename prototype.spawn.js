@@ -128,7 +128,7 @@ module.exports = function() {
                     role: roleName,
                     state: 'idle'
                 });
-            } else if (roleName == "defender" && energy >= 300) {
+            } else if (roleName == "fighter" && energy >= 300) {
                 numberOfToughParts = arg1;
                 numberOfMoveParts = arg2;
                 numberOfAttackParts = arg3;

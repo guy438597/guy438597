@@ -15,7 +15,7 @@ var moveOutOfTheWay = require('command.moveOutOfTheWay');
 
 var roleBuilder = require('role.builder');
 var roleClaimer = require('role.claimer');
-var roleDefender = require('role.defender');
+var roleFighter = require('role.fighter');
 var roleEnergyRefiller = require('role.energyRefiller');
 var roleEnergyTransporter = require('role.energyTransporter');
 var roleHarvester = require('role.harvester');
@@ -145,7 +145,7 @@ module.exports.loop = function() {
     var numberOfUpgraders = _.sum(Game.creeps, (c) => c.memory.role == 'upgrader');
     var numberOfRepairers = _.sum(Game.creeps, (c) => c.memory.role == 'repairer');
     var numberOfClaimers = _.sum(Game.creeps, (c) => c.memory.role == 'claimer');
-    var numberOfDefenders = _.sum(Game.creeps, (c) => c.memory.role == 'defender');
+    var numberOfFighters = _.sum(Game.creeps, (c) => c.memory.role == 'fighter');
 
     for (let name in Memory.creeps) {
         if (Game.creeps[name] == undefined) {
@@ -342,7 +342,10 @@ module.exports.loop = function() {
                 console.log(numberOfEnergyTransporters + 1, "/", totalTransporters, "Spawning new energyTransporter!", name);
             }
         } else if (makeAttackUnits) {
-
+            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, undefined, Game.spawns.Spawn1.room.name);
+            if (name != undefined && isNaN(name)) {
+                console.log(numberOfFighters + 1, "/", "Spawning new builder!", name);
+            }
         } else if (numberOfRepairers < minimumNumberOfRepairers && Memory.energy.energySources.length > 0) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'repairer');
             if (name != undefined && isNaN(name)) {

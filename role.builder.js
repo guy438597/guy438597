@@ -156,11 +156,11 @@ module.exports = {
                 target2 = findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_STORAGE, "transfer");
                 target = chooseClosest(creep, [target, target2]);
             }
-            if (target != undefined) {
+            else if (target != undefined) {
                 console.log(creep.pos, "dying, moving to", target.pos, "to deliver energy before rip", target);
                 creep.say("DYING");
                 //var error = ;
-                if (creep.pos.getRangeTo(target) <= 1) {
+                if (creep.pos.getRangeTo(target) > 1) {
                     costEfficientMove(creep, target);
                 }else {
                     creep.transfer(target);
