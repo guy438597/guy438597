@@ -38,7 +38,7 @@ module.exports = {
         } else if (creep.memory.state != "dying" && creep.memory.state != "deliverEnergy" && creep.carry.energy == creep.carryCapacity) {
             creep.memory.target = undefined;
             creep.memory.state = "deliverEnergy";
-        } else if (creep.memory.state != "dying" && creep.memory.state != "pickupEnergy" && creep.carry.energy == 0) {
+        } else if (creep.memory.state != "dying" && creep.memory.state != "pickupEnergy" && creep.memory.state != "grabbingNearbyEnergy" && creep.carry.energy == 0) {
             creep.memory.target = undefined;
             creep.memory.state = "pickupEnergy";
         }
@@ -77,10 +77,10 @@ module.exports = {
                 if (temp != undefined) {
                     creep.memory.state = "grabbingNearbyEnergy";
                     creep.memory.target = temp.id;
-                    target = temp;
+                    //console.log("test", creep.memory.state, creep.memory.target, target.pos);
                 } else if (source.room != creep.room) {
                     creep.memory.target = source.id;
-                    creep.say("GRAB E " + source.pos.x + " " + source.pos.y);
+                    creep.say("GRAB " + source.room.name);
                     costEfficientMove(creep, source);
                 } else if (creep.pos.getRangeTo(source.pos) <= 4) {
                     //console.log(target.pos);
@@ -109,6 +109,7 @@ module.exports = {
 
         // if nearby dropped energy is found, do this
         else if (creep.memory.state == "grabbingNearbyEnergy") {
+
             if (target == undefined) {
                 creep.memory.state = "pickupEnergy";
                 creep.memory.target = undefined;

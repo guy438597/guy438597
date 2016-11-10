@@ -52,8 +52,8 @@ module.exports.loop = function() {
     Memory.energy.energySources = [
         ["57ef9e7a86f108ae6e60f5c3", 3, 5, "E62S49"], //main Spawn1
         ["57ef9e7a86f108ae6e60f5c5", 4, 5, "E62S49"],
-        //["57ef9e3586f108ae6e60ef7f", 2, 5, "E49N63"], //south of Spawn1
-        //["57ef9e3586f108ae6e60ef81", 4, 5, "E49N63"],
+        //["57ef9e6786f108ae6e60f3f9", 2, 5, "E61S49"], //west of Spawn1
+        //["57ef9e6786f108ae6e60f3fb", 1, 5, "E61S49"],
         //4: ["57ef9e3286f108ae6e60ef3c", 4, 5, "E48N64"], //west of Spawn1
         //5: ["57ef9e3286f108ae6e60ef3a", 4, 5, "E48N64"]
     ];
@@ -240,7 +240,7 @@ module.exports.loop = function() {
     }
 
     // adjust number of builders and repairers according to how many buildingsites and repairtargets there are
-    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 5), 5);
+    minimumNumberOfBuilders = Math.min(_.ceil(Memory.structures.buildingSites.length / 10), 3);
     minimumNumberOfRepairers = Math.min(_.ceil(Memory.structures.repairTargets.length / 20), 3);
 
 
