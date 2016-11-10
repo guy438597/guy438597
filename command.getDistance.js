@@ -22,9 +22,6 @@ module.exports = function(creep, target) {
         return creep.pos.getRangeTo(target.pos);
     }
     var distance = Object.keys(path).length;
-    if (creep.memory.role == "sourceMiner") {
-        console.log(creep.pos, target.pos, distance, path);
-    }
     if (distance == undefined) {
         return 0;
     }

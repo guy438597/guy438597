@@ -36,7 +36,7 @@ module.exports = {
             creep.memory.state = "pickupEnergy";
         }
 
-        if (creep.memory.state != "dying" && creep.ticksToLive <= 50) {
+        if (creep.memory.state != "dying" && creep.ticksToLive <= 50 && getDistanceInTicks(creep, findEnergy(creep, creep.carry.energy, undefined, STRUCTURE_CONTAINER, "transfer")) < 50) {
             creep.memory.target = undefined;
         } else if (creep.memory.state != "dying" && creep.memory.state != "working" && creep.carry.energy == creep.carryCapacity) {
             creep.memory.target = undefined;

@@ -65,8 +65,9 @@ module.exports = function() {
                 numberOfParts = _.floor((energy - 300) / 50);
                 numberOfParts = Math.min(5, numberOfParts);
                 body.push(CARRY);
+                body.push(CARRY);
                 body.push(MOVE);
-                body.push(WORK);
+                body.push(MOVE);
                 body.push(WORK);
                 for (let i = 0; i < numberOfParts; i++) {
                     body.push(CARRY);
@@ -133,24 +134,25 @@ module.exports = function() {
                 numberOfMoveParts = arg2;
                 numberOfAttackParts = arg3;
                 var cost = costDictionary[ATTACK] * numberOfAttackParts + costDictionary[MOVE] * numberOfMoveParts + costDictionary[TOUGH] * numberOfToughParts;
-                if (energy < cost) {
+                console.log("SPAWN FIGHTER", cost, energy);
+                if (energy <= cost) {
                     for (let i = 0; i < numberOfToughParts; i++) {
                         body.push(TOUGH);
                     }
                     if (numberOfAttackParts <= numberOfMoveParts) {
-                        for (let i = 0; i < numberOfAttackParts; i++) {
+                        for (let j = 0; j < numberOfAttackParts; j++) {
                             body.push(MOVE);
                             body.push(ATTACK);
                         }
-                        for (let i = 0; i < numberOfMoveParts - numberOfAttackParts; i++) {
+                        for (let j = 0; j < numberOfMoveParts - numberOfAttackParts; j++) {
                             body.push(MOVE);
                         }
                     } else {
-                        for (let i = 0; i < numberOfAttackParts; i++) {
+                        for (let j = 0; j < numberOfAttackParts; j++) {
                             body.push(ATTACK);
                             body.push(MOVE);
                         }
-                        for (let i = 0; i < numberOfAttackParts - numberOfMoveParts; i++) {
+                        for (let j = 0; j < numberOfAttackParts - numberOfMoveParts; j++) {
                             body.push(ATTACK);
                         }
                     }

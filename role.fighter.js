@@ -11,17 +11,18 @@ module.exports = {
         var target;
         var room = creep.memory.roomToDefend;
         var retreatRoom = creep.memory.retreatRoom;
-        if (creep.memory.roomToDefend == undefined){
-            room = Memory.offense.attackRoom;
+        if (creep.memory.roomToDefend == undefined || creep.memory.roomToDefend == "0"){
+            roomName = Memory.offense.attackRoom;
         }
+        //console.log(typeof creep.memory.roomToDefend);
         //console.log(room);
         //old version:
 
 
-        if (creep.room.name != room.name && creep.hits >= creep.hitsMax * 0.9) {
+        if (creep.room.name != roomName && creep.hits >= creep.hitsMax * 0.9) {
             creep.say("Defend!");
             //console.log(creep.pos);
-            costEfficientMove(creep, new RoomPosition(25, 25, room.name));
+            costEfficientMove(creep, new RoomPosition(25, 25, roomName));
         } else {
             target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
             //console.log(target);
