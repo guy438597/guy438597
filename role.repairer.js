@@ -82,9 +82,9 @@ module.exports = {
                         if (target == undefined) {
                             target = tempTarget;
                             distance = getDistance(creep, tempTarget);
-                            priority = priorityDictionary[tempTarget.structureType] || 0;
+                            priority = typeof priorityDictionary[tempTarget.structureType] !== 'undefined' ? priorityDictionary[tempTarget.structureType] : 0;
                         } else {
-                            tempPriority = priorityDictionary[tempTarget.structureType] || 0;
+                            tempPriority = typeof priorityDictionary[tempTarget.structureType] !== 'undefined' ? priorityDictionary[tempTarget.structureType] : 0;
                             tempDistance = getDistance(creep, tempTarget);
                             if (tempPriority >= priority && tempDistance < distance) {
                                 target = tempTarget;

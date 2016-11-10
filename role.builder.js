@@ -75,10 +75,10 @@ module.exports = {
                         if (target == undefined) {
                             target = tempTarget;
                             distance = getDistance(creep, tempTarget);
-                            priority = priorityDictionary[tempTarget.structureType] || 0;
+                            priority = typeof priorityDictionary[tempTarget.structureType] !== 'undefined' ? priorityDictionary[tempTarget.structureType] : 0;
                         } else {
                             var structtype = tempTarget.structureType;
-                            tempPriority = priorityDictionary[tempTarget.structureType] || 0;
+                            tempPriority = typeof priorityDictionary[tempTarget.structureType] !== 'undefined' ? priorityDictionary[tempTarget.structureType] : 0;
                             tempDistance = getDistance(creep, tempTarget);
                             //console.log(target.structureType, priority, tempPriority, distance, tempDistance);
                             if (tempPriority > priority || tempPriority >= priority && tempDistance < distance) {
