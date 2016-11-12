@@ -18,16 +18,21 @@ loadDefaultValues = function(creep) {
 };
 
 findConstructionSite = function(creep, distance) {
-  var i, len, ref, site, sites, target;
+  var site, sites, target;
   if (distance == null) {
     distance = 10000;
   }
   if (Memory.structures.buildingSites) {
-    ref = Memory.structures.buildingSites;
-    for (i = 0, len = ref.length; i < len; i++) {
-      site = ref[i];
-      sites = Game.getObjectById(site);
-    }
+    sites = (function() {
+      var i, len, ref, results;
+      ref = Memory.structures.buildingSites;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        site = ref[i];
+        results.push(Game.getObjectById(site));
+      }
+      return results;
+    })();
     console.log("findconstr", sites, Memory.structures.buildingSites);
     if (sites) {
       target = chooseClosest(creep, sites);
@@ -43,16 +48,21 @@ findConstructionSite = function(creep, distance) {
 };
 
 findRepairSite = function(creep, distance) {
-  var i, len, ref, site, sites, target;
+  var site, sites, target;
   if (distance == null) {
     distance = 100000;
   }
   if (Memory.structures.repairTargets) {
-    ref = Memory.structures.repairTargets;
-    for (i = 0, len = ref.length; i < len; i++) {
-      site = ref[i];
-      sites = Game.getObjectById(site);
-    }
+    sites = (function() {
+      var i, len, ref, results;
+      ref = Memory.structures.repairTargets;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        site = ref[i];
+        results.push(Game.getObjectById(site));
+      }
+      return results;
+    })();
     if (sites) {
       target = chooseClosest(creep, sites);
     }
