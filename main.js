@@ -524,7 +524,7 @@ module.exports.loop = function() {
       if (name) {
         return console.log(roleCnt.builder + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
       }
-    } else if (energy >= 200 && roleCnt.upgrader < minimumNumberOfUpgraders) {
+    } else if (energy >= 300 && roleCnt.upgrader < minimumNumberOfUpgraders) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'upgrader');
       if (name) {
         return console.log(roleCnt.upgrader + 1, "/", minimumNumberOfUpgraders, "Spawning new upgrader!", name);
