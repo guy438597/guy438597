@@ -17,7 +17,7 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 runRoles = require("./creeproles");
 
 module.exports.loop = function() {
-  var attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, site, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, username, v, w, x, y;
+  var attackTarget, basicEconomyRunning, c, closestContainer, closestStorage, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, site, source, sourceID, sourceRoomName, spawnHighPriorityDefense, spawnLowPriorityAttack, spawning, t, target, tempDistance, totalEnergyTransportersRequired, tower, towers, u, username, v, w, x, y;
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
@@ -387,20 +387,15 @@ module.exports.loop = function() {
     totalEnergyTransportersRequired = 0;
     ref9 = Memory.energy.energySources;
     for (i = t = 0, len7 = ref9.length; t < len7; i = ++t) {
-      source = ref9[i];
-      source = Game.getObjectById(Memory.energy.energySources[i][0]);
+      energySource = ref9[i];
+      source = Game.getObjectById(energySource[0]);
       if (source) {
-        closestSpawn = chooseClosest(source, (function() {
-          var ref10, results;
-          ref10 = Game.spawns;
-          results = [];
-          for (spawnName in ref10) {
-            spawn = ref10[spawnName];
-            results.push(spawn);
-          }
-          return results;
-        })());
-        tempDistance = getDistance(source, closestSpawn);
+        closestStorage = findEnergy(source, -1, void 0, STRUCTURE_STORAGE, "transfer");
+        if (!closestStorage) {
+          closestContainer = findEnergy(source, -1, void 0, STRUCTURE_CONTAINER, "transfer", Memory.energy.miningContainers);
+        }
+        target = chooseClosest(source, [closestStorage, closestContainer]);
+        tempDistance = getDistance(source, target);
         totalEnergyTransportersRequired += Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
       }
     }
@@ -470,17 +465,12 @@ module.exports.loop = function() {
         source = Game.getObjectById(sourceID);
         sourceRoomName = Memory.energy.energySources[i][3];
         if (source) {
-          closestSpawn = chooseClosest(source, (function() {
-            var ref14, results1;
-            ref14 = Game.spawns;
-            results1 = [];
-            for (spawnName in ref14) {
-              spawn = ref14[spawnName];
-              results1.push(Game.spawns[spawnName]);
-            }
-            return results1;
-          })());
-          tempDistance = getDistance(source, closestSpawn);
+          closestStorage = findEnergy(source, -1, void 0, STRUCTURE_STORAGE, "transfer");
+          if (!closestStorage) {
+            closestContainer = findEnergy(source, -1, void 0, STRUCTURE_CONTAINER, "transfer", Memory.energy.miningContainers);
+          }
+          target = chooseClosest(source, [closestStorage, closestContainer]);
+          tempDistance = getDistance(source, target);
           totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
           if (Memory.energy.energySourceTransporters[i].length < totalEnergyTransportersRequired) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID, sourceRoomName);

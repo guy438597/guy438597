@@ -369,10 +369,10 @@ sourceMiner = function(creep) {
       target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
     }
     if (target) {
-      if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
+      if (!target.progress && indexOf.call(Memory.energy.miningContainers, target) < 0) {
         Memory.energy.miningContainers.push(target.id);
       }
-      if (_.sum(target.store) < target.storeCapacity) {
+      if (!target.progress && _.sum(target.store) < target.storeCapacity) {
         goTransferEnergy(creep, target);
         creep.say("PUT CNTR");
         return creep.memory.state = "lookingForNearbyEnergy";
