@@ -321,6 +321,9 @@ sourceMiner = function(creep) {
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
   }
+  if (!target) {
+    creep.memory.target = void 0;
+  }
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "mining") {
@@ -386,6 +389,9 @@ energyRefiller = function(creep) {
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
   }
+  if (!target) {
+    creep.memory.target = void 0;
+  }
   if (!creep.memory.state) {
     creep.memory.state = "pickupEnergy";
   }
@@ -439,6 +445,12 @@ energyTransporter = function(creep) {
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
   }
+  if (!target) {
+    creep.memory.target = void 0;
+  }
+  if (!target) {
+    creep.memory.target = void 0;
+  }
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "pickupEnergy") {
@@ -486,6 +498,9 @@ repairer = function(creep) {
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
   }
+  if (!target) {
+    creep.memory.target = void 0;
+  }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "repairing";
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
     return retreat(creep);
@@ -516,6 +531,9 @@ builder = function(creep) {
   loadDefaultValues(creep);
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
+  }
+  if (!target) {
+    creep.memory.target = void 0;
   }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "building";
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
@@ -549,6 +567,9 @@ claimer = function(creep) {
   loadDefaultValues(creep);
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
+  }
+  if (!target) {
+    creep.memory.target = void 0;
   }
   if (!creep.memory.claimRoomName) {
     creep.memory.claimRoomName = Game.spawns.Spawn1.room.name;
@@ -589,6 +610,9 @@ upgrader = function(creep) {
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
   }
+  if (!target) {
+    creep.memory.target = void 0;
+  }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "upgrading";
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
     return retreat(creep);
@@ -621,6 +645,9 @@ fighter = function(creep) {
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
   }
+  if (!target) {
+    creep.memory.target = void 0;
+  }
   return console.log("testerinoo");
 };
 
@@ -631,6 +658,7 @@ harvester = (creep) ->
     creep.memory.state = if creep.carry.energy is creep.carryCapacity then "work"
     creep.memory.state = if creep.carry.energy is 0 then "mine"
     target = Game.getObjectById(creep.memory.target) if creep.memory.target
+    creep.memory.target = undefined if !target
 
     if creep.carry.state is "mine"
         if creep.memory.state is creep.carry.energy
@@ -668,6 +696,9 @@ harvester = function(creep) {
   }
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
+  }
+  if (!target) {
+    creep.memory.target = void 0;
   }
   if (creep.memory.state === "mining") {
     if (!target) {
