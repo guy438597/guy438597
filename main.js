@@ -78,6 +78,9 @@ module.exports.loop = function() {
   if (!Memory.energy.energySourceMiners) {
     Memory.energy.energySourceMiners = [];
   }
+  if (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
+    Memory.energy.energySourceMiners.push([]);
+  }
   while (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceMiners.push([]);
   }
