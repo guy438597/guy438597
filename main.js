@@ -262,6 +262,10 @@ module.exports = (function() {
     }
   }
 
+  console.log(Memory.structures.buildingSites);
+
+  console.log(Memory.structures.repairTargets);
+
   roleCnt = {
     sourceMiner: ((function() {
       var ref8, results;
