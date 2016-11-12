@@ -1,4 +1,5 @@
-var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles;
+var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles,
+  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 require('./spawnV2')();
 
@@ -222,11 +223,13 @@ module.exports = (function() {
       for (r = 0, len7 = newrepairTargets.length; r < len7; r++) {
         i = newrepairTargets[r];
         Memory.structures.repairTargets = Memory.structures.repairTargets.concat((function() {
-          var len8, results, t;
+          var len8, ref8, results, t;
           results = [];
           for (t = 0, len8 = newrepairTargets.length; t < len8; t++) {
             s = newrepairTargets[t];
-            results.push(s.id);
+            if (ref8 = s.id, indexOf.call(Memory.structures.repairTargets, ref8) < 0) {
+              results.push(s.id);
+            }
           }
           return results;
         })());
@@ -234,11 +237,13 @@ module.exports = (function() {
       for (t = 0, len8 = newbuildingSites.length; t < len8; t++) {
         i = newbuildingSites[t];
         Memory.structures.buildingSites = Memory.structures.buildingSites.concat((function() {
-          var len9, results, u;
+          var len9, ref8, results, u;
           results = [];
           for (u = 0, len9 = newbuildingSites.length; u < len9; u++) {
             s = newbuildingSites[u];
-            results.push(s.id);
+            if (ref8 = s.id, indexOf.call(Memory.structures.buildingSites, ref8) < 0) {
+              results.push(s.id);
+            }
           }
           return results;
         })());
