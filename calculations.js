@@ -2,6 +2,21 @@ var chooseClosest, findEnergy, getDistance, getDistanceInTicks,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 chooseClosest = function(creep, targets) {
+
+  /*
+  if targets.length is 0
+      undefined
+  else if targets.length is 1
+      target = targets[0]
+  else
+      target = targets[0]
+      distance = getdistance(creep, target)
+      for t,i in targets
+          tempDistance = getdistance(creep, t)
+          if t
+  if !target
+      target = target
+   */
   var sortedTargets, target;
   if (targets) {
     targets = targets.filter(function(s) {
@@ -24,7 +39,7 @@ chooseClosest = function(creep, targets) {
 };
 
 getDistance = function(creep, target) {
-  var distance, path;
+  var distance;
   if (!creep || !target) {
     console.log("Warning, undefined in getDistance functionn", creep, target);
   }
@@ -35,9 +50,7 @@ getDistance = function(creep, target) {
     console.log("called getdistance of same object", creep, creep.pos);
     0;
   }
-  distance = creep.room === target.room ? creep.pos.getRangeTo(target.pos) : path = creep.room.findPath(creep.pos, target.pos, {
-    ignoreCreeps: true
-  }).path;
+  distance = creep.room === target.room ? creep.pos.getRangeTo(target.pos) : creep.room.findPath(creep.pos, target.pos).length;
   if (!distance) {
     -1;
   }
