@@ -163,6 +163,7 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   } else if (withdrawOrTransfer === "transfer") {
     targets = [];
     if (distanceFromEdge <= 10) {
+      console.log(creep.pos, distanceFromEdge, creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true));
       targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
         var ref1;
         return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && s.pos.getRangeTo(creep) <= maxRange;
