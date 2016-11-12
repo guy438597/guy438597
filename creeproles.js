@@ -313,8 +313,14 @@ creeproles = (function() {
       target = Game.getObjectById(creep.memory.target);
     }
     if (creep.memory.state === "mining") {
+      if (!target) {
+        target = this.findNearbyDroppedEnergy(creep, 5);
+      }
+      if (target && target.amount) {
+        this.pickupEnergy(creep, target);
+      }
       target = this.findMiningSite(creep);
-      if (target) {
+      if (target && !target.amount) {
         return this.goMine(creep, target);
       }
     } else if (creep.memory.state === "deliverEnergy") {
