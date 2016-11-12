@@ -88,10 +88,12 @@ module.exports.loop = function() {
     maxMiners = source[1];
     maxBodyParts = source[2];
     countBodyParts = 0;
-    ref3 = Memory.energy.energySourceMiners[i];
-    for (m = 0, len2 = ref3.length; m < len2; m++) {
-      name = ref3[m];
-      countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
+    if (Memory.energy.energySourceMiners[i] !== []) {
+      ref3 = Memory.energy.energySourceMiners[i];
+      for (m = 0, len2 = ref3.length; m < len2; m++) {
+        name = ref3[m];
+        countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
+      }
     }
     if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
       moreMinersRequired = true;
