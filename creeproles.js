@@ -23,7 +23,7 @@ findConstructionSite = function(creep, distance) {
     distance = 10000;
   }
   if (Memory.structures.buildingSites) {
-    console.log("finding constr. site", (function() {
+    target = chooseClosest(creep, (function() {
       var i, len, ref, results;
       ref = Memory.structures.buildingSites;
       results = [];
@@ -33,17 +33,9 @@ findConstructionSite = function(creep, distance) {
       }
       return results;
     })());
-    target = chooseClosest((function() {
-      var i, len, ref, results;
-      ref = Memory.structures.buildingSites;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        target = ref[i];
-        results.push(Game.getObjectById(target));
-      }
-      return results;
-    })());
-    return target;
+    if (target) {
+      return target;
+    }
   }
 };
 
@@ -53,7 +45,7 @@ findRepairSite = function(creep, distance) {
     distance = 10000;
   }
   if (Memory.structures.repairTargets) {
-    target = chooseClosest((function() {
+    target = chooseClosest(creep, (function() {
       var i, len, ref, results;
       ref = Memory.structures.repairTargets;
       results = [];
