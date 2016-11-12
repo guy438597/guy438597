@@ -22,11 +22,13 @@ module.exports = (function() {
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
+    console.log("testo");
     if (!creep) {
       delete Memory.creeps[name];
     } else if (creep.memory.role === "sourceMiner" && name !== "Joseph") {
       creep.suicide();
     }
+    console.log("testo2");
   }
 
   energyTransporterConstant = 15;
