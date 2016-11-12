@@ -24,8 +24,7 @@ module.exports = (function() {
     creep = ref[name];
     if (!creep) {
       delete Memory.creeps[name];
-    }
-    if (creep.memory.role === "sourceMiner" && name !== "Joseph") {
+    } else if (creep.memory.role === "sourceMiner" && name !== "Joseph") {
       creep.suicide();
     }
   }
