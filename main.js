@@ -38,7 +38,7 @@ module.exports.loop = function() {
   if (!Memory.energy.miningContainers) {
     Memory.energy.miningContainers = [];
   }
-  Memory.energy.energySources = [["57ef9e7a86f108ae6e60f5c3", 3, 5, "E62S49"], ["57ef9e7a86f108ae6e60f5c5", 4, 5, "E62S49"], ["57ef9e6786f108ae6e60f3f9", 2, 5, "E61S49"], ["57ef9e6786f108ae6e60f3fb", 1, 5, "E61S49"]];
+  Memory.energy.energySources = [["986b04ea5112ddeede7ea467", 3, 5, "E62S49"]];
   if (!Memory.claims) {
     Memory.claims = {};
   }
