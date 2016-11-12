@@ -83,6 +83,10 @@ module.exports = (function() {
     Memory.energy.energySourceMiners = [];
   }
 
+  if (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
+    Memory.energy.energySourceMiners.push([]);
+  }
+
   if (Memory.energy.energySourceMiners) {
     ref2 = Memory.energy.energySources;
     for (i = l = 0, len1 = ref2.length; l < len1; i = ++l) {
@@ -91,20 +95,16 @@ module.exports = (function() {
       maxBodyParts = Memory.energy.energySources[i][2];
       countBodyParts = 0;
       if (Memory.energy.energySourceMiners[i]) {
-        ref3 = Memory.energy.energySourceMiners;
+        ref3 = Memory.energy.energySourceMiners[i];
         for (j = m = 0, len2 = ref3.length; m < len2; j = ++m) {
           miner = ref3[j];
           countBodyParts += 0;
           ref4 = Memory.energy.energySourceMiners[i];
           for (n = 0, len3 = ref4.length; n < len3; n++) {
             name = ref4[n];
-            if (name) {
-              countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
-            }
+            countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
           }
         }
-      } else {
-        Memory.energy.energySourceMiners.push([]);
       }
       if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
         moreMinersRequired = true;
