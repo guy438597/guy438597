@@ -112,7 +112,7 @@ module.exports = (function() {
     }
   }
 
-  if (!Memory.claims.claimClaimers) {
+  if (Memory.claims.claimClaimers === void 0) {
     Memory.claims.claimClaimers = [];
   }
 
