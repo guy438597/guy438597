@@ -25,7 +25,7 @@ chooseClosest = function(creep, targets) {
 getDistance = function(creep, target) {
   var distance, path;
   if (!creep || !target) {
-    console.log("Warning, undefined in getDistance function", creep, target);
+    console.log("Warning, undefined in getDistance functionn", creep, target);
   }
   if (!target) {
     100000;

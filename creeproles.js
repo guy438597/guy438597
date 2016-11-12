@@ -286,7 +286,7 @@ creeproles = (function() {
         }
       }
     } else {
-      return console.log("THIS SHOULD NEVER BE REACHED! ERROR IN MINING COMMAND");
+      return console.log("THIS SHOULD NEVER BE REACHED! ERROR IN MINING COMMANDD");
     }
   };
 

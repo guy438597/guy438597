@@ -552,7 +552,7 @@ module.exports = (function() {
                 return s.type === "terrain" && (s.terrain === "swamp" || s.terrain === "normal");
               });
               if (Memory.claims.claimClaimers[i].length < countWalkableTiles.length) {
-                console.log("buggerino6");
+                console.log("buggerino67");
                 name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', location[0], location[1], Game.spawns.Spawn1.room.name);
                 if (name) {
                   Memory.claims.claimClaimers[i].push(name);
