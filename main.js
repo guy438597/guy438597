@@ -62,7 +62,7 @@ module.exports = (function() {
     name = ref1[i];
     console.log(Memory.energy.energySourceMiners);
     Memory.energy.energySourceMiners = Memory.energy.energySourceMiners.filter(function(s) {
-      return !Game.creeps[name];
+      return Game.creeps[name];
     });
   }
 
