@@ -185,7 +185,8 @@ creeproles = (function() {
         creep.say("MOVE TRNSFR");
         return this.costEfficientMove(creep, target);
       } else {
-        return creep.say("TRANSFER");
+        creep.say("TRANSFER");
+        return creep.memory.target = void 0;
       }
     }
   };
