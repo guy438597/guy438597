@@ -202,7 +202,7 @@ module.exports = (function() {
     }
   }
 
-  if (Memory.structures) {
+  if (Memory.structures === void 0) {
     Memory.structures = {};
   }
 
@@ -398,7 +398,7 @@ module.exports = (function() {
     runRoles[creep.memory.role](creep);
   }
 
-  if (!Memory.energy.energySourceTransporters) {
+  if (Memory.energy.energySourceTransporters === void 0) {
     Memory.energy.energySourceTransporters = [];
   }
 
@@ -410,7 +410,7 @@ module.exports = (function() {
     });
   }
 
-  if (!Memory.energy.totalEnergyTransportersRequired) {
+  if (Memory.energy.totalEnergyTransportersRequired === void 0) {
     Memory.energy.totalEnergyTransportersRequired = 0;
   }
 
