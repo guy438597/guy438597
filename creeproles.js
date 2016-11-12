@@ -446,7 +446,7 @@ creeproles = (function() {
           if (!target) {
             target = this.findStructureToWithdraw(creep);
           }
-          if (target) {
+          if (target && !target.amount) {
             this.goWithdrawEnergy(creep, target);
             if (target) {
               if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
@@ -493,7 +493,7 @@ creeproles = (function() {
       if (!target) {
         target = this.findStructureToWithdraw(creep);
       }
-      if (target) {
+      if (target && !target.amount) {
         this.goWithdrawEnergy(creep, target);
         if (target) {
           if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
@@ -529,7 +529,7 @@ creeproles = (function() {
       if (!target) {
         target = this.findStructureToWithdraw(creep);
       }
-      if (target) {
+      if (target && !target.amount) {
         this.goWithdrawEnergy(creep, target);
         if (target) {
           if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
@@ -608,7 +608,7 @@ creeproles = (function() {
         t2 = this.findStructureToWithdraw(creep, STRUCTURE_CONTAINER, void 0, 500, Memory.energy.miningContainers);
         target = chooseClosest(creep, [t1, t2]);
       }
-      if (target) {
+      if (target && !target.amount) {
         this.goWithdrawEnergy(creep, target);
         if (target) {
           if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
