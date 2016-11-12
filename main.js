@@ -204,8 +204,6 @@ module.exports.loop = (function() {
     }
   }
 
-  runRoles[creep.memory.role](creep);
-
   spawning = Game.spawns.Spawn1.spawning !== null;
 
   energy = Game.spawns.Spawn1.room.energyAvailable;
@@ -249,6 +247,8 @@ module.exports.loop = (function() {
       }
     }
   }
+
+  runRoles[creep.memory.role](creep);
 
   if (Memory.structures) {
     Memory.structures = {};
