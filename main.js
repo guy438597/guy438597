@@ -84,6 +84,7 @@ module.exports.loop = function() {
     maxMiners = source[1];
     maxBodyParts = source[2];
     countBodyParts = 0;
+    console.log(maxMiners, maxBodyParts, countBodyParts, Memory.energy.energySourceMiners[i].length);
     ref3 = Memory.energy.energySourceMiners[i];
     for (m = 0, len2 = ref3.length; m < len2; m++) {
       name = ref3[m];
