@@ -78,10 +78,10 @@ module.exports.loop = function() {
   if (Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
-  while (Memory.energy.energySourceMiners[Memory.energy.energySourceMiners.length] === void 0) {
+  if (Memory.energy.energySourceMiners === [] || Memory.energy.energySourceMiners.length < Memory.energy.energySourceMiners.length) {
     Memory.energy.energySourceMiners.push([]);
   }
-  console.log(Memory.energy.energySourceMiners);
+  console.log("a", Memory.energy.energySourceMiners);
   Memory.energy.energySourceMiners = Memory.energy.energySourceMiners.filter(function(name) {
     return Game.creeps[name] !== void 0;
   });
