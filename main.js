@@ -486,8 +486,8 @@ module.exports.loop = function() {
             return results1;
           })());
           tempDistance = getDistance(source, closestSpawn);
-          console.log(getDistance(source, closestSpawn));
           totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
+          console.log(getDistance(source, closestSpawn), totalEnergyTransportersRequired);
           if (Memory.energy.energySourceTransporters[i].length < totalEnergyTransportersRequired) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID, sourceRoomName);
             if (name) {
