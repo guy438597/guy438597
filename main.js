@@ -28,6 +28,9 @@ module.exports.loop = function() {
   minimumNumberOfUpgraders = 7;
   spawnHighPriorityDefense = false;
   spawnLowPriorityAttack = false;
+  if (Memory.structures === void 0) {
+    Memory.structures = {};
+  }
   Memory.structures.repairFactor = 0.75;
   if (!Memory.energy) {
     Memory.energy = {};
@@ -177,9 +180,6 @@ module.exports.loop = function() {
         }
       }
     }
-  }
-  if (Memory.structures === void 0) {
-    Memory.structures = {};
   }
   if (Game.time % 30 === 0) {
     Memory.structures.repairTargets = [];
