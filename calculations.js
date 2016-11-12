@@ -3,11 +3,13 @@ var chooseClosest, findEnergy, getDistance, getDistanceInTicks,
 
 chooseClosest = function(creep, targets) {
   var sortedTargets, target;
-  targets = targets.filter(function(s) {
-    return s !== void 0;
-  });
-  if (targets.length === 0) {
-    return void 0;
+  if (targets) {
+    targets = targets.filter(function(s) {
+      return s !== void 0;
+    });
+    if (targets.length === 0) {
+      return void 0;
+    }
   }
   sortedTargets = _.sortBy(targets, function(s) {
     return getDistance(creep, s);
