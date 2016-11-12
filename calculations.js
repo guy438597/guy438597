@@ -3,6 +3,12 @@ var chooseClosest, findEnergy, getDistance, getDistanceInTicks,
 
 chooseClosest = function(creep, targets) {
   var sortedTargets, target;
+  targets = targets.filter(function(s) {
+    return s !== void 0;
+  });
+  if (targets.length === 0) {
+    return void 0;
+  }
   sortedTargets = _.sortBy(targets, function(s) {
     return getDistance(creep, s);
   });
@@ -19,6 +25,9 @@ getDistance = function(creep, target) {
   var distance, path;
   if (!creep || !target) {
     console.log("Warning, undefined in getDistance function", creep, target);
+  }
+  if (!target) {
+    100000;
   }
   if (creep === target) {
     console.log("called getdistance of same object", creep, creep.pos);

@@ -606,15 +606,7 @@ creeproles = (function() {
       if (!target) {
         t1 = this.findStructureToWithdraw(creep, STRUCTURE_STORAGE, void 0, 500, Memory.energy.miningContainers);
         t2 = this.findStructureToWithdraw(creep, STRUCTURE_CONTAINER, void 0, 500, Memory.energy.miningContainers);
-        if (t1) {
-          if (t2) {
-            target = chooseClosest(creep, [t1, t2]);
-          } else {
-            target = t1;
-          }
-        } else if (t2) {
-          target = t2;
-        }
+        target = chooseClosest(creep, [t1, t2]);
       }
       if (target) {
         this.goWithdrawEnergy(creep, target);
