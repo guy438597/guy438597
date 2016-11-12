@@ -12,7 +12,7 @@ class creeproles
     @loadDefaultValues: (creep)->
         creep.memory.retreatRoomName = Game.spawns.Spawn1.room.name if !creep.memory.retreatRoomName
 
-    findConstructionSite: (creep, distance)->
+    @findConstructionSite: (creep, distance)->
         if !distance
             distance = 10000
         if Memory.structures.buildingSites
@@ -20,7 +20,7 @@ class creeproles
             #return
             target
 
-    findRepairSite: (creep, distance)->
+    @findRepairSite: (creep, distance)->
         if !distance
             distance = 10000
         if Memory.structures.repairTargets
@@ -28,7 +28,7 @@ class creeproles
             #return
             target
 
-    findNearbyDroppedEnergy: (creep, distance)->
+    @findNearbyDroppedEnergy: (creep, distance)->
         if distance
             target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, filter: (s) -> creep.pos.getRangeTo(s.pos) <= distance)
             if target
@@ -41,7 +41,7 @@ class creeproles
             #return
             target
 
-    findStructureToWithdraw: (creep, structureType = STRUCTURE_CONTAINER, distance = 100000, energy = creep.carryCapacity - creep.carry.energy, excludeListIDs = [])->
+    @findStructureToWithdraw: (creep, structureType = STRUCTURE_CONTAINER, distance = 100000, energy = creep.carryCapacity - creep.carry.energy, excludeListIDs = [])->
             #target = creep.pos.findClosestByPath(FIND_STRUCTURES, filter: (s) -> s.structureType == structureType and s.store[RESOURCE_ENERGY] >= creep.carry.energy and creep.pos.getRangeTo(s.pos) <= distance)
         target = findEnergy(creep, energy, distance, structureType, "withdraw", excludeListIDs)
 
@@ -50,7 +50,7 @@ class creeproles
             #return
             target
 
-    findStructureToDeposit: (creep, structureType, distance = 100000, energy = creep.carry.energy, excludeListIDs = []) ->
+    @findStructureToDeposit: (creep, structureType, distance = 100000, energy = creep.carry.energy, excludeListIDs = []) ->
         structureType = STRUCTURE_CONTAINER if !structureType
         if structureType in [STRUCTURE_TOWER, STRUCTURE_SPAWN, STRUCTURE_EXTENSION]
             #console.log "testo48955", creep.room.find(FIND_STRUCTURES, filter: (s) -> s.structureType == structureType and s.energy < s.energyCapacity and creep.pos.getRangeTo(s.pos) <= distance)
@@ -61,14 +61,14 @@ class creeproles
             #return
             target
 
-    findMiningSite: (creep, distance)->
+    @findMiningSite: (creep, distance)->
         if !distance
             distance = 10000
         target = creep.pos.findClosestByPath(FIND_SOURCES, filter: (s) -> creep.pos.getRangeTo(s.pos) <= distance)
         #return
         target
 
-    goBuild: (creep, target)->
+    @goBuild: (creep, target)->
         if target
             creep.memory.target = target.id
             if target.progress
@@ -81,7 +81,7 @@ class creeproles
             else
                 creep.memory.target = undefined
 
-    goRepair: (creep, target)->
+    @goRepair: (creep, target)->
         if target
             creep.memory.target = target.id
             if target.hits
@@ -94,7 +94,7 @@ class creeproles
             else
                 creep.memory.target = undefined
 
-    goTransferEnergy: (creep, target)->
+    @goTransferEnergy: (creep, target)->
         if target
             creep.memory.target = target.id
             if creep.transfer(target, RESOURCE_ENERGY) is ERR_NOT_IN_RANGE
@@ -103,7 +103,7 @@ class creeproles
             else
                 creep.say("TRANSFER")
 
-    goWithdrawEnergy: (creep, target)->
+    @goWithdrawEnergy: (creep, target)->
         if target
             creep.memory.target = target.id
             if !target.storeCapacity
@@ -121,7 +121,7 @@ class creeproles
             creep.memory.target = undefined
             -1
 
-    goPickUpEnergy: (creep, target)->
+    @goPickUpEnergy: (creep, target)->
         if target
             creep.memory.target = target.id
             if target.storeCapacity
@@ -139,23 +139,23 @@ class creeproles
             creep.memory.target = undefined
             -1
 
-    retreat: (creep, distance)->
+    @retreat: (creep, distance)->
         distance = 2 if !distance
         creep.say("RETREAT")
         @costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoomName))
 
-    costEfficientMove: (creep, target) ->
+    @costEfficientMove: (creep, target) ->
         if target
             if creep.moveTo(target, {noPathFinding: false}) is ERR_NOT_FOUND
                 creep.moveTo(target)
 
-    moveOutOfTheWay: (creep)->
+    @moveOutOfTheWay: (creep)->
         otherCreep = creep.pos.findClosestByRange(FIND_MY_CREEPS, filter: (s) -> s isnt creep and creep.pos.getRangeTo(s) <= 2)
         if otherCreep
             creep.say("AVOID")
             creep.move((4 + creep.pos.getDirectionTo(otherCreep) + Math.floor((Math.random() * 3) - 1)) % 8);
 
-    goMine: (creep, target)->
+    @goMine: (creep, target)->
         if target #we have a target, so probably our mining source
             if creep.memory.energySourceRoomName isnt creep.room.name
                 creep.say("MINE "+ creep.memory.energySourceRoom)
@@ -167,7 +167,7 @@ class creeproles
         else
             console.log "THIS SHOULD NEVER BE REACHED! ERROR IN MINING COMMAND"
 
-    dying: (creep)->
+    @dying: (creep)->
         if creep.carry.energy > 0
             if !target
                 t1 = @findStructureToDeposit(creep, STRUCTURE_CONTAINER)
@@ -266,7 +266,7 @@ class creeproles
         else if creep.memory.state is "dying"
             @dying(creep)
 
-    energyTransporter: (creep) ->
+    @energyTransporter: (creep) ->
         @loadDefaultValues(creep)
         #creep.memory.state = "mining" if !creep.memory.state
         creep.memory.state = if creep.carry.energy is creep.carryCapacity then "deliverEnergy" else "pickupEnergy"
@@ -304,7 +304,7 @@ class creeproles
         else if creep.memory.state is "dying"
             dying(creep)
 
-    repairer: (creep) ->
+    @repairer: (creep) ->
         @loadDefaultValues(creep)
         #creep.memory.state = "mining" if !creep.memory.state
         target = Game.getObjectById(creep.memory.target) if creep.memory.target
@@ -327,7 +327,7 @@ class creeproles
             else
                 @moveOutOfTheWay(creep)
 
-    builder: (creep) ->
+    @builder: (creep) ->
         @loadDefaultValues(creep)
         #creep.memory.state = "mining" if !creep.memory.state
         target = Game.getObjectById(creep.memory.target) if creep.memory.target
@@ -352,7 +352,7 @@ class creeproles
             else
                 @moveOutOfTheWay(creep)
 
-    claimer: (creep) ->
+    @claimer: (creep) ->
         @loadDefaultValues(creep)
         target = Game.getObjectById(creep.memory.target) if creep.memory.target
         creep.memory.claimRoomName = Game.spawns.Spawn1.room.name if !creep.memory.claimRoomName
@@ -378,7 +378,7 @@ class creeproles
         else
             @moveOutOfTheWay(creep)
 
-    upgrader: (creep) ->
+    @upgrader: (creep) ->
         @loadDefaultValues(creep)
         #creep.memory.state = "mining" if !creep.memory.state
         target = Game.getObjectById(creep.memory.target) if creep.memory.target
@@ -401,12 +401,12 @@ class creeproles
         else if creep.memory.state is "dying"
             dying(creep)
 
-    fighter: (creep) ->
+    @fighter: (creep) ->
         @loadDefaultValues(creep)
         target = Game.getObjectById(creep.memory.target) if creep.memory.target
         console.log "testerinoo"
 
-    harvester: (creep) ->
+    @harvester: (creep) ->
         @loadDefaultValues(creep)
         creep.carry.state = if !creep.memory.state and creep.carry.energy == 0 then "mine" else "work"
         target = Game.getObjectById(creep.memory.target) if creep.memory.target

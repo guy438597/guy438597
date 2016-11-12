@@ -20,7 +20,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.findConstructionSite = function(creep, distance) {
+  creeproles.findConstructionSite = function(creep, distance) {
     var target;
     if (!distance) {
       distance = 10000;
@@ -40,7 +40,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.findRepairSite = function(creep, distance) {
+  creeproles.findRepairSite = function(creep, distance) {
     var target;
     if (!distance) {
       distance = 10000;
@@ -60,7 +60,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.findNearbyDroppedEnergy = function(creep, distance) {
+  creeproles.findNearbyDroppedEnergy = function(creep, distance) {
     var target;
     if (distance) {
       target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, {
@@ -79,7 +79,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.findStructureToWithdraw = function(creep, structureType, distance, energy, excludeListIDs) {
+  creeproles.findStructureToWithdraw = function(creep, structureType, distance, energy, excludeListIDs) {
     var target;
     if (structureType == null) {
       structureType = STRUCTURE_CONTAINER;
@@ -99,7 +99,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.findStructureToDeposit = function(creep, structureType, distance, energy, excludeListIDs) {
+  creeproles.findStructureToDeposit = function(creep, structureType, distance, energy, excludeListIDs) {
     var target;
     if (distance == null) {
       distance = 100000;
@@ -127,7 +127,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.findMiningSite = function(creep, distance) {
+  creeproles.findMiningSite = function(creep, distance) {
     var target;
     if (!distance) {
       distance = 10000;
@@ -140,7 +140,7 @@ creeproles = (function() {
     return target;
   };
 
-  creeproles.prototype.goBuild = function(creep, target) {
+  creeproles.goBuild = function(creep, target) {
     if (target) {
       creep.memory.target = target.id;
       if (target.progress) {
@@ -158,7 +158,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.goRepair = function(creep, target) {
+  creeproles.goRepair = function(creep, target) {
     if (target) {
       creep.memory.target = target.id;
       if (target.hits) {
@@ -176,7 +176,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.goTransferEnergy = function(creep, target) {
+  creeproles.goTransferEnergy = function(creep, target) {
     if (target) {
       creep.memory.target = target.id;
       if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
@@ -188,7 +188,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.goWithdrawEnergy = function(creep, target) {
+  creeproles.goWithdrawEnergy = function(creep, target) {
     if (target) {
       creep.memory.target = target.id;
       if (!target.storeCapacity) {
@@ -209,7 +209,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.goPickUpEnergy = function(creep, target) {
+  creeproles.goPickUpEnergy = function(creep, target) {
     if (target) {
       creep.memory.target = target.id;
       if (target.storeCapacity) {
@@ -230,7 +230,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.retreat = function(creep, distance) {
+  creeproles.retreat = function(creep, distance) {
     if (!distance) {
       distance = 2;
     }
@@ -238,7 +238,7 @@ creeproles = (function() {
     return this.costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.retreatRoomName));
   };
 
-  creeproles.prototype.costEfficientMove = function(creep, target) {
+  creeproles.costEfficientMove = function(creep, target) {
     if (target) {
       if (creep.moveTo(target, {
         noPathFinding: false
@@ -248,7 +248,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.moveOutOfTheWay = function(creep) {
+  creeproles.moveOutOfTheWay = function(creep) {
     var otherCreep;
     otherCreep = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
       filter: function(s) {
@@ -261,7 +261,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.goMine = function(creep, target) {
+  creeproles.goMine = function(creep, target) {
     if (target) {
       if (creep.memory.energySourceRoomName !== creep.room.name) {
         creep.say("MINE " + creep.memory.energySourceRoom);
@@ -277,7 +277,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.dying = function(creep) {
+  creeproles.dying = function(creep) {
     var t1, t2, target;
     if (creep.carry.energy > 0) {
       if (!target) {
@@ -415,7 +415,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.energyTransporter = function(creep) {
+  creeproles.energyTransporter = function(creep) {
     var t1, t2, target;
     this.loadDefaultValues(creep);
     creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : "pickupEnergy";
@@ -466,7 +466,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.repairer = function(creep) {
+  creeproles.repairer = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     if (creep.memory.target) {
@@ -496,7 +496,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.builder = function(creep) {
+  creeproles.builder = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     if (creep.memory.target) {
@@ -528,7 +528,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.claimer = function(creep) {
+  creeproles.claimer = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     if (creep.memory.target) {
@@ -567,7 +567,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.upgrader = function(creep) {
+  creeproles.upgrader = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     if (creep.memory.target) {
@@ -596,7 +596,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.fighter = function(creep) {
+  creeproles.fighter = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     if (creep.memory.target) {
@@ -605,7 +605,7 @@ creeproles = (function() {
     return console.log("testerinoo");
   };
 
-  creeproles.prototype.harvester = function(creep) {
+  creeproles.harvester = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     creep.carry.state = !creep.memory.state && creep.carry.energy === 0 ? "mine" : "work";
