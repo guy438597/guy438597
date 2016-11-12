@@ -16,7 +16,7 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 runRoles = require("./creeproles");
 
 module.exports.loop = function() {
-  var attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
+  var attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, username, v, w, x, y, z;
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
@@ -151,6 +151,8 @@ module.exports.loop = function() {
       attackTarget = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
     }
     if (attackTarget) {
+      username = attackTarget.owner.username;
+      Game.notify("User", username, "spotted in room", tower.room.name);
       tower.attack(attackTarget);
     } else {
       healTarget = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
@@ -166,6 +168,13 @@ module.exports.loop = function() {
             return s.hits < s.hitsMax * 0.75;
           }
         });
+        if (!repairTarget) {
+          repairTarget = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: function(s) {
+              return s.hits < s.hitsMax * 0.75 && s.structureType === STRUCTURE_CONTAINER;
+            }
+          });
+        }
         if (repairTarget) {
           tower.repair(repairTarget);
         }
