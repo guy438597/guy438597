@@ -183,6 +183,7 @@ goTransferEnergy = function(creep, target) {
   var ref;
   if (target) {
     creep.memory.target = target.id;
+    console.log(target);
     if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       creep.say("MOVE TRNSFR");
       costEfficientMove(creep, target);
