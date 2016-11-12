@@ -1,4 +1,4 @@
-var builder, calculations, chooseClosest, claimer, costEfficientMove, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, runRoles, sourceMiner, upgrader;
+var builder, calculations, chooseClosest, claimer, costEfficientMove, creeproles, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, sourceMiner, upgrader;
 
 console.log("hii");
 
@@ -14,59 +14,59 @@ getDistance = calculations.getDistance;
 
 getDistanceInTicks = calculations.getDistanceInTicks;
 
-runRoles = require("./creeproles");
+creeproles = require("./creeproles");
 
-loadDefaultValues = runRoles.loadDefaultValues;
+loadDefaultValues = creeproles.loadDefaultValues;
 
-findConstructionSite = runRoles.findConstructionSite;
+findConstructionSite = creeproles.findConstructionSite;
 
-findRepairSite = runRoles.findRepairSite;
+findRepairSite = creeproles.findRepairSite;
 
-findNearbyDroppedEnergy = runRoles.findNearbyDroppedEnergy;
+findNearbyDroppedEnergy = creeproles.findNearbyDroppedEnergy;
 
-findStructureToWithdraw = runRoles.findStructureToWithdraw;
+findStructureToWithdraw = creeproles.findStructureToWithdraw;
 
-findStructureToDeposit = runRoles.findStructureToDeposit;
+findStructureToDeposit = creeproles.findStructureToDeposit;
 
-findMiningSite = runRoles.findMiningSite;
+findMiningSite = creeproles.findMiningSite;
 
-goBuild = runRoles.goBuild;
+goBuild = creeproles.goBuild;
 
-goRepair = runRoles.goRepair;
+goRepair = creeproles.goRepair;
 
-goTransferEnergy = runRoles.goTransferEnergy;
+goTransferEnergy = creeproles.goTransferEnergy;
 
-goWithdrawEnergy = runRoles.goWithdrawEnergy;
+goWithdrawEnergy = creeproles.goWithdrawEnergy;
 
-goPickUpEnergy = runRoles.goPickUpEnergy;
+goPickUpEnergy = creeproles.goPickUpEnergy;
 
-retreat = runRoles.retreat;
+retreat = creeproles.retreat;
 
-costEfficientMove = runRoles.costEfficientMove;
+costEfficientMove = creeproles.costEfficientMove;
 
-moveOutOfTheWay = runRoles.moveOutOfTheWay;
+moveOutOfTheWay = creeproles.moveOutOfTheWay;
 
-goMine = runRoles.goMine;
+goMine = creeproles.goMine;
 
-dying = runRoles.dying;
+dying = creeproles.dying;
 
-sourceMiner = runRoles.sourceMiner;
+sourceMiner = creeproles.sourceMiner;
 
-energyRefiller = runRoles.energyRefiller;
+energyRefiller = creeproles.energyRefiller;
 
-energyTransporter = runRoles.energyTransporter;
+energyTransporter = creeproles.energyTransporter;
 
-repairer = runRoles.repairer;
+repairer = creeproles.repairer;
 
-builder = runRoles.builder;
+builder = creeproles.builder;
 
-claimer = runRoles.claimer;
+claimer = creeproles.claimer;
 
-upgrader = runRoles.upgrader;
+upgrader = creeproles.upgrader;
 
-fighter = runRoles.fighter;
+fighter = creeproles.fighter;
 
-harvester = runRoles.harvester;
+harvester = creeproles.harvester;
 
 module.exports.loop = (function() {
   var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
