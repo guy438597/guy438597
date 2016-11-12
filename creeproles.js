@@ -310,7 +310,6 @@ creeproles = (function() {
     if (!creep.memory.state) {
       creep.memory.state = "mining";
     }
-    creep.memory.state = creep.carryCapacity === creep.carry.energy && creep.memory.state !== "lookingForNearbyEnergy" ? "puttingEnergyInContainer" : "mining";
     if (!creep.memory.target && creep.memory.state === "mining") {
       creep.memory.target = creep.memory.energySource;
     }
@@ -325,7 +324,11 @@ creeproles = (function() {
         this.findMiningSite(creep);
       }
       if (target) {
-        return this.goMine(creep, target);
+        this.goMine(creep, target);
+        if (creep.creep.carryCapacity === creep.carry.energy) {
+          creep.memory.state = "puttingEnergyInContainer";
+          return creep.memory.target = void 0;
+        }
       }
     } else if (creep.memory.state === "puttingEnergyInContainer") {
       if (!target) {
@@ -339,7 +342,8 @@ creeproles = (function() {
         }
         if (_.sum(target.store) < target.storeCapacity) {
           this.goTransferEnergy(creep, target);
-          return creep.say("PUT CNTR");
+          creep.say("PUT CNTR");
+          return creep.memory.state = "lookingForNearbyEnergy";
         } else {
           creep.say("CNTR FULL");
           creep.drop(RESOURCE_ENERGY);
@@ -411,7 +415,12 @@ creeproles = (function() {
         }
       }
       if (target) {
-        return this.goTransferEnergy(creep, target);
+        this.goTransferEnergy(creep, target);
+        if (target) {
+          if (target.storeCapacity - target.store[RESOURCE_ENERGY] < creep.carry.energy) {
+            return creep.memory.target = void 0;
+          }
+        }
       } else {
         return this.moveOutOfTheWay(creep);
       }
@@ -445,7 +454,12 @@ creeproles = (function() {
             target = this.findStructureToWithdraw(creep);
           }
           if (target) {
-            return this.goWithdrawEnergy(creep, target);
+            this.goWithdrawEnergy(creep, target);
+            if (target) {
+              if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
+                return creep.memory.target = void 0;
+              }
+            }
           }
         }
       } else {
@@ -457,8 +471,10 @@ creeproles = (function() {
       target = chooseClosest(creep, [t1, t2]);
       if (target && creep.carry.energy) {
         this.goTransferEnergy(creep, target);
-        if (target.storeCapacity - target.store[RESOURCE_ENERGY] > creep.carryCapacity) {
-          return creep.memory.target = void 0;
+        if (target) {
+          if (target.storeCapacity - target.store[RESOURCE_ENERGY] > creep.carryCapacity) {
+            return creep.memory.target = void 0;
+          }
         }
       } else {
         return moveOutOfTheWay(creep);
@@ -485,7 +501,12 @@ creeproles = (function() {
         target = this.findStructureToWithdraw(creep);
       }
       if (target) {
-        return this.goWithdrawEnergy(creep, target);
+        this.goWithdrawEnergy(creep, target);
+        if (target) {
+          if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
+            return creep.memory.target = void 0;
+          }
+        }
       }
     } else if (creep.memory.state === "repairing") {
       if (target) {
@@ -516,7 +537,12 @@ creeproles = (function() {
         target = this.findStructureToWithdraw(creep);
       }
       if (target) {
-        return this.goWithdrawEnergy(creep, target);
+        this.goWithdrawEnergy(creep, target);
+        if (target) {
+          if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
+            return creep.memory.target = void 0;
+          }
+        }
       } else {
         return this.moveOutOfTheWay(creep);
       }
@@ -572,7 +598,7 @@ creeproles = (function() {
   };
 
   creeproles.upgrader = function(creep) {
-    var target;
+    var t1, t2, target;
     this.loadDefaultValues(creep);
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
@@ -585,10 +611,17 @@ creeproles = (function() {
         target = this.findNearbyDroppedEnergy(creep, 5);
       }
       if (!target) {
-        target = this.findStructureToWithdraw(creep);
+        t1 = this.findStructureToWithdraw(creep, STRUCTURE_STORAGE, void 0, 500, Memory.energy.miningContainers);
+        t2 = this.findStructureToWithdraw(creep, STRUCTURE_CONTAINER, void 0, 500, Memory.energy.miningContainers);
+        target = chooseClosest(creep, [t1, t2]);
       }
       if (target) {
-        return this.goWithdrawEnergy(creep, target);
+        this.goWithdrawEnergy(creep, target);
+        if (target) {
+          if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
+            return creep.memory.target = void 0;
+          }
+        }
       } else {
         return this.moveOutOfTheWay(creep);
       }
