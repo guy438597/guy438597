@@ -1,5 +1,6 @@
 var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles,
-  modulo = function(a, b) { return (+a % (b = +b) + b) % b; };
+  modulo = function(a, b) { return (+a % (b = +b) + b) % b; },
+  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 require('./spawnV2')();
 
@@ -194,20 +195,24 @@ module.exports.loop = function() {
       });
       newbuildingSites = room.find(FIND_MY_CONSTRUCTION_SITES);
       Memory.structures.repairTargets = Memory.structures.repairTargets.concat((function() {
-        var len6, r, results;
+        var len6, r, ref7, results;
         results = [];
         for (r = 0, len6 = newrepairTargets.length; r < len6; r++) {
           site = newrepairTargets[r];
-          results.push(site.id);
+          if (ref7 = site.id, indexOf.call(Memory.structures.repairTargets, ref7) < 0) {
+            results.push(site.id);
+          }
         }
         return results;
       })());
       Memory.structures.buildingSites = Memory.structures.buildingSites.concat((function() {
-        var len6, r, results;
+        var len6, r, ref7, results;
         results = [];
         for (r = 0, len6 = newbuildingSites.length; r < len6; r++) {
           site = newbuildingSites[r];
-          results.push(site.id);
+          if (ref7 = site.id, indexOf.call(Memory.structures.buildingSites, ref7) < 0) {
+            results.push(site.id);
+          }
         }
         return results;
       })());
