@@ -187,7 +187,6 @@ module.exports.loop = function() {
     ref6 = Game.rooms;
     for (name in ref6) {
       room = ref6[name];
-      console.log(name, room);
       newrepairTargets = room.find(FIND_STRUCTURES, {
         filter: function(s) {
           return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * Memory.structures.repairFactor;
