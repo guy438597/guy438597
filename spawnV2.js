@@ -108,6 +108,7 @@ module.exports = function() {
           body.push(CARRY);
         }
       }
+      console.log(body, numberOfParts, energy);
       return this.createCreep(body, void 0, {
         role: roleName,
         energySourceID: arg1,
