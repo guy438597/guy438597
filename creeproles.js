@@ -456,7 +456,7 @@ creeproles = (function() {
           }
         }
       } else {
-        return console.log(creep.name, creep.pos, creep.target, creep.memory.source, "programm should never get here, in energyTransporter!");
+        return console.log(creep.name, creep.pos, creep.memory.target, creep.memory.energySourceID, "programm should never get here, in energyTransporter!");
       }
     } else if (creep.memory.state === "deliverEnergy") {
       t1 = this.findStructureToDeposit(creep, STRUCTURE_CONTAINER);
