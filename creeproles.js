@@ -396,7 +396,7 @@ creeproles = (function() {
       }
       if (target) {
         this.goWithdrawEnergy(creep, target);
-        if (target) {
+        if (target && !target.amount) {
           if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
             return creep.memory.target = void 0;
           }
