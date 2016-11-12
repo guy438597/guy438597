@@ -132,8 +132,8 @@ goBuild = function(creep, target) {
     creep.memory.target = target.id;
     if (target.progress >= 0) {
       if (target.progress < target.progressTotal) {
-        if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-          creep.say("RPR " + target.pos.x + "," + target.pos.y);
+        if (creep.build(target) === ERR_NOT_IN_RANGE) {
+          creep.say("BLD " + target.pos.x + "," + target.pos.y);
           return costEfficientMove(creep, target);
         } else if (creep.carry.energy === 0) {
           return creep.memory.target = void 0;
@@ -152,8 +152,8 @@ goRepair = function(creep, target) {
     creep.memory.target = target.id;
     if (target.hits >= 1) {
       if (target.hits < target.hitsMax * 0.99) {
-        if (creep.build(target) === ERR_NOT_IN_RANGE) {
-          creep.say("BLD " + target.pos.x + "," + target.pos.y);
+        if (creep.repair(target) === ERR_NOT_IN_RANGE) {
+          creep.say("RPR " + target.pos.x + "," + target.pos.y);
           return costEfficientMove(creep, target);
         } else if (creep.carry.energy === 0) {
           return creep.memory.target = void 0;
