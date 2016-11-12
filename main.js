@@ -60,7 +60,6 @@ module.exports = (function() {
   ref1 = Memory.energy.energySourceMiners;
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
     name = ref1[i];
-    console.log(Memory.energy.energySourceMiners);
     Memory.energy.energySourceMiners = Memory.energy.energySourceMiners.filter(function(s) {
       return Game.creeps[name];
     });
