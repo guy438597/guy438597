@@ -412,6 +412,7 @@ module.exports.loop = function() {
     }
     Memory.energy.totalTransportersRequired = totalEnergyTransportersRequired;
   }
+  console.log("rlcount refiller", roleCnt.energyRefiller);
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
   if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
     if (!basicEconomyRunning && roleCnt.harvester < 2) {
