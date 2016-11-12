@@ -377,6 +377,7 @@ sourceMiner = function(creep) {
   if (creep.memory.state === "puttingEnergyInContainer") {
     console.log(target, creep.memory.target);
     if (!target) {
+      console.log("MINER DOWN BELOW:");
       target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1);
       console.log("new found structure:", target);
     }
@@ -399,7 +400,6 @@ sourceMiner = function(creep) {
         goBuild(creep, target);
         creep.say("BLD CNTR");
       } else {
-        console.log("MINER DOWN BELOW:");
         creep.say("NO CNTR");
         creep.drop(RESOURCE_ENERGY);
       }
