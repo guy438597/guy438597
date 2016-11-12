@@ -382,6 +382,7 @@ module.exports.loop = function() {
   ref9 = Memory.energy.energySourceTransporters[i];
   for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
     name = ref9[i];
+    console.log(i);
     Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(name) {
       return Game.creeps[name] !== void 0;
     });
