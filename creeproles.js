@@ -461,6 +461,9 @@ energyTransporter = function(creep) {
   if (!creep.memory.energySourceID) {
     console.log(creep.name, creep.role, "has no energy sourceID in memory!");
   }
+  if (!creep.memory.state) {
+    creep.memory.state = "pickupEnergy";
+  }
   if (creep.memory.state === "pickupEnergy" && !creep.memory.target) {
     creep.memory.target = creep.memory.energySourceID;
   }
