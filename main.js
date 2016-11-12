@@ -80,6 +80,8 @@ module.exports.loop = function() {
     maxMiners = source[1];
     maxBodyParts = source[2];
     countBodyParts = 0;
+    console.log(Memory.energy.energySourceMiners);
+    console.log(Memory.energy.energySourceMiners[i].length);
     if (Memory.energy.energySourceMiners[i].length > 0) {
       ref2 = Memory.energy.energySourceMiners[i];
       for (l = 0, len1 = ref2.length; l < len1; l++) {
@@ -87,8 +89,6 @@ module.exports.loop = function() {
         countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
       }
     }
-    console.log(Memory.energy.energySourceMiners);
-    console.log(Memory.energy.energySourceMiners[i].length);
     if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
       moreMinersRequired = true;
     }
