@@ -369,7 +369,7 @@ module.exports.loop = function() {
     } else if (creep.memory.role === "energyRefiller") {
       combinedTicksEnergyRefiller += creep.ticksToLive;
     }
-    creeproles[creep.memory.role](creep);
+    creeproles.harvester(creep);
   }
   if (!Memory.energy.energySourceTransporters) {
     Memory.energy.energySourceTransporters = [];
