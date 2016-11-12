@@ -84,8 +84,6 @@ module.exports.loop = function() {
     maxMiners = source[1];
     maxBodyParts = source[2];
     countBodyParts = 0;
-    console.log(Memory.energy.energySourceMiners);
-    console.log(Memory.energy.energySourceMiners[i].length);
     if (Memory.energy.energySourceMiners[i].length > 0) {
       ref3 = Memory.energy.energySourceMiners[i];
       for (m = 0, len2 = ref3.length; m < len2; m++) {
@@ -372,13 +370,14 @@ module.exports.loop = function() {
   if (Memory.energy.energySourceTransporters) {
     Memory.energy.energySourceTransporters = [];
   }
-  while (Memory.energy.energySourceTransporters.length < Memory.energy.energySources.length) {
+  while (Memory.energy.energySourceTransporters.length <= Memory.energy.energySources.length) {
     Memory.energy.energySourceTransporters.push([]);
   }
+  console.log(Memory.energy.energySourceTransporters);
   ref8 = Memory.energy.energySourceTransporters[i];
   for (i = t = 0, len8 = ref8.length; t < len8; i = ++t) {
     name = ref8[i];
-    console.log(i);
+    console.log(name);
     Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(name) {
       return Game.creeps[name] !== void 0;
     });
