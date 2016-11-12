@@ -186,12 +186,12 @@ module.exports.loop = function() {
     ref6 = Game.rooms;
     for (name in ref6) {
       room = ref6[name];
-      Memory.structures.repairTargets.concat(Game.rooms[name].find(FIND_STRUCTURES, {
+      Memory.structures.repairTargets = Memory.structures.repairTargets.concat(Game.rooms[name].find(FIND_STRUCTURES, {
         filter: function(s) {
           return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * Memory.structures.repairFactor;
         }
       }));
-      Memory.structures.buildingSites.concat(Game.rooms[name].find(FIND_MY_CONSTRUCTION_SITES));
+      Memory.structures.buildingSites = Memory.structures.buildingSites.concat(Game.rooms[name].find(FIND_MY_CONSTRUCTION_SITES));
     }
   } else {
     if (Memory.structures.repairTargets) {
