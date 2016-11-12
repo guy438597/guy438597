@@ -196,6 +196,7 @@ goTransferEnergy = function(creep, target) {
         }
       }
     } else {
+      console.log(creep.transfer(target, RESOURCE_ENERGY));
       creep.say("TRANSFER");
       return creep.memory.target = void 0;
     }
