@@ -43,16 +43,11 @@ module.exports.loop = function() {
     Memory.claims = {};
   }
   Memory.claims.claimLocations = [["E61S49", "r"]];
-  console.log("asd");
-  if (Memory.energy.energySourceMiners === void 0) {
+  if (Memory.energy.energySourceMiners) {
     Memory.energy.energySourceMiners = [];
   }
   while (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceMiners.push([]);
-  }
-  console.log(Memory.energy.energySourceMiners.length, Memory.energy.energySources.length);
-  if (!Memory.energy.energySourceMiners === void 0) {
-    Memory.energy.energySourceMiners = [];
   }
   ref1 = Memory.energy.energySourceMiners;
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
