@@ -374,7 +374,6 @@ sourceMiner = function(creep) {
     }
   }
   if (creep.memory.state === "puttingEnergyInContainer") {
-    console.log(target, creep.memory.target);
     if (!target) {
       target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
         filter: function(s) {
