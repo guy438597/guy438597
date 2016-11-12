@@ -22,9 +22,7 @@ findConstructionSite = function(creep, distance) {
   if (distance == null) {
     distance = 10000;
   }
-  if (!distance) {
-    distance = 10000;
-  }
+  console.log("findconstr", Memory.structures.buildingSites);
   if (Memory.structures.buildingSites) {
     target = chooseClosest(creep, Memory.structures.buildingSites);
     if (target) {
@@ -338,6 +336,7 @@ sourceMiner = function(creep) {
   } else if (creep.memory.state === "puttingEnergyInContainer") {
     if (!target) {
       target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
+      console.log("miner deposit target", target);
     }
     if (target) {
       if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
