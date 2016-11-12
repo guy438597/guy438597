@@ -651,7 +651,8 @@ creeproles = (function() {
   creeproles.harvester = function(creep) {
     var target;
     this.loadDefaultValues(creep);
-    creep.carry.state = !creep.memory.state && creep.carry.energy === 0 ? "mine" : "work";
+    creep.memory.state = creep.carry.energy === creep.carryCapacity ? "work" : void 0;
+    creep.memory.state = creep.carry.energy === 0 ? "mine" : void 0;
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
     }
