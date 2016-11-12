@@ -18,6 +18,9 @@ chooseClosest = function(creep, targets) {
       target = target
    */
   var sortedTargets, target;
+  if (!targets) {
+    void 0;
+  }
   if (targets) {
     targets = targets.filter(function(s) {
       return s !== void 0;
