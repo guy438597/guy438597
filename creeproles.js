@@ -430,6 +430,7 @@ energyTransporter = function(creep) {
   var t1, t2, target;
   loadDefaultValues(creep);
   creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : "pickupEnergy";
+  creep.memory.energySourceRoomName = "W48S61";
   if (!creep.memory.energySourceID) {
     console.log(creep.name, creep.role, "has no energy sourceID in memory!");
   }
