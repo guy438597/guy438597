@@ -42,8 +42,8 @@ module.exports = function() {
       return this.createCreep(body, void 0, {
         role: roleName,
         state: void 0,
-        source: arg1,
-        energySourceRoom: arg2
+        energySourceID: arg1,
+        energySourceRoomName: arg2
       });
     } else if (roleName === "builder" && energy >= 300) {
       numberOfParts = Math.floor((energy - 300) / 50);

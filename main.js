@@ -441,7 +441,7 @@ module.exports = (function() {
 
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
 
-  if (!spawning && (energy >= 300 && !basicEconomyRunning && energy >= 200)) {
+  if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
     if (energy >= 190 && spawnHighPriorityDefense) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {
