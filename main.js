@@ -188,12 +188,12 @@ module.exports.loop = function() {
     for (name in ref6) {
       room = ref6[name];
       console.log(name, room);
-      newrepairTargets = Game.rooms[name].find(FIND_STRUCTURES, {
+      newrepairTargets = room.find(FIND_STRUCTURES, {
         filter: function(s) {
           return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * Memory.structures.repairFactor;
         }
       });
-      newbuildingSites = Game.rooms[name].find(FIND_MY_CONSTRUCTION_SITES);
+      newbuildingSites = room.find(FIND_MY_CONSTRUCTION_SITES);
       Memory.structures.repairTargets = Memory.structures.repairTargets.concat((function() {
         var len6, r, results;
         results = [];
