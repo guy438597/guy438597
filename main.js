@@ -27,7 +27,7 @@ module.exports = (function() {
     } else if (Game.creeps[name].memory.role === "sourceMiner" && name !== "Joseph") {
       creep.suicide();
     }
-    console.log("testo2");
+    console.log("testo3");
   }
 
   energyTransporterConstant = 15;
