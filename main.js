@@ -498,6 +498,7 @@ module.exports.loop = function() {
         }
       }
       if (name) {
+        console.log("yolo");
         return console.log(roleCnt.energyTransporter + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
       }
     } else if (energy >= 650 && newClaimerRequired) {
