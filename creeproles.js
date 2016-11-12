@@ -141,7 +141,7 @@ creeproles = (function() {
 
   creeproles.findMiningSite = function(creep, distance) {
     var target;
-    if (!distance) {
+    if (distance == null) {
       distance = 10000;
     }
     target = creep.pos.findClosestByPath(FIND_SOURCES, {
@@ -149,7 +149,9 @@ creeproles = (function() {
         return creep.pos.getRangeTo(s.pos) <= distance;
       }
     });
-    return target;
+    if (target) {
+      return target;
+    }
   };
 
   creeproles.goBuild = function(creep, target) {
@@ -276,14 +278,9 @@ creeproles = (function() {
 
   creeproles.goMine = function(creep, target) {
     if (target) {
-      if (creep.memory.energySourceRoomName !== creep.room.name) {
-        creep.say("MINE " + creep.memory.energySourceRoom);
-        return this.costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
-      } else {
-        creep.say("MINING");
-        if (creep.harvest(target) === ERR_NOT_IN_RANGE) {
-          return this.costEfficientMove(creep, target);
-        }
+      creep.say("MINING");
+      if (creep.harvest(target) === ERR_NOT_IN_RANGE) {
+        return this.costEfficientMove(creep, target);
       }
     } else {
       return console.log("THIS SHOULD NEVER BE REACHED! ERROR IN MINING COMMANDD");
