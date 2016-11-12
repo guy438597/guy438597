@@ -94,6 +94,7 @@ module.exports.loop = function() {
       moreMinersRequired = true;
     }
   }
+  console.log(moreMinersRequired);
   if (!Memory.claims.claimClaimers) {
     Memory.claims.claimClaimers = [];
   }
@@ -425,46 +426,44 @@ module.exports.loop = function() {
         return console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
       }
     } else if (energy >= 200 && moreMinersRequired && roleCnt.energyRefiller > 1) {
-      if (Memory.energy.energySourceMiners) {
-        ref10 = Memory.energy.energySources;
-        results = [];
-        for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
-          source = ref10[i];
-          sourceID = Memory.energy.energySources[i][0];
-          maxMiners = Memory.energy.energySources[i][1];
-          maxBodyParts = Memory.energy.energySources[i][2];
-          sourceRoomName = Memory.energy.energySources[i][3];
-          countBodyParts = 0;
-          if (Memory.energy.energySourceMiners[i]) {
-            ref11 = Memory.energy.energySourceMiners;
-            for (j = w = 0, len11 = ref11.length; w < len11; j = ++w) {
-              miner = ref11[j];
-              ref12 = Memory.energy.energySourceMiners[i];
-              for (x = 0, len12 = ref12.length; x < len12; x++) {
-                name = ref12[x];
-                if (name) {
-                  countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
-                }
+      ref10 = Memory.energy.energySources;
+      results = [];
+      for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
+        source = ref10[i];
+        sourceID = Memory.energy.energySources[i][0];
+        maxMiners = Memory.energy.energySources[i][1];
+        maxBodyParts = Memory.energy.energySources[i][2];
+        sourceRoomName = Memory.energy.energySources[i][3];
+        countBodyParts = 0;
+        if (Memory.energy.energySourceMiners[i]) {
+          ref11 = Memory.energy.energySourceMiners;
+          for (j = w = 0, len11 = ref11.length; w < len11; j = ++w) {
+            miner = ref11[j];
+            ref12 = Memory.energy.energySourceMiners[i];
+            for (x = 0, len12 = ref12.length; x < len12; x++) {
+              name = ref12[x];
+              if (name) {
+                countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
               }
             }
-          } else {
-            Memory.energy.energySourceMiners.push([]);
           }
-          if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
-            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'sourceMiner', sourceID, sourceRoomName);
-            if (name) {
-              console.log(roleCnt.sourceMiner + 1, "/", Memory.energy.energySources.length, "Spawning new sourceMiner!", name);
-              Memory.energy.energySourceMiners[i].push(name);
-              break;
-            } else {
-              results.push(void 0);
-            }
+        } else {
+          Memory.energy.energySourceMiners.push([]);
+        }
+        if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
+          name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'sourceMiner', sourceID, sourceRoomName);
+          if (name) {
+            console.log(roleCnt.sourceMiner + 1, "/", Memory.energy.energySources.length, "Spawning new sourceMiner!", name);
+            Memory.energy.energySourceMiners[i].push(name);
+            break;
           } else {
             results.push(void 0);
           }
+        } else {
+          results.push(void 0);
         }
-        return results;
       }
+      return results;
     } else if (energy >= 200 && (combinedTicksEnergyRefiller < 300 || roleCnt.energyRefiller < minimumNumberOfEnergyRefillers)) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyRefiller');
       if (name) {
