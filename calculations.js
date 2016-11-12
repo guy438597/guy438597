@@ -18,7 +18,7 @@ chooseClosest = function(creep, targets) {
       target = target
    */
   var sortedTargets, target;
-  if (targets === void 0) {
+  if (targets.length <= 0) {
     void 0;
   }
   if (targets) {
@@ -110,9 +110,12 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   distanceFromEdge = Math.min(distanceFromEdge, maxRange);
   if (type === "pickupEnergy") {
     if (distanceFromEdge <= 10) {
-      target = chooseClosest(creep.room.lookForAtArea(LOOK_RESOURCES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
+      targets = creep.room.lookForAtArea(LOOK_RESOURCES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
         return s.resourceType === RESOURCE_ENERGY && s.amount >= minEnergyInObject && s.pos.getRangeTo(creep) <= distanceFromEdge;
-      }));
+      });
+      if (targets.length > 0) {
+        target = chooseClosest(creep, target);
+      }
     } else {
       target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, {
         filter: (function(_this) {
@@ -128,12 +131,15 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   } else if (withdrawOrTransfer === "withdraw") {
     targets = [];
     if (distanceFromEdge <= 10) {
-      target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
+      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
         return function(s) {
           var ref;
           return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref = s.id, indexOf.call(excludeListIDs, ref) < 0) && s.pos.getRangeTo(creep) <= maxRange;
         };
-      })(this)));
+      })(this));
+      if (targets.length > 0) {
+        target = chooseClosest(targets);
+      }
     } else {
       targets = [];
       ref = Game.rooms;
@@ -154,12 +160,15 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   } else if (withdrawOrTransfer === "transfer") {
     targets = [];
     if (distanceFromEdge <= 10) {
-      target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
+      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
         return function(s) {
           var ref1;
           return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && s.pos.getRangeTo(creep) <= maxRange;
         };
-      })(this)));
+      })(this));
+      if (targets.length > 0) {
+        target = chooseClosest(creep, targets);
+      }
     } else {
       targets = [];
       ref1 = Game.rooms;
