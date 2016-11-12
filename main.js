@@ -22,11 +22,11 @@ module.exports = (function() {
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
-    if (creep.memory.role === "sourceMiner" && name !== "Joseph") {
-      creep.suicide();
-    }
     if (!creep) {
       delete Memory.creeps[name];
+    }
+    if (creep.memory.role === "sourceMiner" && name !== "Joseph") {
+      creep.suicide();
     }
   }
 
