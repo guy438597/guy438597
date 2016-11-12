@@ -391,8 +391,10 @@ creeproles = (function() {
       }
       if (target) {
         this.goWithdrawEnergy(creep, target);
-        if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
-          return creep.memory.target = void 0;
+        if (target) {
+          if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
+            return creep.memory.target = void 0;
+          }
         }
       }
     } else if (creep.memory.state === "deliverEnergy") {
@@ -406,10 +408,7 @@ creeproles = (function() {
         }
       }
       if (target) {
-        this.goTransferEnergy(creep, target);
-        if (target.energyCapacity === target.energy) {
-          return creep.memory.target = void 0;
-        }
+        return this.goTransferEnergy(creep, target);
       } else {
         return this.moveOutOfTheWay(creep);
       }
@@ -443,10 +442,7 @@ creeproles = (function() {
             target = this.findStructureToWithdraw(creep);
           }
           if (target) {
-            this.goWithdrawEnergy(creep, target);
-            if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
-              return creep.memory.target = void 0;
-            }
+            return this.goWithdrawEnergy(creep, target);
           }
         }
       } else {
