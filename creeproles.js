@@ -699,6 +699,11 @@ harvester = function(creep) {
   }
 };
 
+
+/*
+asd
+ */
+
 module.exports = {
   loadDefaultValues: loadDefaultValues,
   findConstructionSite: findConstructionSite,
