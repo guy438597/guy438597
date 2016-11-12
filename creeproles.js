@@ -71,7 +71,7 @@ findNearbyDroppedEnergy = function(creep, distance) {
   var filter, target;
   if (distance) {
     target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, filter = function(s) {
-      return creep.pos.getRangeTo(s.pos) <= distance;
+      return creep.pos.getRangeTo(s.pos) <= distance && s.amount >= 20;
     });
     if (target) {
       creep.memory.target = target.id;
@@ -235,6 +235,7 @@ goPickUpEnergy = function(creep, target) {
       creep.memory.target = target.id;
       return 1;
     } else {
+      console.log(creep, creep.pos, target);
       creep.say("PICKUP E");
       creep.memory.target = void 0;
       return 1;
