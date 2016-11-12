@@ -16,7 +16,7 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 runRoles = require("./creeproles");
 
 module.exports.loop = function() {
-  var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
+  var attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
@@ -78,28 +78,22 @@ module.exports.loop = function() {
   if (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceMiners.push([]);
   }
-  if (Memory.energy.energySourceMiners) {
-    ref2 = Memory.energy.energySources;
-    for (i = l = 0, len1 = ref2.length; l < len1; i = ++l) {
-      source = ref2[i];
-      maxMiners = Memory.energy.energySources[i][1];
-      maxBodyParts = Memory.energy.energySources[i][2];
-      countBodyParts = 0;
-      if (Memory.energy.energySourceMiners[i]) {
-        ref3 = Memory.energy.energySourceMiners[i];
-        for (j = m = 0, len2 = ref3.length; m < len2; j = ++m) {
-          miner = ref3[j];
-          countBodyParts += 0;
-          ref4 = Memory.energy.energySourceMiners[i];
-          for (n = 0, len3 = ref4.length; n < len3; n++) {
-            name = ref4[n];
-            countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
-          }
-        }
-      }
-      if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
-        moreMinersRequired = true;
-      }
+  Memory.energy.energySourceMiners = Memory.energy.energySourceMiners.filter(function(name) {
+    return Game.creeps[name] !== void 0;
+  });
+  ref2 = Memory.energy.energySources;
+  for (i = l = 0, len1 = ref2.length; l < len1; i = ++l) {
+    source = ref2[i];
+    maxMiners = source[1];
+    maxBodyParts = source[2];
+    countBodyParts = 0;
+    ref3 = Memory.energy.energySourceMiners[i];
+    for (m = 0, len2 = ref3.length; m < len2; m++) {
+      name = ref3[m];
+      countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
+    }
+    if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
+      moreMinersRequired = true;
     }
   }
   if (Memory.claims.claimClaimers === void 0) {
@@ -108,9 +102,9 @@ module.exports.loop = function() {
   while (Memory.claims.claimClaimers.length < Memory.claims.claimLocations.length) {
     Memory.claims.claimClaimers.push([]);
   }
-  ref5 = Memory.claims.claimClaimers;
-  for (i = o = 0, len4 = ref5.length; o < len4; i = ++o) {
-    name = ref5[i];
+  ref4 = Memory.claims.claimClaimers;
+  for (i = n = 0, len3 = ref4.length; n < len3; i = ++n) {
+    name = ref4[i];
     Memory.claims.claimClaimers = Memory.claims.claimClaimers.filter(function(name) {
       return Game.creeps[name] !== void 0;
     });
@@ -119,9 +113,9 @@ module.exports.loop = function() {
   if (!Memory.claims.claimLocations) {
     Memory.claims.claimLocations = [];
   }
-  ref6 = Memory.claims.claimLocations;
-  for (i = p = 0, len5 = ref6.length; p < len5; i = ++p) {
-    location = ref6[i];
+  ref5 = Memory.claims.claimLocations;
+  for (i = o = 0, len4 = ref5.length; o < len4; i = ++o) {
+    location = ref5[i];
     roomName = location[0];
     if (Game.rooms[roomName]) {
       if (Game.rooms[roomName].controller.my) {
@@ -149,8 +143,8 @@ module.exports.loop = function() {
   towers = towers.filter(function(s) {
     return s.structureType === STRUCTURE_TOWER;
   });
-  for (q = 0, len6 = towers.length; q < len6; q++) {
-    tower = towers[q];
+  for (p = 0, len5 = towers.length; p < len5; p++) {
+    tower = towers[p];
     attackTarget = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
       filter: function(s) {
         return s.getActiveBodyparts(HEAL) > 0;
@@ -187,36 +181,36 @@ module.exports.loop = function() {
   if (Game.time % 30 === 0) {
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
-    ref7 = Game.rooms;
-    for (name in ref7) {
-      room = ref7[name];
+    ref6 = Game.rooms;
+    for (name in ref6) {
+      room = ref6[name];
       newrepairTargets = Game.rooms[name].find(FIND_STRUCTURES, {
         filter: function(s) {
           return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * Memory.structures.repairFactor;
         }
       }, newbuildingSites = Game.rooms[name].find(FIND_MY_CONSTRUCTION_SITES));
-      for (r = 0, len7 = newrepairTargets.length; r < len7; r++) {
-        i = newrepairTargets[r];
+      for (q = 0, len6 = newrepairTargets.length; q < len6; q++) {
+        i = newrepairTargets[q];
         Memory.structures.repairTargets = Memory.structures.repairTargets.concat((function() {
-          var len8, ref8, results, t;
+          var len7, r, ref7, results;
           results = [];
-          for (t = 0, len8 = newrepairTargets.length; t < len8; t++) {
-            s = newrepairTargets[t];
-            if (ref8 = s.id, indexOf.call(Memory.structures.repairTargets, ref8) < 0) {
+          for (r = 0, len7 = newrepairTargets.length; r < len7; r++) {
+            s = newrepairTargets[r];
+            if (ref7 = s.id, indexOf.call(Memory.structures.repairTargets, ref7) < 0) {
               results.push(s.id);
             }
           }
           return results;
         })());
       }
-      for (t = 0, len8 = newbuildingSites.length; t < len8; t++) {
-        i = newbuildingSites[t];
+      for (r = 0, len7 = newbuildingSites.length; r < len7; r++) {
+        i = newbuildingSites[r];
         Memory.structures.buildingSites = Memory.structures.buildingSites.concat((function() {
-          var len9, ref8, results, u;
+          var len8, ref7, results, t;
           results = [];
-          for (u = 0, len9 = newbuildingSites.length; u < len9; u++) {
-            s = newbuildingSites[u];
-            if (ref8 = s.id, indexOf.call(Memory.structures.buildingSites, ref8) < 0) {
+          for (t = 0, len8 = newbuildingSites.length; t < len8; t++) {
+            s = newbuildingSites[t];
+            if (ref7 = s.id, indexOf.call(Memory.structures.buildingSites, ref7) < 0) {
               results.push(s.id);
             }
           }
@@ -238,11 +232,11 @@ module.exports.loop = function() {
   }
   roleCnt = {
     sourceMiner: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "sourceMiner") {
           results.push(item);
         }
@@ -250,11 +244,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     energyRefiller: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "energyRefiller") {
           results.push(item);
         }
@@ -262,11 +256,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     energyTransporter: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "energyTransporter") {
           results.push(item);
         }
@@ -274,11 +268,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     harvester: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "harvester") {
           results.push(item);
         }
@@ -286,11 +280,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     builder: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "builder") {
           results.push(item);
         }
@@ -298,11 +292,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     repairer: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "repairer") {
           results.push(item);
         }
@@ -310,11 +304,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     wallRepairer: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "wallRepairer") {
           results.push(item);
         }
@@ -322,11 +316,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     upgrader: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "upgrader") {
           results.push(item);
         }
@@ -334,11 +328,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     claimer: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "claimer") {
           results.push(item);
         }
@@ -346,11 +340,11 @@ module.exports.loop = function() {
       return results;
     })()).length,
     fighter: ((function() {
-      var ref8, results;
-      ref8 = Game.creeps;
+      var ref7, results;
+      ref7 = Game.creeps;
       results = [];
-      for (key in ref8) {
-        item = ref8[key];
+      for (key in ref7) {
+        item = ref7[key];
         if (item.memory.role === "fighter") {
           results.push(item);
         }
@@ -360,9 +354,9 @@ module.exports.loop = function() {
   };
   console.log(roleCnt.sourceMiner, roleCnt.energyRefiller, roleCnt.energyTransporter, roleCnt.builder, roleCnt.repairer);
   combinedTicksEnergyRefiller = 0;
-  ref8 = Game.creeps;
-  for (name in ref8) {
-    creep = ref8[name];
+  ref7 = Game.creeps;
+  for (name in ref7) {
+    creep = ref7[name];
     if (Game.creeps[name].spawning) {
       continue;
     }
@@ -383,9 +377,9 @@ module.exports.loop = function() {
   while (Memory.energy.energySourceTransporters.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceTransporters.push([]);
   }
-  ref9 = Memory.energy.energySourceTransporters[i];
-  for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
-    name = ref9[i];
+  ref8 = Memory.energy.energySourceTransporters[i];
+  for (i = t = 0, len8 = ref8.length; t < len8; i = ++t) {
+    name = ref8[i];
     console.log(i);
     Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(name) {
       return Game.creeps[name] !== void 0;
@@ -396,17 +390,17 @@ module.exports.loop = function() {
   }
   if (!(Game.time % 30)) {
     totalEnergyTransportersRequired = 0;
-    ref10 = Memory.energy.energySources;
-    for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
-      source = ref10[i];
+    ref9 = Memory.energy.energySources;
+    for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
+      source = ref9[i];
       source = Game.getObjectById(Memory.energy.energySources[i][0]);
       if (source) {
         closestSpawn = chooseClosest(source, (function() {
-          var ref11, results;
-          ref11 = Game.spawns;
+          var ref10, results;
+          ref10 = Game.spawns;
           results = [];
-          for (spawnName in ref11) {
-            spawn = ref11[spawnName];
+          for (spawnName in ref10) {
+            spawn = ref10[spawnName];
             results.push(spawn);
           }
           return results;
@@ -426,22 +420,22 @@ module.exports.loop = function() {
       }
     } else if (energy >= Math.min(650, energyMax) && moreMinersRequired && roleCnt.energyRefiller > 1) {
       if (Memory.energy.energySourceMiners) {
-        ref11 = Memory.energy.energySources;
+        ref10 = Memory.energy.energySources;
         results = [];
-        for (i = w = 0, len11 = ref11.length; w < len11; i = ++w) {
-          source = ref11[i];
+        for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
+          source = ref10[i];
           sourceID = Memory.energy.energySources[i][0];
           maxMiners = Memory.energy.energySources[i][1];
           maxBodyParts = Memory.energy.energySources[i][2];
           sourceRoomName = Memory.energy.energySources[i][3];
           countBodyParts = 0;
           if (Memory.energy.energySourceMiners[i]) {
-            ref12 = Memory.energy.energySourceMiners;
-            for (j = x = 0, len12 = ref12.length; x < len12; j = ++x) {
-              miner = ref12[j];
-              ref13 = Memory.energy.energySourceMiners[i];
-              for (y = 0, len13 = ref13.length; y < len13; y++) {
-                name = ref13[y];
+            ref11 = Memory.energy.energySourceMiners;
+            for (j = w = 0, len11 = ref11.length; w < len11; j = ++w) {
+              miner = ref11[j];
+              ref12 = Memory.energy.energySourceMiners[i];
+              for (x = 0, len12 = ref12.length; x < len12; x++) {
+                name = ref12[x];
                 if (name) {
                   countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
                 }
@@ -471,18 +465,18 @@ module.exports.loop = function() {
         return console.log(roleCnt.energyRefiller + 1, "/", 2, "Spawning new energyRefiller!", name);
       }
     } else if (energy >= 150 && roleCnt.energyTransporter < Memory.energy.totalTransportersRequired) {
-      ref14 = Memory.energy.energySources;
-      for (i = z = 0, len14 = ref14.length; z < len14; i = ++z) {
-        energySource = ref14[i];
+      ref13 = Memory.energy.energySources;
+      for (i = y = 0, len13 = ref13.length; y < len13; i = ++y) {
+        energySource = ref13[i];
         sourceID = Memory.energy.energySources[i][0];
         source = Game.getObjectById(sourceID);
         if (source) {
           closestSpawn = chooseClosest(source, (function() {
-            var ref15, results1;
-            ref15 = Game.spawns;
+            var ref14, results1;
+            ref14 = Game.spawns;
             results1 = [];
-            for (spawnName in ref15) {
-              spawn = ref15[spawnName];
+            for (spawnName in ref14) {
+              spawn = ref14[spawnName];
               results1.push(spawn);
             }
             return results1;
@@ -501,10 +495,10 @@ module.exports.loop = function() {
         return console.log(roleCnt.energyTransporter + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
       }
     } else if (energy >= 650 && newClaimerRequired) {
-      ref15 = Memory.claims.claimLocations;
+      ref14 = Memory.claims.claimLocations;
       results1 = [];
-      for (i = aa = 0, len15 = ref15.length; aa < len15; i = ++aa) {
-        location = ref15[i];
+      for (i = z = 0, len14 = ref14.length; z < len14; i = ++z) {
+        location = ref14[i];
         console.log("buggerino4");
         roomName = location[0];
         if (Game.rooms[roomName]) {
