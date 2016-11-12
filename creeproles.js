@@ -301,17 +301,17 @@ creeproles = (function() {
   creeproles.sourceMiner = function(creep) {
     var target;
     this.loadDefaultValues(creep);
-    if (!creep.memory.energySource) {
-      creep.memory.energySource = creep.pos.findClosestByRange(FIND_SOURCES).id;
+    if (!creep.memory.energySourceID) {
+      creep.memory.energySourceID = creep.pos.findClosestByRange(FIND_SOURCES).id;
     }
     if (!creep.memory.energySourceRoomName) {
-      creep.memory.energySourceRoomName = Game.getObjectById(creep.memory.energySource).room.name;
+      creep.memory.energySourceRoomName = Game.getObjectById(creep.memory.energySourceID).room.name;
     }
     if (!creep.memory.state) {
       creep.memory.state = "mining";
     }
     if (!creep.memory.target && creep.memory.state === "mining") {
-      creep.memory.target = creep.memory.energySource;
+      creep.memory.target = creep.memory.energySourceID;
     }
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
@@ -426,11 +426,11 @@ creeproles = (function() {
     var t1, t2, target;
     this.loadDefaultValues(creep);
     creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : "pickupEnergy";
-    if (!creep.memory.source) {
+    if (!creep.memory.energySourceID) {
       console.log(creep.name, creep.role, "has no energy sourceID in memory!");
     }
     if (creep.memory.state === "pickupEnergy" && !creep.memory.target) {
-      creep.memory.target = creep.memory.source;
+      creep.memory.target = creep.memory.energySourceID;
     }
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
@@ -606,7 +606,15 @@ creeproles = (function() {
       if (!target) {
         t1 = this.findStructureToWithdraw(creep, STRUCTURE_STORAGE, void 0, 500, Memory.energy.miningContainers);
         t2 = this.findStructureToWithdraw(creep, STRUCTURE_CONTAINER, void 0, 500, Memory.energy.miningContainers);
-        target = chooseClosest(creep, [t1, t2]);
+        if (t1) {
+          if (t2) {
+            target = chooseClosest(creep, [t1, t2]);
+          } else {
+            target = t1;
+          }
+        } else if (t2) {
+          target = t2;
+        }
       }
       if (target) {
         this.goWithdrawEnergy(creep, target);
