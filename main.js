@@ -367,7 +367,7 @@ module.exports.loop = function() {
     }
     runRoles[creep.memory.role](creep);
   }
-  if (Memory.energy.energySourceTransporters) {
+  if (!Memory.energy.energySourceTransporters) {
     Memory.energy.energySourceTransporters = [];
   }
   while (Memory.energy.energySourceTransporters.length <= Memory.energy.energySources.length) {
