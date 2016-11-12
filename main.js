@@ -50,8 +50,8 @@ module.exports.loop = function() {
     Memory.energy.energySourceMiners.push([]);
   }
   ref1 = Memory.energy.energySourceMiners;
-  for (k = 0, len = ref1.length; k < len; k++) {
-    name = ref1[k];
+  for (i = k = 0, len = ref1.length; k < len; i = ++k) {
+    name = ref1[i];
     Memory.energy.energySourceMiners[i] = Memory.energy.energySourceMiners[i].filter(function(name) {
       return Game.creeps[name];
     });
