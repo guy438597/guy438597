@@ -430,7 +430,6 @@ energyTransporter = function(creep) {
   var t1, t2, target;
   loadDefaultValues(creep);
   creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : "pickupEnergy";
-  creep.memory.energySourceRoomName = "W48S61";
   if (!creep.memory.energySourceID) {
     console.log(creep.name, creep.role, "has no energy sourceID in memory!");
   }
@@ -666,7 +665,7 @@ harvester = function(creep) {
       target = findNearbyDroppedEnergy(creep, 5);
     }
     if (target && target.amount) {
-      pickupEnergy(creep, target);
+      goPickUpEnergy(creep, target);
     }
     if (!target) {
       target = findMiningSite(creep);
