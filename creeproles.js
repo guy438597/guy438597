@@ -268,9 +268,6 @@ moveOutOfTheWay = function(creep) {
 };
 
 goMine = function(creep, target) {
-  if (creep.carry.energy === 0) {
-    creep.memory.target = void 0;
-  }
   if (target) {
     creep.say("MINING");
     console.log(creep.harvest(target));
