@@ -70,7 +70,7 @@ findRepairSite = function(creep, distance) {
 findNearbyDroppedEnergy = function(creep, distance) {
   var filter, target;
   if (distance) {
-    target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY, filter = function(s) {
+    target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, filter = function(s) {
       return creep.pos.getRangeTo(s.pos) <= distance;
     });
     if (target) {
@@ -78,7 +78,7 @@ findNearbyDroppedEnergy = function(creep, distance) {
       return target;
     }
   } else {
-    target = creep.pos.findClosestByRange(FIND_DROPPED_ENERGY);
+    target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
     creep.memory.target = target.id;
     return target;
   }
@@ -183,7 +183,6 @@ goTransferEnergy = function(creep, target) {
   var ref;
   if (target) {
     creep.memory.target = target.id;
-    console.log(target);
     if (creep.transfer(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
       creep.say("MOVE TRNSFR");
       costEfficientMove(creep, target);
@@ -197,7 +196,6 @@ goTransferEnergy = function(creep, target) {
         }
       }
     } else {
-      console.log(creep.transfer(target, RESOURCE_ENERGY));
       creep.say("TRANSFER");
       return creep.memory.target = void 0;
     }

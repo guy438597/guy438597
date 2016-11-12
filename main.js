@@ -418,7 +418,7 @@ module.exports.loop = function() {
         console.log(roleCnt.harvester + 1, "/", "Spawning new harvester!", name);
       }
     }
-    if (energy >= 190 && spawnHighPriorityDefense) {
+    if (energy >= 200 && spawnHighPriorityDefense) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {
         return console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
@@ -464,12 +464,12 @@ module.exports.loop = function() {
         }
         return results;
       }
-    } else if (energy >= 150 && (combinedTicksEnergyRefiller < 300 || roleCnt.energyRefiller < minimumNumberOfEnergyRefillers)) {
+    } else if (energy >= 200 && (combinedTicksEnergyRefiller < 300 || roleCnt.energyRefiller < minimumNumberOfEnergyRefillers)) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyRefiller');
       if (name) {
         return console.log(roleCnt.energyRefiller + 1, "/", minimumNumberOfEnergyRefillers, "Spawning new energyRefiller!", name);
       }
-    } else if (energy >= 150 && roleCnt.energyTransporter < Memory.energy.totalTransportersRequired) {
+    } else if (energy >= 200 && roleCnt.energyTransporter < Memory.energy.totalTransportersRequired) {
       ref13 = Memory.energy.energySources;
       for (i = y = 0, len13 = ref13.length; y < len13; i = ++y) {
         energySource = ref13[i];
