@@ -481,7 +481,7 @@ module.exports.loop = function() {
             results1 = [];
             for (spawnName in ref14) {
               spawn = ref14[spawnName];
-              results1.push(spawn);
+              results1.push(Game.spawns[spawnName]);
             }
             return results1;
           })());
