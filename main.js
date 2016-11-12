@@ -570,8 +570,6 @@ module.exports = (function() {
     }
   }
 
-  1;
-
   return exports;
 
 })();
