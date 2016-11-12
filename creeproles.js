@@ -331,7 +331,11 @@ creeproles = (function() {
       }
     } else if (creep.memory.state === "deliverEnergy") {
       if (!target) {
-        target = this.findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
+        target = creep.room.find(FIND_STRUCTURES, {
+          filter: function(s) {
+            return s.structureType === STRUCTURE_SPAWN;
+          }
+        });
       }
       if (target) {
         return this.goTransferEnergy(creep, target);
