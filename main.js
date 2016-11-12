@@ -87,6 +87,8 @@ module.exports.loop = function() {
         countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
       }
     }
+    console.log(Memory.energy.energySourceMiners);
+    console.log(Memory.energy.energySourceMiners[i].length);
     if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
       moreMinersRequired = true;
     }
