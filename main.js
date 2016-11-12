@@ -125,6 +125,8 @@ module.exports.loop = (function() {
 
   minimumNumberOfRepairers = Math.min(Math.floor((Memory.structures.repairTargets.length + 9) / 10), 3);
 
+  runRoles[creep.memory.role](creep);
+
   moreMinersRequired = false;
 
   if (!Memory.energy.energySourceMiners) {
