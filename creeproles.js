@@ -326,7 +326,7 @@ sourceMiner = function(creep) {
   if (!target) {
     creep.memory.target = void 0;
   }
-  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
+  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "mining") {
     if (!target) {
@@ -450,7 +450,7 @@ energyTransporter = function(creep) {
   if (!target) {
     creep.memory.target = void 0;
   }
-  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
+  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "pickupEnergy") {
     if (target) {
@@ -501,7 +501,7 @@ repairer = function(creep) {
     creep.memory.target = void 0;
   }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "repairing";
-  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
+  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "pickupEnergy") {
     if (!target) {
@@ -535,7 +535,7 @@ builder = function(creep) {
     creep.memory.target = void 0;
   }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "building";
-  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
+  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "pickupEnergy") {
     if (!target) {
@@ -579,7 +579,7 @@ claimer = function(creep) {
   if (!creep.memory.claimOption) {
     creep.memory.claimOption = "r";
   }
-  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
+  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
     return retreat(creep);
   } else if (creep.room.name !== creep.memory.claimRoomName) {
     creep.say("CLAIMER");
@@ -613,7 +613,7 @@ upgrader = function(creep) {
     creep.memory.target = void 0;
   }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "upgrading";
-  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
+  if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "pickupEnergy") {
     if (!target) {
