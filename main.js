@@ -75,9 +75,10 @@ module.exports.loop = function() {
     return Game.getObjectById(id) !== null;
   });
   moreMinersRequired = false;
-  if (!Memory.energy.energySourceMiners) {
+  if (Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
+  console.log(Memory.energy.energySourceMiners);
   if (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceMiners.push([]);
   }
