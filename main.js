@@ -209,7 +209,7 @@ module.exports = (function() {
     Memory.structures = {};
   }
 
-  if (Game.time % 2 === 0) {
+  if (Game.time % 30 === 0) {
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
     ref7 = Game.rooms;
@@ -261,10 +261,6 @@ module.exports = (function() {
       });
     }
   }
-
-  console.log(Memory.structures.buildingSites);
-
-  console.log(Memory.structures.repairTargets);
 
   roleCnt = {
     sourceMiner: ((function() {
