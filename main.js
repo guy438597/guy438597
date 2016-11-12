@@ -445,8 +445,6 @@ module.exports = (function() {
     Memory.energy.totalTransportersRequired = totalEnergyTransportersRequired;
   }
 
-  console.log(moreMinersRequired, roleCnt.energyRefiller);
-
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
 
   if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
