@@ -62,7 +62,7 @@ module.exports = (function() {
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
     name = ref1[i];
     Memory.energy.energySourceMiners[i] = Memory.energy.energySourceMiners[i].filter(function(name) {
-      return Game.creeps[name] === void 0;
+      return Game.creeps[name] !== void 0;
     });
   }
 
@@ -136,7 +136,7 @@ module.exports = (function() {
   for (i = o = 0, len4 = ref5.length; o < len4; i = ++o) {
     name = ref5[i];
     Memory.claims.claimClaimers = Memory.claims.claimClaimers.filter(function(name) {
-      return Game.creeps[name];
+      return Game.creeps[name] !== void 0;
     });
   }
 
@@ -424,7 +424,7 @@ module.exports = (function() {
   for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
     name = ref9[i];
     Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(name) {
-      return Game.creeps[name];
+      return Game.creeps[name] !== void 0;
     });
   }
 
