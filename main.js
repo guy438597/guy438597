@@ -22,9 +22,6 @@ module.exports = (function() {
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
-    console.log(Game.creeps[name]);
-    console.log(Game.creeps[name].memory);
-    console.log(Game.creeps[name].memory.role);
     if (!creep) {
       delete Memory.creeps[name];
     } else if (Game.creeps[name].memory.role === "sourceMiner" && name !== "Joseph") {
