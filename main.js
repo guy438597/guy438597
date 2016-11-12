@@ -405,6 +405,12 @@ module.exports.loop = function() {
   }
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
   if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
+    if (!basicEconomyRunning) {
+      name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'harvester');
+      if (name) {
+        console.log(roleCnt.harvester + 1, "/", "Spawning new harvester!", name);
+      }
+    }
     if (energy >= 190 && spawnHighPriorityDefense) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {

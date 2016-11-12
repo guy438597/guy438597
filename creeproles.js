@@ -305,6 +305,26 @@ creeproles = (function() {
     }
   };
 
+  creeproles.harvester = function(creep) {
+    var target;
+    this.loadDefaultValues(creep);
+    creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : "mining";
+    if (creep.memory.target) {
+      target = Game.getObjectById(creep.memory.target);
+    }
+    if (creep.memory.state === "mining") {
+      target = this.findMiningSite(creep);
+      if (target) {
+        return this.goMine(creep, target);
+      }
+    } else if (creep.memory.state === "deliverEnergy") {
+      target = this.findStructureToDeposit(creep, STRUCTURE_SPAWN);
+      if (target) {
+        return this.goTransferEnergy(creep, target);
+      }
+    }
+  };
+
   creeproles.sourceMiner = function(creep) {
     var target;
     this.loadDefaultValues(creep);
