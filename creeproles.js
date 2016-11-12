@@ -399,6 +399,7 @@ sourceMiner = function(creep) {
         goBuild(creep, target);
         creep.say("BLD CNTR");
       } else {
+        console.log("MINER DOWN BELOW:");
         creep.say("NO CNTR");
         creep.drop(RESOURCE_ENERGY);
       }
