@@ -1,7 +1,5 @@
 var builder, chooseClosest, claimer, costEfficientMove, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, sourceMiner, upgrader;
 
-console.log("hii");
-
 require('./spawnV2')();
 
 chooseClosest = require("./calculations").chooseClosest;
@@ -429,7 +427,6 @@ module.exports.loop = (function() {
   ref8 = Game.creeps;
   for (name in ref8) {
     creep = ref8[name];
-    console.log("testooo435", creep.memory.role);
     if (creep.spawning) {
       continue;
     }
@@ -443,6 +440,7 @@ module.exports.loop = (function() {
       combinedTicksEnergyRefiller += creep.ticksToLive;
     }
     runRoles[creep.memory.role](creep);
+    console.log("ran role!", creep.memory.role);
   }
 
   if (!Memory.energy.totalEnergyTransportersRequired) {
