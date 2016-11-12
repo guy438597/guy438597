@@ -299,7 +299,7 @@ creeproles = (function() {
   };
 
   creeproles.sourceMiner = function(creep) {
-    var ref, target;
+    var target;
     this.loadDefaultValues(creep);
     if (!creep.memory.energySource) {
       creep.memory.energySource = creep.pos.findClosestByRange(FIND_SOURCES).id;
@@ -325,7 +325,7 @@ creeproles = (function() {
       }
       if (target) {
         this.goMine(creep, target);
-        if (creep.creep.carryCapacity === creep.carry.energy) {
+        if (creep.carryCapacity === creep.carry.energy) {
           creep.memory.state = "puttingEnergyInContainer";
           return creep.memory.target = void 0;
         }
@@ -336,9 +336,7 @@ creeproles = (function() {
       }
       if (target) {
         if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
-          if (ref = target.id, indexOf.call(Memory.energy.miningContainers, ref) < 0) {
-            Memory.energy.miningContainers.push(target.id);
-          }
+          Memory.energy.miningContainers.push(target.id);
         }
         if (_.sum(target.store) < target.storeCapacity) {
           this.goTransferEnergy(creep, target);
