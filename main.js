@@ -89,6 +89,10 @@ module.exports = (function() {
   console.log Memory.claims.claimLocations.length
    */
 
+  Memory.energy.miningContainers = Memory.energy.miningContainers.filter(function(id) {
+    return Game.getObjectById(id) !== null;
+  });
+
   moreMinersRequired = false;
 
   if (!Memory.energy.energySourceMiners) {
