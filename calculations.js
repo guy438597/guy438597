@@ -16,7 +16,7 @@ chooseClosest = function(creep, targets) {
         target = targets;
         distance = getDistance(creep, target);
         targets.splice(0, 1);
-      } else {
+      } else if (targets[0]) {
         tempDistance = getDistance(creep, targets[0]);
         if (tempDistance < distance) {
           target = targets[0];
