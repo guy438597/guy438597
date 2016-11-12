@@ -127,7 +127,6 @@ module.exports = function() {
       }
       return this.createCreep(body, void 0, {
         role: roleName,
-        state: void 0,
         roomToDefend: arg4,
         retreatRoom: arg5
       });
@@ -138,7 +137,6 @@ module.exports = function() {
       body.push(MOVE);
       return this.createCreep(body, void 0, {
         role: roleName,
-        state: void 0,
         claimRoomName: arg1,
         claimOption: arg2,
         retreatRoomName: arg3

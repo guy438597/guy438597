@@ -108,7 +108,6 @@ module.exports = (function() {
       }
       if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
         moreMinersRequired = true;
-        break;
       }
     }
   }
