@@ -730,6 +730,5 @@ module.exports = {
   builder: builder,
   claimer: claimer,
   upgrader: upgrader,
-  fighter: fighter,
-  harvester: harvester
+  fighter: fighter
 };
