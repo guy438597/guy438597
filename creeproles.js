@@ -637,8 +637,6 @@ creeproles = (function() {
     }
   };
 
-  1;
-
   return creeproles;
 
 })();
