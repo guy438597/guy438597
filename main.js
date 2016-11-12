@@ -84,7 +84,6 @@ module.exports.loop = function() {
     maxMiners = source[1];
     maxBodyParts = source[2];
     countBodyParts = 0;
-    console.log(Memory.energy.energySourceMiners[i].length < maxMiners, countBodyParts < maxBodyParts);
     ref3 = Memory.energy.energySourceMiners[i];
     for (m = 0, len2 = ref3.length; m < len2; m++) {
       name = ref3[m];
@@ -94,7 +93,6 @@ module.exports.loop = function() {
       moreMinersRequired = true;
     }
   }
-  console.log(moreMinersRequired);
   if (!Memory.claims.claimClaimers) {
     Memory.claims.claimClaimers = [];
   }
@@ -412,7 +410,6 @@ module.exports.loop = function() {
     }
     Memory.energy.totalTransportersRequired = totalEnergyTransportersRequired;
   }
-  console.log("rlcount refiller", roleCnt.energyRefiller);
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
   if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
     if (!basicEconomyRunning && roleCnt.harvester < 2) {
@@ -426,7 +423,7 @@ module.exports.loop = function() {
       if (name) {
         return console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
       }
-    } else if (energy >= 200 && moreMinersRequired && roleCnt.energyRefiller > 1) {
+    } else if (energy >= 200 && moreMinersRequired && roleCnt.energyRefiller > minimumNumberOfEnergyRefillers) {
       ref10 = Memory.energy.energySources;
       results = [];
       for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
@@ -499,7 +496,6 @@ module.exports.loop = function() {
         }
       }
       if (name) {
-        console.log("yolo");
         return console.log(roleCnt.energyTransporter + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
       }
     } else if (energy >= 650 && newClaimerRequired) {
