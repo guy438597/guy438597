@@ -387,10 +387,9 @@ module.exports.loop = function() {
     if (!basicEconomyRunning && roleCnt.harvester < 2) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'harvester');
       if (name) {
-        console.log(roleCnt.harvester + 1, "/", "Spawning new harvester!", name);
+        return console.log(roleCnt.harvester + 1, "/", "Spawning new harvester!", name);
       }
-    }
-    if (energy >= 200 && spawnHighPriorityDefense) {
+    } else if (energy >= 200 && spawnHighPriorityDefense) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {
         return console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
