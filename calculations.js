@@ -10,9 +10,9 @@ chooseClosest = function(creep, targets) {
       target = targets[0]
   else
       target = targets[0]
-      distance = getdistance(creep, target)
+      distance = getDistance(creep, target)
       for t,i in targets
-          tempDistance = getdistance(creep, t)
+          tempDistance = getDistance(creep, t)
           if t
   if !target
       target = target
@@ -51,7 +51,7 @@ getDistance = function(creep, target) {
     100000;
   }
   if (creep === target) {
-    console.log("called getdistance of same object", creep, creep.pos);
+    console.log("called getDistance of same object", creep, creep.pos);
     0;
   }
   distance = creep.room === target.room ? creep.pos.getRangeTo(target) : creep.room.findPath(creep.pos, target.pos).length;

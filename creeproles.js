@@ -1,4 +1,4 @@
-var builder, calculations, chooseClosest, claimer, costEfficientMove, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, sourceMiner, upgrader,
+var builder, calculations, chooseClosest, claimer, costEfficientMove, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, healer, loadDefaultValues, moveOutOfTheWay, repairer, retreat, sourceMiner, upgrader, warrior,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 calculations = require("./calculations");
@@ -264,7 +264,7 @@ goPickUpEnergy = function(creep, target) {
 };
 
 retreat = function(creep, distance) {
-  if (!distance) {
+  if (distance == null) {
     distance = 2;
   }
   creep.say("RETREAT");
@@ -281,11 +281,14 @@ costEfficientMove = function(creep, target) {
   }
 };
 
-moveOutOfTheWay = function(creep) {
+moveOutOfTheWay = function(creep, distance) {
   var otherCreep;
+  if (distance == null) {
+    distance = 2;
+  }
   otherCreep = creep.pos.findClosestByRange(FIND_MY_CREEPS, {
     filter: function(s) {
-      return s !== creep && creep.pos.getRangeTo(s) <= 2;
+      return s !== creep && creep.pos.getRangeTo(s) <= distance;
     }
   });
   if (otherCreep) {
@@ -371,8 +374,9 @@ sourceMiner = function(creep) {
     }
   }
   if (creep.memory.state === "puttingEnergyInContainer") {
+    console.log(target, creep.memory.target);
     if (!target) {
-      target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
+      target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1);
     }
     if (target && !target.progress) {
       if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
@@ -404,7 +408,8 @@ sourceMiner = function(creep) {
     }
     if (target) {
       goPickUpEnergy(creep, target);
-      return creep.memory.state = "puttingEnergyInContainer";
+      creep.memory.state = "puttingEnergyInContainer";
+      return creep.memory.target = void 0;
     } else {
       return creep.memory.state = "mining";
     }
@@ -764,6 +769,117 @@ harvester = function(creep) {
   }
 };
 
+warrior = function(creep) {
+  var attackTarget, linkedCreep, target;
+  loadDefaultValues(creep);
+  if (creep.memory.isLinked) {
+    linkedCreep = Game.getObjectById(creep.memory.linkedCreep);
+  }
+  if (!linkedCreep) {
+    creep.memory.isLinked = void 0;
+    creep.memory.linkedCreep = void 0;
+  }
+  if (creep.memory.isLinked) {
+    if (creep.room === creep.memory.attackRoomName) {
+      attackTarget = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS);
+      if (!attackTarget) {
+        attackTarget = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {
+          filter: function(s) {
+            return s.structureType === STRUCTURE_TOWER || s.structureType === STRUCTURE_RAMPART;
+          }
+        });
+        if (!attackTarget) {
+          attackTarget = creep.pos.findClosestByPath(FIND_HOSTILE_SPAWNS);
+          if (!attackTarget) {
+            attackTarget = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+            if (!attackTarget) {
+              attackTarget = creep.pos.findClosestByPath(FIND_HOSTILE_CONSTRUCTION_SITES);
+            }
+          }
+        }
+      }
+      if (attackTarget) {
+        if (creep.attack(attackTarget) === ERR_NOT_IN_RANGE) {
+          return costEfficientMove(creep, attackTarget);
+        }
+      } else {
+        target = creep.pos.findClosestByPath(FIND_SOURCES);
+        if (getdistance(creep, target) >= 5) {
+          return costEfficientMove(creep, target);
+        } else {
+          return moveOutOfTheWay(creep, 2);
+        }
+      }
+    } else if (creep.room !== creep.memory.attackRoomName) {
+      return costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.attackRoomName));
+    }
+  } else if (!creep.memory.isLinked) {
+    if (creep.room.name !== creep.memory.retreatRoomName) {
+      return moveTo(new RoomPosition(25, 25, creep.memory.retreatRoomName));
+    } else {
+      return moveOutOfTheWay(creep);
+    }
+  }
+};
+
+healer = function(creep) {
+  var healTarget, highestPriority, linkedCreep, needHealing;
+  loadDefaultValues(creep);
+  if (creep.memory.isLinked) {
+    linkedCreep = Game.getObjectById(creep.memory.linkedCreep);
+  }
+  if (!linkedCreep) {
+    creep.memory.isLinked = void 0;
+    creep.memory.linkedCreep = void 0;
+  }
+  if (creep.memory.isLinked) {
+    if (creep.hits < creep.hitsMax || linkedCreep.hits < linkedCreep.hitsMax) {
+      needHealing = true;
+    }
+    highestPriority = creep.hits / creep.hitsMax < linkedCreep.hits / linkedCreep.hitsMax ? creep : linkedCreep;
+    if (highestPriority === linkedCreep) {
+      if (creep.heal(linkedCreep) === ERR_NOT_IN_RANGE) {
+        return costEfficientMove(creep, linkedCreep);
+      } else if (creep.heal(linkedCreep) === ERR_NO_BODYPART) {
+        return creep.heal(creep);
+      }
+    } else if (highestPriority === creep) {
+      return creep.heal(creep);
+    } else {
+      return costEfficientMove(creep, linkedCreep);
+    }
+  } else if (!creep.memory.isLinked) {
+    linkedCreep = creep.room.find(FIND_MY_CREEPS, {
+      filter: function(s) {
+        return s.memory.role === "warrior" && !s.memory.isLinked;
+      }
+    });
+    if (!linkedCreep.memory.isLinked) {
+      creep.say("LINK " + linkedCreep.pos.x + " " + linkedCreep.pos.y);
+      linkedCreep.say("LINK " + creep.pos.x + " " + creep.pos.y);
+      creep.memory.isLinked = true;
+      creep.memory.linkedCreep = linkedCreep.id;
+      linkedCreep.memory.isLinked = true;
+      return linkedCreep.memory.linkedCreep = creep.id;
+    } else if (creep.room.name !== creep.memory.retreatRoomName) {
+      if (moveTo(new RoomPosition(25, 25, creep.memory.retreatRoomName)) === ERR_NO_BODYPART) {
+        return creep.heal(creep);
+      }
+    } else if (creep.room.name === creep.memory.retreatRoomName) {
+      healTarget = creep.room.find(FIND_MY_CREEPS, {
+        filter: function(s) {
+          return s.hits < s.hitsMax;
+        }
+      });
+      if (healTarget) {
+        if (creep.heal(healTarget) === ERR_NOT_IN_RANGE) {
+          return costEfficientMove(creep, healTarget);
+        }
+      }
+    }
+  }
+};
+
 
 /*
 asd
@@ -795,5 +911,7 @@ module.exports = {
   builder: builder,
   claimer: claimer,
   upgrader: upgrader,
-  fighter: fighter
+  fighter: fighter,
+  warrior: warrior,
+  healer: healer
 };

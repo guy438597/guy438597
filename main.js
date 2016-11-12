@@ -17,7 +17,7 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 runRoles = require("./creeproles");
 
 module.exports.loop = function() {
-  var attackTarget, basicEconomyRunning, c, closestContainer, closestStorage, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len2, len3, len4, len5, len6, len7, len8, len9, loc, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, roleCnt, room, roomName, site, source, sourceID, sourceRoomName, spawnHighPriorityDefense, spawnLowPriorityAttack, spawning, t, target, tempDistance, totalEnergyTransportersRequired, tower, towers, u, username, v, w, x, y, z;
+  var attackTarget, basicEconomyRunning, c, closestContainer, closestStorage, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len2, len3, len4, len5, len6, len7, len8, len9, loc, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, roleCnt, room, roomName, site, source, sourceID, sourceRoomName, spawnHighPriorityDefense, spawnLowPriorityWarrior, spawning, t, target, tempDistance, totalEnergyTransportersRequired, tower, towers, u, username, v, w, x, y, z;
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
@@ -28,7 +28,7 @@ module.exports.loop = function() {
   energyTransporterConstant = 15;
   minimumNumberOfUpgraders = 7;
   spawnHighPriorityDefense = false;
-  spawnLowPriorityAttack = false;
+  spawnLowPriorityWarrior = false;
   if (!Memory.structures) {
     Memory.structures = {};
   }
@@ -464,7 +464,7 @@ module.exports.loop = function() {
             closestContainer = findEnergy(source, -1, void 0, STRUCTURE_CONTAINER, "transfer", Memory.energy.miningContainers);
           }
           target = chooseClosest(source, [closestStorage, closestContainer]);
-          tempDistance = getDistance(source, target);
+          tempDistance = target ? getDistance(source, target) : 0;
           totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
           if (Memory.energy.energySourceTransporters[i].length < totalEnergyTransportersRequired) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID, sourceRoomName);
@@ -524,7 +524,7 @@ module.exports.loop = function() {
       if (name) {
         console.log(roleCnt.upgrader + 1, "/", minimumNumberOfUpgraders, "Spawning new upgrader!", name);
       }
-    } else if (energy >= 200 && spawnLowPriorityAttack) {
+    } else if (energy >= 200 && spawnLowPriorityWarrior) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {
         console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
@@ -536,13 +536,13 @@ module.exports.loop = function() {
   }
   if (modulo(Game.time, 300) === 0) {
     results = [];
-    for (i = z = 37; z <= 43; i = z += 2) {
+    for (i = z = 40; z >= 31; i = z += -2) {
       results.push((function() {
         var aa, results1;
         results1 = [];
-        for (j = aa = 40; aa >= 31; j = aa += -2) {
-          Memory.structures.scheduledBuildings.push([j, i, STRUCTURE_EXTENSION]);
-          results1.push(Memory.structures.scheduledBuildings.push([j - 1, i + 1, STRUCTURE_EXTENSION]));
+        for (j = aa = 37; aa <= 43; j = aa += 2) {
+          Memory.structures.scheduledBuildings.push([i, j, STRUCTURE_EXTENSION]);
+          results1.push(Memory.structures.scheduledBuildings.push([i - 1, j + 1, STRUCTURE_EXTENSION]));
         }
         return results1;
       })());
