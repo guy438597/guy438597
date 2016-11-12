@@ -2,45 +2,50 @@ var chooseClosest, findEnergy, getDistance, getDistanceInTicks,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 chooseClosest = function(creep, targets) {
-
-  /*
-  if targets.length is 0
-      undefined
-  else if targets.length is 1
-      target = targets[0]
-  else
-      target = targets[0]
-      distance = getDistance(creep, target)
-      for t,i in targets
-          tempDistance = getDistance(creep, t)
-          if t
-  if !target
-      target = target
-   */
-  var sortedTargets, target;
-  if (targets.length <= 0) {
+  var distance, i, j, len, t, target, tempDistance;
+  if (!targets) {
     void 0;
   }
-  if (targets) {
-    if (targets.length === 0) {
-      void 0;
-    } else if (targets.length === 1) {
-      targets[0];
+  if (targets.length === 0) {
+    void 0;
+  } else if (targets.length === 1) {
+    target = targets[0];
+  } else {
+    target = targets[0];
+    distance = getDistance(creep, target);
+    for (i = j = 0, len = targets.length; j < len; i = ++j) {
+      t = targets[i];
+      if (t) {
+        tempDistance = getDistance(creep, t);
+        if (tempDistance < distance) {
+          distance = tempDistance;
+          target = t;
+        }
+      }
     }
   }
-  targets = targets.filter(function(s) {
-    return s !== void 0;
-  });
-  sortedTargets = _.sortBy(targets, function(s) {
-    return getDistance(creep, s);
-  });
-  console.log("choose closest", creep, creep.pos, sortedTargets);
-  if (sortedTargets.length > 0) {
-    target = sortedTargets[0];
-    if (target) {
-      return target;
-    }
+  if (!target) {
+    void 0;
   }
+  return target;
+
+  /*
+  if targets.length <= 0
+      undefined
+  if targets
+      if targets.length is 0
+          undefined
+      else if targets.length is 1
+          targets[0]
+  targets = targets.filter( (s) -> s isnt undefined)
+  sortedTargets = _.sortBy(targets, (s) -> getDistance(creep, s))
+  console.log "choose closest", creep, creep.pos, sortedTargets#, creep.memory.role
+  if sortedTargets.length > 0
+      target = sortedTargets[0]
+      if target
+           * return
+          target
+   */
 };
 
 getDistance = function(creep, target) {
