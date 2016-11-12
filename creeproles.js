@@ -137,6 +137,8 @@ goBuild = function(creep, target) {
         if (creep.repair(target) === ERR_NOT_IN_RANGE) {
           creep.say("RPR " + target.pos.x + "," + target.pos.y);
           return costEfficientMove(creep, target);
+        } else if (creep.carry.energy === 0) {
+          return creep.memory.target = void 0;
         }
       } else {
         return creep.memory.target = void 0;
@@ -155,6 +157,8 @@ goRepair = function(creep, target) {
         if (creep.build(target) === ERR_NOT_IN_RANGE) {
           creep.say("BLD " + target.pos.x + "," + target.pos.y);
           return costEfficientMove(creep, target);
+        } else if (creep.carry.energy === 0) {
+          return creep.memory.target = void 0;
         }
       } else {
         return creep.memory.target = void 0;
@@ -264,6 +268,9 @@ moveOutOfTheWay = function(creep) {
 };
 
 goMine = function(creep, target) {
+  if (creep.carry.energy === 0) {
+    creep.memory.target = void 0;
+  }
   if (target) {
     creep.say("MINING");
     console.log(creep.harvest(target));
