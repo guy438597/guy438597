@@ -307,6 +307,13 @@ sourceMiner = function(creep) {
   if (!creep.memory.state) {
     creep.memory.state = "mining";
   }
+  if (creep.memory.state === "mining" && creep.carry.energy === creep.carryCapacity) {
+    creep.memory.state = "puttingEnergyInContainer";
+    creep.memory.target = void 0;
+  } else if (creep.memory.state === "puttingEnergyInContainer" && creep.carry.energy === 0) {
+    creep.memory.state = "mining";
+    creep.memory.target = void 0;
+  }
   if (!creep.memory.target && creep.memory.state === "mining") {
     creep.memory.target = creep.memory.energySourceID;
   }
@@ -327,11 +334,7 @@ sourceMiner = function(creep) {
       }
     }
     if (target) {
-      goMine(creep, target);
-      if (creep.carryCapacity === creep.carry.energy) {
-        creep.memory.state = "puttingEnergyInContainer";
-        return creep.memory.target = void 0;
-      }
+      return goMine(creep, target);
     }
   } else if (creep.memory.state === "puttingEnergyInContainer") {
     if (!target) {
@@ -348,8 +351,7 @@ sourceMiner = function(creep) {
         return creep.memory.state = "lookingForNearbyEnergy";
       } else {
         creep.say("CNTR FULL");
-        creep.drop(RESOURCE_ENERGY);
-        return creep.memory.state = "mining";
+        return creep.drop(RESOURCE_ENERGY);
       }
     } else {
       if (!target) {
@@ -360,16 +362,16 @@ sourceMiner = function(creep) {
         return creep.say("BLD CNTR");
       } else {
         creep.say("NO CNTR");
-        creep.drop(RESOURCE_ENERGY);
-        return creep.memory.state = "mining";
+        return creep.drop(RESOURCE_ENERGY);
       }
     }
   } else if (creep.memory.state === "lookingForNearbyEnergy") {
-    if (!target) {
-      findNearbyDroppedEnergy(creep, distance);
+    if (findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1) || findConstructionSite(creep, 1)) {
+      findNearbyDroppedEnergy(creep, 1);
     }
     if (target) {
-      return goPickUpEnergy(creep, target);
+      goPickUpEnergy(creep, target);
+      return creep.memory.state = "puttingEnergyInContainer";
     } else {
       return creep.memory.state = "mining";
     }
