@@ -34,7 +34,7 @@ findConstructionSite = function(creep, distance) {
       }
       return results;
     })());
-    if (target.getDistance(creep, target) <= distance) {
+    if (getDistance(creep, target) <= distance) {
       return target;
     } else {
       return void 0;
@@ -58,7 +58,7 @@ findRepairSite = function(creep, distance) {
       }
       return results;
     })());
-    if (target.getDistance(creep, target) <= distance) {
+    if (getDistance(creep, target) <= distance) {
       return target;
     } else {
       return void 0;
