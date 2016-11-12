@@ -124,11 +124,9 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       }
     } else {
       target = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, {
-        filter: (function(_this) {
-          return function(s) {
-            return s.amount >= minEnergyInObject && s.pos.getRangeTo(creep) <= maxRange;
-          };
-        })(this)
+        filter: function(s) {
+          return s.amount >= minEnergyInObject && s.pos.getRangeTo(creep) <= maxRange;
+        }
       });
     }
     if (target) {
@@ -137,12 +135,10 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   } else if (withdrawOrTransfer === "withdraw") {
     targets = [];
     if (distanceFromEdge <= 10) {
-      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
-        return function(s) {
-          var ref;
-          return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref = s.id, indexOf.call(excludeListIDs, ref) < 0) && s.pos.getRangeTo(creep) <= maxRange;
-        };
-      })(this));
+      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
+        var ref;
+        return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref = s.id, indexOf.call(excludeListIDs, ref) < 0) && s.pos.getRangeTo(creep) <= maxRange;
+      });
       if (targets.length > 0) {
         target = chooseClosest(targets);
       }
@@ -167,12 +163,10 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   } else if (withdrawOrTransfer === "transfer") {
     targets = [];
     if (distanceFromEdge <= 10) {
-      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
-        return function(s) {
-          var ref1;
-          return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && s.pos.getRangeTo(creep) <= maxRange;
-        };
-      })(this));
+      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
+        var ref1;
+        return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && s.pos.getRangeTo(creep) <= maxRange;
+      });
       if (targets.length > 0) {
         target = chooseClosest(creep, targets);
       }
