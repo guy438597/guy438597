@@ -62,7 +62,7 @@ module.exports = (function() {
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
     name = ref1[i];
     Memory.energy.energySourceMiners[i] = Memory.energy.energySourceMiners[i].filter(function(name) {
-      return Game.creeps[name];
+      return Game.creeps[name] === void 0;
     });
   }
 
@@ -574,7 +574,7 @@ module.exports = (function() {
     } else if (energy >= 300 && roleCnt.builder < minimumNumberOfBuilders) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'builder');
       if (name) {
-        console.log(roleCnt.upgrader + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
+        console.log(roleCnt.builder + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
       }
     } else if (energy >= 200 && roleCnt.upgrader < minimumNumberOfUpgraders) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'upgrader');
