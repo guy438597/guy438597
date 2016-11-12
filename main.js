@@ -563,7 +563,7 @@ module.exports = (function() {
       if (name) {
         console.log(roleCnt.upgrader + 1, "/", minimumNumberOfUpgraders, "Spawning new upgrader!", name);
       }
-    } else if (energy >= 200 && makeAttackUnitsLowPriority) {
+    } else if (energy >= 200 && spawnLowPriorityAttack) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {
         console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
