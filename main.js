@@ -208,9 +208,11 @@ module.exports = (function() {
     ref7 = Game.rooms;
     for (name in ref7) {
       room = ref7[name];
-      newrepairTargets = room.find(FIND_STRUCTURES, filter(function(s) {
-        return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * repairFactor;
-      }), newbuildingSites = room.find(FIND_MY_CONSTRUCTION_SITES));
+      newrepairTargets = room.find(FIND_STRUCTURES, {
+        filter: function(s) {
+          return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * repairFactor;
+        }
+      }, newbuildingSites = room.find(FIND_MY_CONSTRUCTION_SITES));
       for (r = 0, len7 = newrepairTargets.length; r < len7; r++) {
         i = newrepairTargets[r];
         Memory.structures.repairTargets.concat((function() {
