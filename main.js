@@ -540,7 +540,7 @@ module.exports = (function() {
             }
           }
         } else {
-          console.log("buggerino5");
+          console.log("buggerino56");
           name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
           if (name) {
             Memory.claims.claimClaimers[i].push(name);
