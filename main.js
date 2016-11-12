@@ -1,4 +1,4 @@
-var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks;
+var builder, calculations, chooseClosest, claimer, costEfficientMove, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, runRoles, sourceMiner, upgrader;
 
 console.log("hii");
 
@@ -13,6 +13,60 @@ findEnergy = calculations.findEnergy;
 getDistance = calculations.getDistance;
 
 getDistanceInTicks = calculations.getDistanceInTicks;
+
+runRoles = require("./creeproles");
+
+loadDefaultValues = loadDefaultValues.runRoles;
+
+findConstructionSite = findConstructionSite.runRoles;
+
+findRepairSite = findRepairSite.runRoles;
+
+findNearbyDroppedEnergy = findNearbyDroppedEnergy.runRoles;
+
+findStructureToWithdraw = findStructureToWithdraw.runRoles;
+
+findStructureToDeposit = findStructureToDeposit.runRoles;
+
+findMiningSite = findMiningSite.runRoles;
+
+goBuild = goBuild.runRoles;
+
+goRepair = goRepair.runRoles;
+
+goTransferEnergy = goTransferEnergy.runRoles;
+
+goWithdrawEnergy = goWithdrawEnergy.runRoles;
+
+goPickUpEnergy = goPickUpEnergy.runRoles;
+
+retreat = retreat.runRoles;
+
+costEfficientMove = costEfficientMove.runRoles;
+
+moveOutOfTheWay = moveOutOfTheWay.runRoles;
+
+goMine = goMine.runRoles;
+
+dying = dying.runRoles;
+
+sourceMiner = sourceMiner.runRoles;
+
+energyRefiller = energyRefiller.runRoles;
+
+energyTransporter = energyTransporter.runRoles;
+
+repairer = repairer.runRoles;
+
+builder = builder.runRoles;
+
+claimer = claimer.runRoles;
+
+upgrader = upgrader.runRoles;
+
+fighter = fighter.runRoles;
+
+harvester = harvester.runRoles;
 
 module.exports.loop = (function() {
   var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
