@@ -67,6 +67,8 @@ module.exports.loop = (function() {
     });
   }
 
+  asd();
+
   if (!Memory.structures.buildingSites) {
     Memory.structures.buildingSites = [];
   }
