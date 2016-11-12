@@ -50,7 +50,7 @@ module.exports.loop = function() {
   while (Memory.energy.energySourceMiners.length < Memory.energy.energySourceMiners.length) {
     Memory.energy.energySourceMiners.push([]);
   }
-  console.log("a", Memory.energy.energySourceMiners);
+  console.log(Memory.energy.energySourceMiners.length, Memory.energy.energySourceMiners.length);
   if (!Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
