@@ -145,11 +145,12 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
         room = ref[name];
         targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES).filter(function(s) {
           var ref1;
-          return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0);
+          return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && getdistance(creep, s) <= maxRange;
         }));
       }
     }
     if (targets.length > 0) {
+      console.log("withdrawtargets found and given to the chooseClosest function:", targets);
       target = chooseClosest(creep, targets);
     }
     if (target) {
@@ -174,7 +175,7 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
         room = ref1[name];
         targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES).filter(function(s) {
           var ref2;
-          return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref2 = s.id, indexOf.call(excludeListIDs, ref2) < 0);
+          return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref2 = s.id, indexOf.call(excludeListIDs, ref2) < 0) && getdistance(creep, s) <= maxRange;
         }));
       }
     }
