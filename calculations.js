@@ -28,6 +28,9 @@ chooseClosest = function(creep, targets) {
       targets[0];
     }
   }
+  targets = targets.filter(function(s) {
+    return s !== void 0;
+  });
   sortedTargets = _.sortBy(targets, function(s) {
     return getDistance(creep, s);
   });

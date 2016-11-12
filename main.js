@@ -210,6 +210,7 @@ module.exports.loop = function() {
         }
         return results;
       })());
+      console.log(Memory.structures.buildingSites);
     }
   } else {
     if (Memory.structures.repairTargets) {
