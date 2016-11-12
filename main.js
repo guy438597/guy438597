@@ -1,4 +1,5 @@
-var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles;
+var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles,
+  modulo = function(a, b) { return (+a % (b = +b) + b) % b; };
 
 require('./spawnV2')();
 
@@ -180,7 +181,7 @@ module.exports.loop = function() {
       }
     }
   }
-  if ((Game.time % 2) === 0) {
+  if (modulo(Game.time, 2) === 0) {
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
     ref6 = Game.rooms;
