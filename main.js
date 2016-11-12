@@ -531,7 +531,7 @@ module.exports = (function() {
               });
               if (Memory.claims.claimClaimers[i].length < countWalkableTiles.length) {
                 console.log("buggerino6");
-                name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', loc[0], loc[1], Game.spawns.Spawn1.room.name);
+                name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', location[0], location[1], Game.spawns.Spawn1.room.name);
                 if (name) {
                   Memory.claims.claimClaimers[i].push(name);
                   console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
