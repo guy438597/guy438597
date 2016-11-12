@@ -47,10 +47,10 @@ module.exports.loop = function() {
   if (Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
-  while (Memory.energy.energySourceMiners.length < Memory.energy.energySourceMiners.length) {
+  while (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceMiners.push([]);
   }
-  console.log(Memory.energy.energySourceMiners.length, Memory.energy.energySourceMiners.length);
+  console.log(Memory.energy.energySourceMiners.length, Memory.energy.energySources.length);
   if (!Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
