@@ -415,6 +415,7 @@ module.exports.loop = function() {
         console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
       }
     } else if (energy >= 200 && moreMinersRequired && roleCnt.energyRefiller >= minimumNumberOfEnergyRefillers) {
+      console.log("hi");
       ref10 = Memory.energy.energySources;
       for (i = u = 0, len8 = ref10.length; u < len8; i = ++u) {
         source = ref10[i];
