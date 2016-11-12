@@ -308,6 +308,9 @@ creeproles = (function() {
   creeproles.harvester = function(creep) {
     var target;
     this.loadDefaultValues(creep);
+    if (!creep.memory.state) {
+      creep.memory.state = "mining";
+    }
     creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : void 0;
     creep.memory.state = creep.carry.energy === 0 ? "mining" : void 0;
     if (creep.memory.target) {
