@@ -14,7 +14,7 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 creeproles = (function() {
   function creeproles() {}
 
-  creeproles.prototype.loadDefaultValues = function(creep) {
+  creeproles.loadDefaultValues = function(creep) {
     if (!creep.memory.retreatRoomName) {
       return creep.memory.retreatRoomName = Game.spawns.Spawn1.room.name;
     }

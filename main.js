@@ -381,7 +381,7 @@ module.exports.loop = (function() {
   ref8 = Game.creeps;
   for (name in ref8) {
     creep = ref8[name];
-    console.log("testooo435", creep.role);
+    console.log("testooo435", creep.memory.role);
     if (creep.spawning) {
       continue;
     }

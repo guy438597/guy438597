@@ -152,7 +152,7 @@ class module.exports.loop
     # run all roles
     combinedTicksEnergyRefiller = 0 # if it goes below a certain number, i need a new energyRefiller
     for name, creep of Game.creeps
-        console.log "testooo435", creep.role
+        console.log "testooo435", creep.memory.role
         if creep.spawning
             continue
         #console.log "logging run roles loop",name, creep, creep.pos, creep.memory.role
