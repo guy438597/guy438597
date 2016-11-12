@@ -95,6 +95,7 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       return target;
     }
   } else if (withdrawOrTransfer === "withdraw") {
+    targets = [];
     if (distanceFromEdge <= 10) {
       target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
         return function(s) {
@@ -120,6 +121,7 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       return target;
     }
   } else if (withdrawOrTransfer === "transfer") {
+    targets = [];
     if (distanceFromEdge <= 10) {
       target = chooseClosest(creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter((function(_this) {
         return function(s) {
