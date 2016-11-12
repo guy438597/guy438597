@@ -449,9 +449,6 @@ energyTransporter = function(creep) {
   if (!target) {
     creep.memory.target = void 0;
   }
-  if (!target) {
-    creep.memory.target = void 0;
-  }
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
     return retreat(creep);
   } else if (creep.memory.state === "pickupEnergy") {
@@ -462,14 +459,14 @@ energyTransporter = function(creep) {
       if (target.id === creep.memory.energySourceID) {
         if (creep.pos.getRangeTo(target) <= 4) {
           target = findNearbyDroppedEnergy(creep, 5);
-          if (!target) {
+          if (!target || target.ticksToRegeneration) {
             target = findStructureToWithdraw(creep, STRUCTURE_CONTAINER, 5, void 0, Memory.energy.miningContainers);
           }
           if (target) {
             return goWithdrawEnergy(creep, target);
           }
         } else {
-          return goWithdrawEnergy(creep, target);
+          return costEfficientMove(creep, target);
         }
       } else {
         if (target) {
