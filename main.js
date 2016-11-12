@@ -22,7 +22,7 @@ module.exports = (function() {
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
-    if (!Game.creeps[name]) {
+    if (Game.creeps[name] === void 0) {
       delete Memory.creeps[name];
     }
   }
@@ -60,7 +60,7 @@ module.exports = (function() {
   ref1 = Memory.energy.energySourceMiners;
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
     name = ref1[i];
-    Memory.energy.energySourceMiners[i] = Memory.energy.energySourceMiners[i].filter(function(s) {
+    Memory.energy.energySourceMiners[i] = Memory.energy.energySourceMiners[i].filter(function(name) {
       return Game.creeps[name];
     });
   }
@@ -124,7 +124,7 @@ module.exports = (function() {
   ref5 = Memory.claims.claimClaimers;
   for (i = o = 0, len4 = ref5.length; o < len4; i = ++o) {
     name = ref5[i];
-    Memory.claims.claimClaimers = Memory.claims.claimClaimers.filter(function(s) {
+    Memory.claims.claimClaimers = Memory.claims.claimClaimers.filter(function(name) {
       return Game.creeps[name];
     });
   }
@@ -177,6 +177,9 @@ module.exports = (function() {
         return s.getActiveBodyparts(HEAL) > 0;
       }
     });
+    if (!attackTarget) {
+      attackTarget = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+    }
     if (attackTarget) {
       tower.attack(attackTarget);
     } else {
@@ -396,23 +399,35 @@ module.exports = (function() {
     runRoles[creep.memory.role](creep);
   }
 
+  if (!Memory.energy.energySourceTransporters) {
+    Memory.energy.energySourceTransporters = [];
+  }
+
+  ref9 = Memory.energy.energySourceTransporters[i];
+  for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
+    name = ref9[i];
+    Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(name) {
+      return Game.creeps[name];
+    });
+  }
+
   if (!Memory.energy.totalEnergyTransportersRequired) {
     Memory.energy.totalEnergyTransportersRequired = 0;
   }
 
   if (!(Game.time % 30)) {
     totalEnergyTransportersRequired = 0;
-    ref9 = Memory.energy.energySources;
-    for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
-      source = ref9[i];
+    ref10 = Memory.energy.energySources;
+    for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
+      source = ref10[i];
       source = Game.getObjectById(Memory.energy.energySources[i][0]);
       if (source) {
         closestSpawn = chooseClosest(source, (function() {
-          var ref10, results;
-          ref10 = Game.spawns;
+          var ref11, results;
+          ref11 = Game.spawns;
           results = [];
-          for (spawnName in ref10) {
-            spawn = ref10[spawnName];
+          for (spawnName in ref11) {
+            spawn = ref11[spawnName];
             results.push(spawn);
           }
           return results;
@@ -422,17 +437,6 @@ module.exports = (function() {
       }
     }
     Memory.energy.totalTransportersRequired = totalEnergyTransportersRequired;
-  } else {
-    if (!Memory.energy.energySourceTransporters) {
-      Memory.energy.energySourceTransporters = [];
-    }
-    ref10 = Memory.energy.energySourceTransporters[i];
-    for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
-      name = ref10[i];
-      Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(s) {
-        return Game.creeps[name];
-      });
-    }
   }
 
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
