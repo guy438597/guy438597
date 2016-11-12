@@ -1,4 +1,4 @@
-var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles,
+var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles, yolo,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 require('./spawnV2')();
@@ -15,10 +15,10 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 
 runRoles = require("./creeproles");
 
-module.exports = (function() {
+yolo = (function() {
   var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
 
-  function exports() {}
+  function yolo() {}
 
   ref = Memory.creeps;
   for (name in ref) {
@@ -593,9 +593,11 @@ module.exports = (function() {
     }
   }
 
-  return exports;
+  return yolo;
 
 })();
+
+module.exports.loop = yolo;
 
 
 /*
