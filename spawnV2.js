@@ -78,9 +78,7 @@ module.exports = function() {
       });
     } else if (roleName === "energyRefiller" && energy >= 300) {
       numberOfParts = Math.floor((energy - 150) / 150);
-      console.log(numberOfParts);
       numberOfParts = Math.min(2, numberOfParts);
-      console.log(numberOfParts);
       body.push(MOVE);
       body.push(CARRY);
       body.push(CARRY);
@@ -91,7 +89,6 @@ module.exports = function() {
           body.push(CARRY);
         }
       }
-      console.log(body, energy, numberOfParts);
       return this.createCreep(body, void 0, {
         role: roleName
       });
@@ -108,7 +105,6 @@ module.exports = function() {
           body.push(CARRY);
         }
       }
-      console.log(body, numberOfParts, energy);
       return this.createCreep(body, void 0, {
         role: roleName,
         energySourceID: arg1,

@@ -367,7 +367,6 @@ sourceMiner = function(creep) {
   } else if (creep.memory.state === "puttingEnergyInContainer") {
     if (!target) {
       target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
-      console.log("miner deposit target", target);
     }
     if (target) {
       if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
