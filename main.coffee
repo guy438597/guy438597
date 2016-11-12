@@ -1,4 +1,5 @@
 # out: default/main.js
+console.log "hi"
 
 require('./spawnV2')();
 calculations = require("./calculations")
@@ -13,7 +14,7 @@ class module.exports.loop
     console.log Game.time #test if game server is active
     runRoles = new creeproles()
     #TODO still have to replace Game.spawns.Spawn1 with a loop that loops over all spawns
-    #do this at the start to not loop over old creeps
+    #do this at the start to not loop over old creepsaa
     for name, creep of Memory.creeps
         if not creep
             delete Memory.creeps[name]

@@ -1,5 +1,7 @@
 var calculations, chooseClosest, creeproles, findEnergy, getDistance, getDistanceInTicks;
 
+console.log("hi");
+
 require('./spawnV2')();
 
 calculations = require("./calculations");
