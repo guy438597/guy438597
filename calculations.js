@@ -3,6 +3,7 @@ var chooseClosest, findEnergy, getDistance, getDistanceInTicks,
 
 chooseClosest = function(creep, targets) {
   var distance, i, j, len, t, target, tempDistance;
+  console.log("choose closest", creep, creep.pos, targets);
   if (!targets) {
     void 0;
   }
@@ -17,7 +18,7 @@ chooseClosest = function(creep, targets) {
       t = targets[i];
       if (t) {
         tempDistance = getDistance(creep, t);
-        if (tempDistance < distance) {
+        if (tempDistance !== -1 && tempDistance < distance) {
           distance = tempDistance;
           target = t;
         }
