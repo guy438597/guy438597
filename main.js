@@ -19,8 +19,6 @@ module.exports = (function() {
 
   function exports() {}
 
-  console.log(Game.time);
-
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
