@@ -646,7 +646,7 @@ harvester = (creep) ->
  */
 
 harvester = function(creep) {
-  var filter, target;
+  var target;
   loadDefaultValues(creep);
   if (!creep.memory.state) {
     creep.memory.state = "mining";
@@ -677,9 +677,7 @@ harvester = function(creep) {
     }
   } else if (creep.memory.state === "deliverEnergy") {
     if (!target) {
-      target = creep.room.findClosestByPath(FIND_MY_STRUCTURES, filter = function(s) {
-        return s.structureType === STRUCTURE_SPAWN;
-      });
+      target = findStructureToDeposit(creep, STRUCTURE_SPAWN);
     }
     if (target) {
       return goTransferEnergy(creep, target);
