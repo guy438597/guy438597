@@ -401,7 +401,6 @@ module.exports = (function() {
     ref9 = Memory.energy.energySources;
     for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
       source = ref9[i];
-      console.log("buggerino");
       source = Game.getObjectById(Memory.energy.energySources[i][0]);
       if (source) {
         closestSpawn = chooseClosest(source, (function() {
