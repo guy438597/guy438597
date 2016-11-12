@@ -129,7 +129,6 @@ findStructureToDeposit = function(creep, structureType, distance, minEnergyInObj
   if (!structureType) {
     structureType = STRUCTURE_CONTAINER;
   }
-  console.log("findStructureToDeposit", structureType);
   if (structureType === STRUCTURE_TOWER || structureType === STRUCTURE_SPAWN || structureType === STRUCTURE_EXTENSION) {
     target = chooseClosest(creep, creep.room.find(FIND_STRUCTURES, {
       filter: function(s) {
@@ -255,7 +254,6 @@ goPickUpEnergy = function(creep, target) {
       creep.memory.target = target.id;
       return 1;
     } else {
-      console.log(creep, creep.pos, target);
       creep.say("PICKUP E");
       creep.memory.target = void 0;
       return 1;
@@ -300,7 +298,6 @@ moveOutOfTheWay = function(creep) {
 goMine = function(creep, target) {
   if (target) {
     creep.say("MINING");
-    console.log(creep.harvest(target));
     if (creep.harvest(target) === ERR_NOT_IN_RANGE) {
       return costEfficientMove(creep, target);
     }
