@@ -14,7 +14,6 @@ chooseClosest = function(creep, targets) {
   sortedTargets = _.sortBy(targets, function(s) {
     return getDistance(creep, s);
   });
-  console.log("choose closest", creep, creep.pos, sortedTargets);
   if (sortedTargets.length > 0) {
     target = sortedTargets[0];
     if (target) {
@@ -87,7 +86,6 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   }
   distanceFromEdge = Math.min(creep.pos.x, creep.pos.y, 49 - creep.pos.x, 49 - creep.pos.y);
   distanceFromEdge = Math.min(distanceFromEdge, maxRange);
-  console.log("findenergy", creep, minEnergyInObject, maxRange, type, withdrawOrTransfer, excludeListIDs.length);
   if (type === "pickupEnergy") {
     if (distanceFromEdge <= 10) {
       target = chooseClosest(creep.room.lookForAtArea(LOOK_RESOURCES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {

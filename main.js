@@ -53,7 +53,7 @@ module.exports = (function() {
 
   Memory.claims.claimLocations = [["E61S49", "r"]];
 
-  if (!Memory.energy.energySourceMiners) {
+  if (!Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
 
@@ -65,11 +65,11 @@ module.exports = (function() {
     });
   }
 
-  if (!Memory.structures.buildingSites) {
+  if (Memory.structures.buildingSites === void 0) {
     Memory.structures.buildingSites = [];
   }
 
-  if (!Memory.structures.repairTargets) {
+  if (Memory.structures.repairTargets === void 0) {
     Memory.structures.repairTargets = [];
   }
 
