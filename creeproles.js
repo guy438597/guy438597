@@ -591,6 +591,9 @@ builder = function(creep) {
       target = findNearbyDroppedEnergy(creep, 5);
     }
     if (!target) {
+      target = findStructureToWithdraw(creep, void 0, void 0, void 0, Memory.energy.miningContainers);
+    }
+    if (!target) {
       target = findStructureToWithdraw(creep);
     }
     if (target && !target.amount) {
