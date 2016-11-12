@@ -7,11 +7,11 @@ chooseClosest = calculations.chooseClosest
 findEnergy = calculations.findEnergy
 getDistance = calculations.getDistance
 getDistanceInTicks = calculations.getDistanceInTicks
-creeproles = require("./creeproles")
+runRoles = require("./creeproles")
 
 #module.exports.loop = class main
 class module.exports.loop
-    #console.log Game.time #test if game server is active
+    console.log Game.time #test if game server is active
     #runRoles = new creeproles()
     #TODO still have to replace Game.spawns.Spawn1 with a loop that loops over all spawns
     #do this at the start to not loop over old creepsaaaa
@@ -152,6 +152,7 @@ class module.exports.loop
     # run all roles
     combinedTicksEnergyRefiller = 0 # if it goes below a certain number, i need a new energyRefiller
     for name, creep of Game.creeps
+        console.log "testooo435", creep.role
         if creep.spawning
             continue
         #console.log "logging run roles loop",name, creep, creep.pos, creep.memory.role
