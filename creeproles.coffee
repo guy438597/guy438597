@@ -7,7 +7,7 @@ getDistance = calculations.getDistance
 getDistanceInTicks = calculations.getDistanceInTicks
 
 class creeproles
-    constructor: ()->
+    @constructor: ()->
 
     @loadDefaultValues: (creep)->
         creep.memory.retreatRoomName = Game.spawns.Spawn1.room.name if !creep.memory.retreatRoomName
