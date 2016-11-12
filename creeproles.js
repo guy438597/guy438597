@@ -396,7 +396,7 @@ creeproles = (function() {
     }
     creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "deliverEnergy";
     if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
-      return retreat(creep);
+      return this.retreat(creep);
     } else if (creep.memory.state === "pickupEnergy") {
       if (!target) {
         target = this.findNearbyDroppedEnergy(creep, 5);
@@ -452,7 +452,7 @@ creeproles = (function() {
       target = Game.getObjectById(creep.memory.target);
     }
     if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
-      return retreat(creep);
+      return this.retreat(creep);
     } else if (creep.memory.state === "pickupEnergy") {
       if (target) {
         if (creep.memory.energySourceRoomName !== creep.room.name) {
@@ -501,7 +501,7 @@ creeproles = (function() {
     }
     creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "repairing";
     if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
-      return retreat(creep);
+      return this.retreat(creep);
     } else if (creep.memory.state === "pickupEnergy") {
       if (!target) {
         target = this.findNearbyDroppedEnergy(creep, 5);
