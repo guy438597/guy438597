@@ -320,8 +320,11 @@ creeproles = (function() {
       return this.retreat(creep);
     } else if (creep.memory.state === "mining") {
       if (!target) {
-        console.log("CREEP SHOULD NEVER HAVE NO TARGET, ERROR IN MINER SCRIPT");
-        this.findMiningSite(creep);
+        if (creep.room.name !== creep.memory.energySourceRoomName) {
+          costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
+        } else {
+          console.log("minerscript ???????? wat");
+        }
       }
       if (target) {
         this.goMine(creep, target);
