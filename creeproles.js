@@ -29,6 +29,7 @@ findConstructionSite = function(creep, distance) {
       site = ref[i];
       sites = Game.getObjectById(site);
     }
+    console.log(sites, Memory.structures.buildingSites);
     if (sites) {
       target = chooseClosest(creep, sites);
     }
