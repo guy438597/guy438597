@@ -445,6 +445,8 @@ module.exports = (function() {
     Memory.energy.totalTransportersRequired = totalEnergyTransportersRequired;
   }
 
+  console.log(moreMinersRequired, roleCnt.energyRefiller);
+
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
 
   if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
@@ -453,7 +455,7 @@ module.exports = (function() {
       if (name) {
         console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
       }
-    } else if (Math.max(Math.min(650, energy), 200) >= 200 && moreMinersRequired && roleCnt.energyRefiller > 1) {
+    } else if (energy >= Math.min(650, energyMax) && moreMinersRequired && roleCnt.energyRefiller > 1) {
       if (Memory.energy.energySourceMiners) {
         ref11 = Memory.energy.energySources;
         for (i = w = 0, len11 = ref11.length; w < len11; i = ++w) {
