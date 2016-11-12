@@ -72,7 +72,11 @@ getDistance = function(creep, target) {
     console.log("called getDistance of same object", creep, creep.pos);
     0;
   }
-  distance = creep.room === target.room ? creep.pos.getRangeTo(target) : creep.room.findPath(creep.pos, target.pos).length;
+  if (creep && target) {
+    if (creep.room && target.room) {
+      distance = creep.room === target.room ? creep.pos.getRangeTo(target) : creep.room.findPath(creep.pos, target.pos).length;
+    }
+  }
   if (!distance) {
     -1;
   }
@@ -141,25 +145,25 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       return target;
     }
   } else if (withdrawOrTransfer === "withdraw") {
+
+    /*
+    targets = []
+    if distanceFromEdge <= 10
+        targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter( (s) -> s.structureType == type and s.store[RESOURCE_ENERGY] >= minEnergyInObject and s.id not in excludeListIDs and s.pos.getRangeTo(creep) <= maxRange)
+        if targets.length > 0
+            target = chooseClosest(targets)
+    else
+     */
     targets = [];
-    if (distanceFromEdge <= 10) {
-      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
-        var ref;
-        return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref = s.id, indexOf.call(excludeListIDs, ref) < 0) && s.pos.getRangeTo(creep) <= maxRange;
-      });
-      if (targets.length > 0) {
-        target = chooseClosest(targets);
-      }
-    } else {
-      targets = [];
-      ref = Game.rooms;
-      for (name in ref) {
-        room = ref[name];
-        targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES).filter(function(s) {
+    ref = Game.rooms;
+    for (name in ref) {
+      room = ref[name];
+      targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES, {
+        filter: function(s) {
           var ref1;
           return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && getDistance(creep, s) <= maxRange;
-        }));
-      }
+        }
+      }));
     }
     if (targets.length > 0) {
       target = chooseClosest(creep, targets);
@@ -168,25 +172,25 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       return target;
     }
   } else if (withdrawOrTransfer === "transfer") {
+
+    /*
+    targets = []
+    if distanceFromEdge <= 10
+        targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter( (s) -> s.structureType == type and s.storeCapacity - _.sum(s.store) >= minEnergyInObject and s.id not in excludeListIDs and s.pos.getRangeTo(creep) <= maxRange)
+        if targets.length > 0
+            target = chooseClosest(creep, targets)
+    else
+     */
     targets = [];
-    if (distanceFromEdge <= 10) {
-      targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
-        var ref1;
-        return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && s.pos.getRangeTo(creep) <= maxRange;
-      });
-      if (targets.length > 0) {
-        target = chooseClosest(creep, targets);
-      }
-    } else {
-      targets = [];
-      ref1 = Game.rooms;
-      for (name in ref1) {
-        room = ref1[name];
-        targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES).filter(function(s) {
+    ref1 = Game.rooms;
+    for (name in ref1) {
+      room = ref1[name];
+      targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES, {
+        filter: function(s) {
           var ref2;
           return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref2 = s.id, indexOf.call(excludeListIDs, ref2) < 0) && getDistance(creep, s) <= maxRange;
-        }));
-      }
+        }
+      }));
     }
     if (targets.length > 0) {
       target = chooseClosest(creep, targets);

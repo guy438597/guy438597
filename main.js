@@ -351,7 +351,6 @@ module.exports.loop = function() {
   };
   minimumNumberOfBuilders = Math.min(Math.floor((Memory.structures.buildingSites.length + 4) / 5), 3);
   minimumNumberOfRepairers = Math.min(Math.floor((Memory.structures.repairTargets.length + 9) / 10), 3);
-  console.log(Memory.structures.buildingSites.length, minimumNumberOfBuilders, roleCnt.builder);
   combinedTicksEnergyRefiller = 0;
   ref7 = Game.creeps;
   for (name in ref7) {
