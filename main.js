@@ -379,6 +379,9 @@ module.exports.loop = function() {
   if (Memory.energy.energySourceTransporters === void 0) {
     Memory.energy.energySourceTransporters = [];
   }
+  while (Memory.energy.energySourceTransporters.length < Memory.energy.energySource.length) {
+    Memory.energy.energySourceTransporters.push([]);
+  }
   ref9 = Memory.energy.energySourceTransporters[i];
   for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
     name = ref9[i];
