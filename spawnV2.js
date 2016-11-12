@@ -28,7 +28,7 @@ module.exports = function() {
     body = [];
     numberOfParts = 0;
     hitpoints = 0;
-    if (roleName === "harvester") {
+    if (roleName === "harvester" && energy >= 200) {
       return this.createCreep([WORK, MOVE, CARRY], void 0, {
         role: roleName
       });
