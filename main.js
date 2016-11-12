@@ -152,7 +152,7 @@ module.exports.loop = function() {
     }
     if (attackTarget) {
       username = attackTarget.owner.username;
-      Game.notify("User", username, "spotted in room", tower.room.name);
+      Game.notify("User", username, "spotted in rooom", tower.room.name);
       tower.attack(attackTarget);
     } else {
       healTarget = tower.pos.findClosestByRange(FIND_MY_CREEPS, {
