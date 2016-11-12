@@ -28,7 +28,7 @@ module.exports.loop = function() {
   minimumNumberOfUpgraders = 7;
   spawnHighPriorityDefense = false;
   spawnLowPriorityAttack = false;
-  if (Memory.structures === void 0) {
+  if (!Memory.structures) {
     Memory.structures = {};
   }
   Memory.structures.repairFactor = 0.75;
@@ -43,10 +43,10 @@ module.exports.loop = function() {
     Memory.claims = {};
   }
   Memory.claims.claimLocations = [["E61S49", "r"]];
-  if (Memory.energy.energySourceMiners) {
+  if (!Memory.energy.energySourceMiners) {
     Memory.energy.energySourceMiners = [];
   }
-  while (Memory.energy.energySourceMiners.length <= Memory.energy.energySources.length) {
+  while (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceMiners.push([]);
   }
   ref1 = Memory.energy.energySourceMiners;
@@ -56,10 +56,10 @@ module.exports.loop = function() {
       return Game.creeps[name];
     });
   }
-  if (Memory.structures.buildingSites === void 0) {
+  if (!Memory.structures.buildingSites) {
     Memory.structures.buildingSites = [];
   }
-  if (Memory.structures.repairTargets === void 0) {
+  if (!Memory.structures.repairTargets) {
     Memory.structures.repairTargets = [];
   }
   minimumNumberOfBuilders = Math.min(Math.floor((Memory.structures.buildingSites.length + 4) / 5), 3);
@@ -74,6 +74,12 @@ module.exports.loop = function() {
   console.log Memory.claims.claimClaimers.length
   console.log Memory.claims.claimLocations.length
    */
+  if (Game.getObjectById("385175e4e6a8b79b0e9861df")) {
+    console.log("yee");
+  }
+  if (Game.getObjectById("385175e4e6a8b79b0e9861d35f")) {
+    console.log("eeyy");
+  }
   Memory.energy.miningContainers = Memory.energy.miningContainers.filter(function(id) {
     return Game.getObjectById(id) !== null;
   });
