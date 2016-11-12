@@ -438,9 +438,10 @@ energyRefiller = function(creep) {
       target = findNearbyDroppedEnergy(creep, 30);
     }
     if (target) {
-      return goWithdrawEnergy(creep, target);
+      goWithdrawEnergy(creep, target);
     }
-  } else if (creep.memory.state === "deliverEnergy") {
+  }
+  if (creep.memory.state === "deliverEnergy") {
     if (!target) {
       target = findStructureToDeposit(creep, STRUCTURE_EXTENSION);
     }
@@ -451,11 +452,12 @@ energyRefiller = function(creep) {
       target = findStructureToDeposit(creep, STRUCTURE_TOWER);
     }
     if (target) {
-      return goTransferEnergy(creep, target);
+      goTransferEnergy(creep, target);
     } else {
-      return moveOutOfTheWay(creep);
+      moveOutOfTheWay(creep);
     }
-  } else if (creep.memory.state === "dying") {
+  }
+  if (creep.memory.state === "dying") {
     return dying(creep);
   }
 };
@@ -480,8 +482,9 @@ energyTransporter = function(creep) {
     creep.memory.target = void 0;
   }
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
-    return retreat(creep);
-  } else if (creep.memory.state === "pickupEnergy") {
+    retreat(creep);
+  }
+  if (creep.memory.state === "pickupEnergy") {
     if (target) {
       if (creep.memory.energySourceRoomName !== creep.room.name) {
         costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
@@ -493,29 +496,31 @@ energyTransporter = function(creep) {
             target = findStructureToWithdraw(creep, STRUCTURE_CONTAINER, 5, void 0, Memory.energy.miningContainers);
           }
           if (target) {
-            return goWithdrawEnergy(creep, target);
+            goWithdrawEnergy(creep, target);
           }
         } else {
-          return costEfficientMove(creep, target);
+          costEfficientMove(creep, target);
         }
       } else {
         if (target) {
-          return goWithdrawEnergy(creep, target);
+          goWithdrawEnergy(creep, target);
         }
       }
     } else {
-      return console.log(creep.name, creep.pos, creep.memory.target, creep.memory.energySourceID, "programm should never get here, in energyTransporter!");
+      console.log(creep.name, creep.pos, creep.memory.target, creep.memory.energySourceID, "programm should never get here, in energyTransporter!");
     }
-  } else if (creep.memory.state === "deliverEnergy") {
+  }
+  if (creep.memory.state === "deliverEnergy") {
     t1 = findStructureToDeposit(creep, STRUCTURE_CONTAINER);
     t2 = findStructureToDeposit(creep, STRUCTURE_STORAGE);
     target = chooseClosest(creep, [t1, t2]);
     if (target && creep.carry.energy) {
-      return goTransferEnergy(creep, target);
+      goTransferEnergy(creep, target);
     } else {
-      return moveOutOfTheWay(creep);
+      moveOutOfTheWay(creep);
     }
-  } else if (creep.memory.state === "dying") {
+  }
+  if (creep.memory.state === "dying") {
     return dying(creep);
   }
 };
@@ -531,8 +536,9 @@ repairer = function(creep) {
   }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "repairing";
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
-    return retreat(creep);
-  } else if (creep.memory.state === "pickupEnergy") {
+    retreat(creep);
+  }
+  if (creep.memory.state === "pickupEnergy") {
     if (!target) {
       target = findNearbyDroppedEnergy(creep, 5);
     }
@@ -540,9 +546,10 @@ repairer = function(creep) {
       target = findStructureToWithdraw(creep);
     }
     if (target && !target.amount) {
-      return goWithdrawEnergy(creep, target);
+      goWithdrawEnergy(creep, target);
     }
-  } else if (creep.memory.state === "repairing") {
+  }
+  if (creep.memory.state === "repairing") {
     if (target) {
       findRepairSite(creep);
     }
@@ -565,8 +572,9 @@ builder = function(creep) {
   }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "building";
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
-    return retreat(creep);
-  } else if (creep.memory.state === "pickupEnergy") {
+    retreat(creep);
+  }
+  if (creep.memory.state === "pickupEnergy") {
     if (!target) {
       target = findNearbyDroppedEnergy(creep, 5);
     }
@@ -574,11 +582,12 @@ builder = function(creep) {
       target = findStructureToWithdraw(creep);
     }
     if (target && !target.amount) {
-      return goWithdrawEnergy(creep, target);
+      goWithdrawEnergy(creep, target);
     } else {
-      return moveOutOfTheWay(creep);
+      moveOutOfTheWay(creep);
     }
-  } else if (creep.memory.state === "building") {
+  }
+  if (creep.memory.state === "building") {
     if (target) {
       findRepairSite(creep);
     }
@@ -643,8 +652,9 @@ upgrader = function(creep) {
   }
   creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "upgrading";
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
-    return retreat(creep);
-  } else if (creep.memory.state === "pickupEnergy") {
+    retreat(creep);
+  }
+  if (creep.memory.state === "pickupEnergy") {
     if (!target) {
       target = findNearbyDroppedEnergy(creep, 5);
     }
@@ -654,15 +664,17 @@ upgrader = function(creep) {
       target = chooseClosest(creep, [t1, t2]);
     }
     if (target && !target.amount) {
-      return goWithdrawEnergy(creep, target);
+      goWithdrawEnergy(creep, target);
     } else {
-      return moveOutOfTheWay(creep);
+      moveOutOfTheWay(creep);
     }
-  } else if (creep.memory.state === "upgrading") {
+  }
+  if (creep.memory.state === "upgrading") {
     if (creep.upgradeController(creep.room.controller) === ERR_NOT_IN_RANGE) {
-      return costEfficientMove(creep, creep.room.controller);
+      costEfficientMove(creep, creep.room.controller);
     }
-  } else if (creep.memory.state === "dying") {
+  }
+  if (creep.memory.state === "dying") {
     return dying(creep);
   }
 };
@@ -739,9 +751,10 @@ harvester = function(creep) {
       target = findMiningSite(creep);
     }
     if (target && !target.amount) {
-      return goMine(creep, target);
+      goMine(creep, target);
     }
-  } else if (creep.memory.state === "deliverEnergy") {
+  }
+  if (creep.memory.state === "deliverEnergy") {
     if (!target) {
       target = findStructureToDeposit(creep, STRUCTURE_SPAWN);
     }
