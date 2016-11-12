@@ -56,6 +56,7 @@ module.exports.loop = function() {
       return Game.creeps[name] !== void 0;
     });
   }
+  console.log(Memory.energy.energySourceMiners.length, Memory.energy.energySources.length);
   if (Memory.structures.buildingSites === void 0) {
     Memory.structures.buildingSites = [];
   }
