@@ -33,7 +33,6 @@ findConstructionSite = function(creep, distance) {
       }
       return results;
     })();
-    console.log("findconstr", sites, Memory.structures.buildingSites);
     if (sites) {
       target = chooseClosest(creep, sites);
     }

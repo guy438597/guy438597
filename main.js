@@ -216,7 +216,6 @@ module.exports.loop = function() {
         }
         return results;
       })());
-      console.log("new constrr. sites:", Memory.structures.buildingSites, newbuildingSites);
     }
   } else {
     if (Memory.structures.repairTargets) {
