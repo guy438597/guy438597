@@ -52,7 +52,7 @@ getDistance = function(creep, target) {
     console.log("called getdistance of same object", creep, creep.pos);
     0;
   }
-  distance = creep.room === target.room ? creep.pos.getRangeTo(target.pos) : creep.room.findPath(creep.pos, target.pos).length;
+  distance = creep.room === target.room ? creep.pos.getRangeTo(target) : creep.room.findPath(creep.pos, target.pos).length;
   if (!distance) {
     -1;
   }
