@@ -42,7 +42,7 @@ module.exports.loop = function() {
   if (!Memory.claims) {
     Memory.claims = {};
   }
-  Memory.claims.claimLocations = [["E61S49", "r"]];
+  Memory.claims.claimLocations = [];
   if (!Memory.energy.energySourceMiners) {
     Memory.energy.energySourceMiners = [];
   }
@@ -74,14 +74,8 @@ module.exports.loop = function() {
   console.log Memory.claims.claimClaimers.length
   console.log Memory.claims.claimLocations.length
    */
-  if (Game.getObjectById("385175e4e6a8b79b0e9861df")) {
-    console.log("yee");
-  }
-  if (Game.getObjectById("385175e4e6a8b79b0e9861d35f")) {
-    console.log("eeyy");
-  }
   Memory.energy.miningContainers = Memory.energy.miningContainers.filter(function(id) {
-    return Game.getObjectById(id) !== null;
+    return !Game.getObjectById(id);
   });
   moreMinersRequired = false;
   ref2 = Memory.energy.energySources;
@@ -90,18 +84,16 @@ module.exports.loop = function() {
     maxMiners = source[1];
     maxBodyParts = source[2];
     countBodyParts = 0;
-    if (Memory.energy.energySourceMiners[i].length > 0) {
-      ref3 = Memory.energy.energySourceMiners[i];
-      for (m = 0, len2 = ref3.length; m < len2; m++) {
-        name = ref3[m];
-        countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
-      }
+    ref3 = Memory.energy.energySourceMiners[i];
+    for (m = 0, len2 = ref3.length; m < len2; m++) {
+      name = ref3[m];
+      countBodyParts += Game.creeps[name].getActiveBodyparts(WORK);
     }
     if (Memory.energy.energySourceMiners[i].length < maxMiners && countBodyParts < maxBodyParts) {
       moreMinersRequired = true;
     }
   }
-  if (Memory.claims.claimClaimers === void 0) {
+  if (!Memory.claims.claimClaimers) {
     Memory.claims.claimClaimers = [];
   }
   while (Memory.claims.claimClaimers.length < Memory.claims.claimLocations.length) {
@@ -111,7 +103,7 @@ module.exports.loop = function() {
   for (i = n = 0, len3 = ref4.length; n < len3; i = ++n) {
     name = ref4[i];
     Memory.claims.claimClaimers = Memory.claims.claimClaimers.filter(function(name) {
-      return Game.creeps[name] !== void 0;
+      return Game.creeps[name];
     });
   }
   newClaimerRequired = false;
@@ -462,10 +454,10 @@ module.exports.loop = function() {
         }
         return results;
       }
-    } else if (energy >= 150 && (combinedTicksEnergyRefiller < 300 || roleCnt.energyRefiller < 2)) {
+    } else if (energy >= 150 && (combinedTicksEnergyRefiller < 300 || roleCnt.energyRefiller < minimumNumberOfEnergyRefillers)) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyRefiller');
       if (name) {
-        return console.log(roleCnt.energyRefiller + 1, "/", 2, "Spawning new energyRefiller!", name);
+        return console.log(roleCnt.energyRefiller + 1, "/", minimumNumberOfEnergyRefillers, "Spawning new energyRefiller!", name);
       }
     } else if (energy >= 150 && roleCnt.energyTransporter < Memory.energy.totalTransportersRequired) {
       ref13 = Memory.energy.energySources;
