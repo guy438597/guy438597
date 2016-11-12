@@ -39,9 +39,6 @@ module.exports.loop = function() {
     Memory.energy.miningContainers = [];
   }
   Memory.energy.energySources = [["57ef9d2186f108ae6e60d4c4", 2, 5, "W48S61"], ["57ef9d2186f108ae6e60d4c2", 3, 5, "W48S61"]];
-  if (-6) {
-    console.log("yolo");
-  }
   if (!Memory.claims) {
     Memory.claims = {};
   }
@@ -384,7 +381,7 @@ module.exports.loop = function() {
   for (i = u = 0, len8 = ref8.length; u < len8; i = ++u) {
     name = ref8[i];
     Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(n) {
-      return Game.creeps[n];
+      return Game.creeps[n] && n > 0;
     });
   }
   if (Memory.energy.totalEnergyTransportersRequired === void 0) {
@@ -490,7 +487,6 @@ module.exports.loop = function() {
           })());
           tempDistance = getDistance(source, closestSpawn);
           totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
-          console.log(getDistance(source, closestSpawn), totalEnergyTransportersRequired);
           if (Memory.energy.energySourceTransporters[i].length < totalEnergyTransportersRequired) {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID, sourceRoomName);
             if (name) {
