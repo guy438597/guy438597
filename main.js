@@ -35,6 +35,8 @@ module.exports = (function() {
 
   spawnLowPriorityAttack = false;
 
+  Memory.structures.repairFactor = 0.75;
+
   if (!Memory.energy) {
     Memory.energy = {};
   }
@@ -211,7 +213,7 @@ module.exports = (function() {
       room = ref7[name];
       newrepairTargets = room.find(FIND_STRUCTURES, {
         filter: function(s) {
-          return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * repairFactor;
+          return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * Memory.structures.repairFactor;
         }
       }, newbuildingSites = room.find(FIND_MY_CONSTRUCTION_SITES));
       for (r = 0, len7 = newrepairTargets.length; r < len7; r++) {
