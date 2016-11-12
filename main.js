@@ -475,6 +475,7 @@ module.exports.loop = function() {
         energySource = ref13[i];
         sourceID = Memory.energy.energySources[i][0];
         source = Game.getObjectById(sourceID);
+        sourceRoomName = Memory.energy.energySources[i][3];
         if (source) {
           closestSpawn = chooseClosest(source, (function() {
             var ref14, results1;
@@ -489,7 +490,7 @@ module.exports.loop = function() {
           tempDistance = getDistance(source, closestSpawn);
           totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
           if (Memory.energy.energySourceTransporters[i].length < totalEnergyTransportersRequired) {
-            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID);
+            name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyTransporter', sourceID, sourceRoomName);
             if (name) {
               Memory.energy.energySourceTransporters[i].push(name);
             }
