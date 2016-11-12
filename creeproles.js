@@ -308,7 +308,8 @@ creeproles = (function() {
   creeproles.harvester = function(creep) {
     var target;
     this.loadDefaultValues(creep);
-    creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : "mining";
+    creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : void 0;
+    creep.memory.state = creep.carry.energy === 0 ? "mining" : void 0;
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
     }
@@ -319,7 +320,9 @@ creeproles = (function() {
       if (target && target.amount) {
         this.pickupEnergy(creep, target);
       }
-      target = this.findMiningSite(creep);
+      if (!target) {
+        target = this.findMiningSite(creep);
+      }
       if (target && !target.amount) {
         return this.goMine(creep, target);
       }
