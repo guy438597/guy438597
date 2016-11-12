@@ -53,7 +53,7 @@ module.exports.loop = function() {
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
     name = ref1[i];
     Memory.energy.energySourceMiners[i] = Memory.energy.energySourceMiners[i].filter(function(name) {
-      return name !== [] && Game.creeps[name] !== void 0;
+      return Game.creeps[name] !== void 0;
     });
   }
   if (Memory.structures.buildingSites === void 0) {
