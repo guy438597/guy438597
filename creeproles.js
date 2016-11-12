@@ -411,14 +411,8 @@ creeproles = (function() {
           if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
             creep.memory.target = void 0;
           }
-          1;
+          return 1;
         }
-      }
-      if (!target) {
-        target = this.findMiningSite(creep);
-      }
-      if (target) {
-        return this.goMine(creep, target);
       }
     } else if (creep.memory.state === "deliverEnergy") {
       if (!target) {
