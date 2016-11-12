@@ -677,7 +677,7 @@ harvester = function(creep) {
     }
   } else if (creep.memory.state === "deliverEnergy") {
     if (!target) {
-      target = creep.room.find(FIND_STRUCTURES, filter = function(s) {
+      target = creep.room.findClosestByPath(FIND_MY_STRUCTURES, filter = function(s) {
         return s.structureType === STRUCTURE_SPAWN;
       });
     }
