@@ -266,6 +266,7 @@ moveOutOfTheWay = function(creep) {
 goMine = function(creep, target) {
   if (target) {
     creep.say("MINING");
+    console.log(creep.harvest(target));
     if (creep.harvest(target) === ERR_NOT_IN_RANGE) {
       return costEfficientMove(creep, target);
     }
