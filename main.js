@@ -43,6 +43,14 @@ module.exports.loop = function() {
     Memory.claims = {};
   }
   Memory.claims.claimLocations = [["E61S49", "r"]];
+  console.log("asd");
+  if (Memory.energy.energySourceMiners === void 0) {
+    Memory.energy.energySourceMiners = [];
+  }
+  if (Memory.energy.energySourceMiners === [] || Memory.energy.energySourceMiners.length < Memory.energy.energySourceMiners.length) {
+    Memory.energy.energySourceMiners.push([]);
+  }
+  console.log("a", Memory.energy.energySourceMiners);
   if (!Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
@@ -75,14 +83,6 @@ module.exports.loop = function() {
     return Game.getObjectById(id) !== null;
   });
   moreMinersRequired = false;
-  console.log("asd");
-  if (Memory.energy.energySourceMiners === void 0) {
-    Memory.energy.energySourceMiners = [];
-  }
-  if (Memory.energy.energySourceMiners === [] || Memory.energy.energySourceMiners.length < Memory.energy.energySourceMiners.length) {
-    Memory.energy.energySourceMiners.push([]);
-  }
-  console.log("a", Memory.energy.energySourceMiners);
   Memory.energy.energySourceMiners = Memory.energy.energySourceMiners.filter(function(name) {
     return Game.creeps[name] !== void 0;
   });
