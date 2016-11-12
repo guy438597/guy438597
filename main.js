@@ -25,7 +25,7 @@ module.exports = (function() {
     if (!Game.creeps[name]) {
       delete Memory.creeps[name];
     } else if (Game.creeps[name].memory.role === "sourceMiner" && name !== "Joseph") {
-      creep.suicide();
+      Game.creeps[name].suicide();
     }
     console.log("testo3");
   }
