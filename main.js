@@ -1,72 +1,68 @@
-var builder, calculations, chooseClosest, claimer, costEfficientMove, creeproles, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, sourceMiner, upgrader;
+var builder, chooseClosest, claimer, costEfficientMove, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, sourceMiner, upgrader;
 
 console.log("hii");
 
 require('./spawnV2')();
 
-calculations = require("./calculations");
+chooseClosest = require("./calculations").chooseClosest;
 
-chooseClosest = calculations.chooseClosest;
+findEnergy = require("./calculations").findEnergy;
 
-findEnergy = calculations.findEnergy;
+getDistance = require("./calculations").getDistance;
 
-getDistance = calculations.getDistance;
+getDistanceInTicks = require("./calculations").getDistanceInTicks;
 
-getDistanceInTicks = calculations.getDistanceInTicks;
+loadDefaultValues = require("./creeproles").loadDefaultValues;
 
-creeproles = require("./creeproles");
+findConstructionSite = require("./creeproles").findConstructionSite;
 
-loadDefaultValues = creeproles.loadDefaultValues;
+findRepairSite = require("./creeproles").findRepairSite;
 
-findConstructionSite = creeproles.findConstructionSite;
+findNearbyDroppedEnergy = require("./creeproles").findNearbyDroppedEnergy;
 
-findRepairSite = creeproles.findRepairSite;
+findStructureToWithdraw = require("./creeproles").findStructureToWithdraw;
 
-findNearbyDroppedEnergy = creeproles.findNearbyDroppedEnergy;
+findStructureToDeposit = require("./creeproles").findStructureToDeposit;
 
-findStructureToWithdraw = creeproles.findStructureToWithdraw;
+findMiningSite = require("./creeproles").findMiningSite;
 
-findStructureToDeposit = creeproles.findStructureToDeposit;
+goBuild = require("./creeproles").goBuild;
 
-findMiningSite = creeproles.findMiningSite;
+goRepair = require("./creeproles").goRepair;
 
-goBuild = creeproles.goBuild;
+goTransferEnergy = require("./creeproles").goTransferEnergy;
 
-goRepair = creeproles.goRepair;
+goWithdrawEnergy = require("./creeproles").goWithdrawEnergy;
 
-goTransferEnergy = creeproles.goTransferEnergy;
+goPickUpEnergy = require("./creeproles").goPickUpEnergy;
 
-goWithdrawEnergy = creeproles.goWithdrawEnergy;
+retreat = require("./creeproles").retreat;
 
-goPickUpEnergy = creeproles.goPickUpEnergy;
+costEfficientMove = require("./creeproles").costEfficientMove;
 
-retreat = creeproles.retreat;
+moveOutOfTheWay = require("./creeproles").moveOutOfTheWay;
 
-costEfficientMove = creeproles.costEfficientMove;
+goMine = require("./creeproles").goMine;
 
-moveOutOfTheWay = creeproles.moveOutOfTheWay;
+dying = require("./creeproles").dying;
 
-goMine = creeproles.goMine;
+sourceMiner = require("./creeproles").sourceMiner;
 
-dying = creeproles.dying;
+energyRefiller = require("./creeproles").energyRefiller;
 
-sourceMiner = creeproles.sourceMiner;
+energyTransporter = require("./creeproles").energyTransporter;
 
-energyRefiller = creeproles.energyRefiller;
+repairer = require("./creeproles").repairer;
 
-energyTransporter = creeproles.energyTransporter;
+builder = require("./creeproles").builder;
 
-repairer = creeproles.repairer;
+claimer = require("./creeproles").claimer;
 
-builder = creeproles.builder;
+upgrader = require("./creeproles").upgrader;
 
-claimer = creeproles.claimer;
+fighter = require("./creeproles").fighter;
 
-upgrader = creeproles.upgrader;
-
-fighter = creeproles.fighter;
-
-harvester = creeproles.harvester;
+harvester = require("./creeproles").harvester;
 
 module.exports.loop = (function() {
   var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
