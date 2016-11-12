@@ -75,6 +75,7 @@ module.exports.loop = function() {
     return Game.getObjectById(id) !== null;
   });
   moreMinersRequired = false;
+  console.log("asd");
   if (Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
