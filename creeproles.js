@@ -146,7 +146,7 @@ findMiningSite = function(creep, distance) {
 goBuild = function(creep, target) {
   if (target) {
     creep.memory.target = target.id;
-    if (target.progress) {
+    if (target.progress >= 0) {
       if (target.progress < target.progressTotal) {
         if (creep.repair(target) === ERR_NOT_IN_RANGE) {
           creep.say("RPR " + target.pos.x + "," + target.pos.y);
@@ -164,7 +164,7 @@ goBuild = function(creep, target) {
 goRepair = function(creep, target) {
   if (target) {
     creep.memory.target = target.id;
-    if (target.hits) {
+    if (target.hits >= 1) {
       if (target.hits < target.hitsMax * 0.99) {
         if (creep.build(target) === ERR_NOT_IN_RANGE) {
           creep.say("BLD " + target.pos.x + "," + target.pos.y);
