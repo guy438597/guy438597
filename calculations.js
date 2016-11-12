@@ -24,6 +24,8 @@ chooseClosest = function(creep, targets) {
     });
     if (targets.length === 0) {
       void 0;
+    } else if (targets.length === 1) {
+      targets[0];
     }
   }
   sortedTargets = _.sortBy(targets, function(s) {
