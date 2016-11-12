@@ -572,6 +572,8 @@ module.exports.loop = (function() {
 
   1;
 
+  asd();
+
   return loop;
 
 })();
