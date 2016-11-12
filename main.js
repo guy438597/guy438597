@@ -454,7 +454,6 @@ module.exports = (function() {
             ref12 = Memory.energy.energySourceMiners;
             for (j = x = 0, len12 = ref12.length; x < len12; j = ++x) {
               miner = ref12[j];
-              countBodyParts += 0;
               ref13 = Memory.energy.energySourceMiners[i];
               for (y = 0, len13 = ref13.length; y < len13; y++) {
                 name = ref13[y];
@@ -470,6 +469,7 @@ module.exports = (function() {
             name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'sourceMiner', sourceID, sourceRoomName);
             if (name) {
               console.log(roleCnt.sourceMiner + 1, "/", Memory.energy.energySources.length, "Spawning new sourceMiner!", name);
+              Memory.energy.energySourceMiners[i].push(name);
               break;
             }
           }
