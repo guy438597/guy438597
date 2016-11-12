@@ -346,7 +346,6 @@ module.exports.loop = function() {
       return results;
     })()).length
   };
-  console.log(roleCnt.sourceMiner, roleCnt.energyRefiller, roleCnt.energyTransporter, roleCnt.builder, roleCnt.repairer);
   combinedTicksEnergyRefiller = 0;
   ref7 = Game.creeps;
   for (name in ref7) {
@@ -371,11 +370,9 @@ module.exports.loop = function() {
   while (Memory.energy.energySourceTransporters.length <= Memory.energy.energySources.length) {
     Memory.energy.energySourceTransporters.push([]);
   }
-  console.log(Memory.energy.energySourceTransporters);
   ref8 = Memory.energy.energySourceTransporters[i];
   for (i = t = 0, len8 = ref8.length; t < len8; i = ++t) {
     name = ref8[i];
-    console.log(name, "aa");
     Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(name) {
       return Game.creeps[name] !== void 0;
     });
