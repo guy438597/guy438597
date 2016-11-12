@@ -248,8 +248,6 @@ module.exports.loop = (function() {
     }
   }
 
-  runRoles[creep.memory.role](creep);
-
   if (Memory.structures) {
     Memory.structures = {};
   }
@@ -423,6 +421,8 @@ module.exports.loop = (function() {
       return results;
     })()).length
   };
+
+  runRoles[creep.memory.role](creep);
 
   combinedTicksEnergyRefiller = 0;
 
