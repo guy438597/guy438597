@@ -19,20 +19,14 @@ loadDefaultValues = function(creep) {
 
 findConstructionSite = function(creep, distance) {
   var target;
+  if (distance == null) {
+    distance = 10000;
+  }
   if (!distance) {
     distance = 10000;
   }
   if (Memory.structures.buildingSites) {
-    target = chooseClosest(creep, (function() {
-      var i, len, ref, results;
-      ref = Memory.structures.buildingSites;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        target = ref[i];
-        results.push(Game.getObjectById(target));
-      }
-      return results;
-    })());
+    target = chooseClosest(creep, Memory.structures.buildingSites);
     if (target) {
       return target;
     }
@@ -41,21 +35,14 @@ findConstructionSite = function(creep, distance) {
 
 findRepairSite = function(creep, distance) {
   var target;
-  if (!distance) {
-    distance = 10000;
+  if (distance == null) {
+    distance = 100000;
   }
   if (Memory.structures.repairTargets) {
-    target = chooseClosest(creep, (function() {
-      var i, len, ref, results;
-      ref = Memory.structures.repairTargets;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        target = ref[i];
-        results.push(Game.getObjectById(target));
-      }
-      return results;
-    })());
-    return target;
+    target = chooseClosest(creep, Memory.structures.repairTargets);
+    if (target) {
+      return target;
+    }
   }
 };
 
