@@ -570,7 +570,7 @@ module.exports.loop = (function() {
     }
   }
 
-  asd();
+  1;
 
   return loop;
 
