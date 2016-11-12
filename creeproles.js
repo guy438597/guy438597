@@ -673,7 +673,9 @@ upgrader = function(creep) {
     if (!target) {
       t1 = findStructureToWithdraw(creep, STRUCTURE_STORAGE, void 0, 500, Memory.energy.miningContainers);
       t2 = findStructureToWithdraw(creep, STRUCTURE_CONTAINER, void 0, 500, Memory.energy.miningContainers);
-      target = chooseClosest(creep, [t1, t2]);
+      if (t1 || t2) {
+        target = chooseClosest(creep, [t1, t2]);
+      }
     }
     if (target && !target.amount) {
       goWithdrawEnergy(creep, target);
