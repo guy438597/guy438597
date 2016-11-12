@@ -67,8 +67,6 @@ module.exports.loop = (function() {
     });
   }
 
-  asd();
-
   if (!Memory.structures.buildingSites) {
     Memory.structures.buildingSites = [];
   }
@@ -383,6 +381,7 @@ module.exports.loop = (function() {
   ref8 = Game.creeps;
   for (name in ref8) {
     creep = ref8[name];
+    asd();
     console.log("testooo435", creep.memory.role);
     if (creep.spawning) {
       continue;
