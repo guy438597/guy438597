@@ -78,19 +78,16 @@ module.exports = (function() {
 
   minimumNumberOfRepairers = Math.min(Math.floor((Memory.structures.repairTargets.length + 9) / 10), 3);
 
-  console.log(Memory.structures.buildingSites.length);
 
-  console.log(Memory.structures.repairTargets.length);
-
-  console.log(Memory.energy.energySourceMiners.length);
-
-  console.log(Memory.energy.energySources.length);
-
-  console.log(Memory.energy.energySourceMiners[1].length);
-
-  console.log(Memory.claims.claimClaimers.length);
-
-  console.log(Memory.claims.claimLocations.length);
+  /*
+  console.log Memory.structures.buildingSites.length
+  console.log Memory.structures.repairTargets.length
+  console.log Memory.energy.energySourceMiners.length
+  console.log Memory.energy.energySources.length
+  console.log Memory.energy.energySourceMiners[1].length
+  console.log Memory.claims.claimClaimers.length
+  console.log Memory.claims.claimLocations.length
+   */
 
   moreMinersRequired = false;
 
