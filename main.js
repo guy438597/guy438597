@@ -1,7 +1,5 @@
 var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles;
 
-console.log("hii");
-
 require('./spawnV2')();
 
 calculations = require("./calculations");
@@ -381,7 +379,6 @@ module.exports = (function() {
   ref8 = Game.creeps;
   for (name in ref8) {
     creep = ref8[name];
-    console.log("testooo435", creep.memory.role);
     if (creep.spawning) {
       continue;
     }
