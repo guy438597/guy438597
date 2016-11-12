@@ -327,7 +327,7 @@ creeproles = (function() {
         return this.goMine(creep, target);
       }
     } else if (creep.memory.state === "deliverEnergy") {
-      target = this.findStructureToDeposit(creep, STRUCTURE_SPAWN);
+      target = this.findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
       if (target) {
         return this.goTransferEnergy(creep, target);
       }
