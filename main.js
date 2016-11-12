@@ -83,8 +83,8 @@ module.exports.loop = function() {
     return Game.creeps[name] !== void 0;
   });
   ref2 = Memory.energy.energySources;
-  for (l = 0, len1 = ref2.length; l < len1; l++) {
-    source = ref2[l];
+  for (i = l = 0, len1 = ref2.length; l < len1; i = ++l) {
+    source = ref2[i];
     maxMiners = source[1];
     maxBodyParts = source[2];
     countBodyParts = 0;
