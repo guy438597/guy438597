@@ -210,7 +210,7 @@ module.exports.loop = function() {
         }
         return results;
       })());
-      console.log(Memory.structures.buildingSites);
+      console.log(Memory.structures.buildingSites, newbuildingSites);
     }
   } else {
     if (Memory.structures.repairTargets) {
