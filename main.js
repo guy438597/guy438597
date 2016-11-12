@@ -15,11 +15,8 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 
 runRoles = require("./creeproles");
 
-module.exports = (function() {
-  var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
-
-  function exports() {}
-
+module.exports.loop = function() {
+  var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
   ref = Memory.creeps;
   for (name in ref) {
     creep = ref[name];
@@ -27,37 +24,25 @@ module.exports = (function() {
       delete Memory.creeps[name];
     }
   }
-
   energyTransporterConstant = 15;
-
   minimumNumberOfUpgraders = 7;
-
   spawnHighPriorityDefense = false;
-
   spawnLowPriorityAttack = false;
-
   Memory.structures.repairFactor = 0.75;
-
   if (!Memory.energy) {
     Memory.energy = {};
   }
-
   if (!Memory.energy.miningContainers) {
     Memory.energy.miningContainers = [];
   }
-
   Memory.energy.energySources = [["57ef9e7a86f108ae6e60f5c3", 3, 5, "E62S49"], ["57ef9e7a86f108ae6e60f5c5", 4, 5, "E62S49"], ["57ef9e6786f108ae6e60f3f9", 2, 5, "E61S49"], ["57ef9e6786f108ae6e60f3fb", 1, 5, "E61S49"]];
-
   if (!Memory.claims) {
     Memory.claims = {};
   }
-
   Memory.claims.claimLocations = [["E61S49", "r"]];
-
   if (!Memory.energy.energySourceMiners === void 0) {
     Memory.energy.energySourceMiners = [];
   }
-
   ref1 = Memory.energy.energySourceMiners;
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
     name = ref1[i];
@@ -65,19 +50,14 @@ module.exports = (function() {
       return Game.creeps[name] !== void 0;
     });
   }
-
   if (Memory.structures.buildingSites === void 0) {
     Memory.structures.buildingSites = [];
   }
-
   if (Memory.structures.repairTargets === void 0) {
     Memory.structures.repairTargets = [];
   }
-
   minimumNumberOfBuilders = Math.min(Math.floor((Memory.structures.buildingSites.length + 4) / 5), 3);
-
   minimumNumberOfRepairers = Math.min(Math.floor((Memory.structures.repairTargets.length + 9) / 10), 3);
-
 
   /*
   console.log Memory.structures.buildingSites.length
@@ -88,21 +68,16 @@ module.exports = (function() {
   console.log Memory.claims.claimClaimers.length
   console.log Memory.claims.claimLocations.length
    */
-
   Memory.energy.miningContainers = Memory.energy.miningContainers.filter(function(id) {
     return Game.getObjectById(id) !== null;
   });
-
   moreMinersRequired = false;
-
   if (!Memory.energy.energySourceMiners) {
     Memory.energy.energySourceMiners = [];
   }
-
   if (Memory.energy.energySourceMiners.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceMiners.push([]);
   }
-
   if (Memory.energy.energySourceMiners) {
     ref2 = Memory.energy.energySources;
     for (i = l = 0, len1 = ref2.length; l < len1; i = ++l) {
@@ -127,15 +102,12 @@ module.exports = (function() {
       }
     }
   }
-
   if (Memory.claims.claimClaimers === void 0) {
     Memory.claims.claimClaimers = [];
   }
-
   while (Memory.claims.claimClaimers.length < Memory.claims.claimLocations.length) {
     Memory.claims.claimClaimers.push([]);
   }
-
   ref5 = Memory.claims.claimClaimers;
   for (i = o = 0, len4 = ref5.length; o < len4; i = ++o) {
     name = ref5[i];
@@ -143,13 +115,10 @@ module.exports = (function() {
       return Game.creeps[name] !== void 0;
     });
   }
-
   newClaimerRequired = false;
-
   if (!Memory.claims.claimLocations) {
     Memory.claims.claimLocations = [];
   }
-
   ref6 = Memory.claims.claimLocations;
   for (i = p = 0, len5 = ref6.length; p < len5; i = ++p) {
     location = ref6[i];
@@ -172,21 +141,14 @@ module.exports = (function() {
       newClaimerRequired = true;
     }
   }
-
   spawning = Game.spawns.Spawn1.spawning !== null;
-
   energy = Game.spawns.Spawn1.room.energyAvailable;
-
   energyMax = Game.spawns.Spawn1.room.energyCapacityAvailable;
-
   minimumNumberOfEnergyRefillers = Math.floor(energyMax / 300);
-
   towers = Game.spawns.Spawn1.room.find(FIND_STRUCTURES);
-
   towers = towers.filter(function(s) {
     return s.structureType === STRUCTURE_TOWER;
   });
-
   for (q = 0, len6 = towers.length; q < len6; q++) {
     tower = towers[q];
     attackTarget = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS, {
@@ -219,11 +181,9 @@ module.exports = (function() {
       }
     }
   }
-
   if (Memory.structures === void 0) {
     Memory.structures = {};
   }
-
   if (Game.time % 30 === 0) {
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
@@ -276,7 +236,6 @@ module.exports = (function() {
       });
     }
   }
-
   roleCnt = {
     sourceMiner: ((function() {
       var ref8, results;
@@ -399,9 +358,7 @@ module.exports = (function() {
       return results;
     })()).length
   };
-
   combinedTicksEnergyRefiller = 0;
-
   ref8 = Game.creeps;
   for (name in ref8) {
     creep = ref8[name];
@@ -419,11 +376,9 @@ module.exports = (function() {
     }
     runRoles[creep.memory.role](creep);
   }
-
   if (Memory.energy.energySourceTransporters === void 0) {
     Memory.energy.energySourceTransporters = [];
   }
-
   ref9 = Memory.energy.energySourceTransporters[i];
   for (i = u = 0, len9 = ref9.length; u < len9; i = ++u) {
     name = ref9[i];
@@ -431,11 +386,9 @@ module.exports = (function() {
       return Game.creeps[name] !== void 0;
     });
   }
-
   if (Memory.energy.totalEnergyTransportersRequired === void 0) {
     Memory.energy.totalEnergyTransportersRequired = 0;
   }
-
   if (!(Game.time % 30)) {
     totalEnergyTransportersRequired = 0;
     ref10 = Memory.energy.energySources;
@@ -459,18 +412,17 @@ module.exports = (function() {
     }
     Memory.energy.totalTransportersRequired = totalEnergyTransportersRequired;
   }
-
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
-
   if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
     if (energy >= 190 && spawnHighPriorityDefense) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {
-        console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
+        return console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
       }
     } else if (energy >= Math.min(650, energyMax) && moreMinersRequired && roleCnt.energyRefiller > 1) {
       if (Memory.energy.energySourceMiners) {
         ref11 = Memory.energy.energySources;
+        results = [];
         for (i = w = 0, len11 = ref11.length; w < len11; i = ++w) {
           source = ref11[i];
           sourceID = Memory.energy.energySources[i][0];
@@ -499,14 +451,19 @@ module.exports = (function() {
               console.log(roleCnt.sourceMiner + 1, "/", Memory.energy.energySources.length, "Spawning new sourceMiner!", name);
               Memory.energy.energySourceMiners[i].push(name);
               break;
+            } else {
+              results.push(void 0);
             }
+          } else {
+            results.push(void 0);
           }
         }
+        return results;
       }
     } else if (energy >= 150 && (combinedTicksEnergyRefiller < 300 || roleCnt.energyRefiller < 2)) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'energyRefiller');
       if (name) {
-        console.log(roleCnt.energyRefiller + 1, "/", 2, "Spawning new energyRefiller!", name);
+        return console.log(roleCnt.energyRefiller + 1, "/", 2, "Spawning new energyRefiller!", name);
       }
     } else if (energy >= 150 && roleCnt.energyTransporter < Memory.energy.totalTransportersRequired) {
       ref14 = Memory.energy.energySources;
@@ -516,14 +473,14 @@ module.exports = (function() {
         source = Game.getObjectById(sourceID);
         if (source) {
           closestSpawn = chooseClosest(source, (function() {
-            var ref15, results;
+            var ref15, results1;
             ref15 = Game.spawns;
-            results = [];
+            results1 = [];
             for (spawnName in ref15) {
               spawn = ref15[spawnName];
-              results.push(spawn);
+              results1.push(spawn);
             }
-            return results;
+            return results1;
           })());
           tempDistance = getDistance(source, closestSpawn);
           totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
@@ -536,10 +493,11 @@ module.exports = (function() {
         }
       }
       if (name) {
-        console.log(roleCnt.energyTransporter + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
+        return console.log(roleCnt.energyTransporter + 1, "/", Memory.energy.totalTransportersRequired, "Spawning new energyTransporter!", name);
       }
     } else if (energy >= 650 && newClaimerRequired) {
       ref15 = Memory.claims.claimLocations;
+      results1 = [];
       for (i = aa = 0, len15 = ref15.length; aa < len15; i = ++aa) {
         location = ref15[i];
         console.log("buggerino4");
@@ -556,46 +514,54 @@ module.exports = (function() {
                 name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', location[0], location[1], Game.spawns.Spawn1.room.name);
                 if (name) {
                   Memory.claims.claimClaimers[i].push(name);
-                  console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+                  results1.push(console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name));
+                } else {
+                  results1.push(void 0);
                 }
+              } else {
+                results1.push(void 0);
               }
+            } else {
+              results1.push(void 0);
             }
+          } else {
+            results1.push(void 0);
           }
         } else {
           console.log("buggerino56");
           name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'claimer', location[0], location[1], Game.spawns.Spawn1.room.name);
           if (name) {
             Memory.claims.claimClaimers[i].push(name);
-            console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name);
+            results1.push(console.log(numberOfClaimers + 1, "/", "Spawning new claimer!", name));
+          } else {
+            results1.push(void 0);
           }
         }
       }
+      return results1;
     } else if (energy >= 300 && roleCnt.repairer < minimumNumberOfRepairers) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'repairer');
       if (name) {
-        console.log(roleCnt.repairer + 1, "/", minimumNumberOfRepairers, "Spawning new repairer!", name);
+        return console.log(roleCnt.repairer + 1, "/", minimumNumberOfRepairers, "Spawning new repairer!", name);
       }
     } else if (energy >= 300 && roleCnt.builder < minimumNumberOfBuilders) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'builder');
       if (name) {
-        console.log(roleCnt.builder + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
+        return console.log(roleCnt.builder + 1, "/", minimumNumberOfBuilders, "Spawning new builder!", name);
       }
     } else if (energy >= 200 && roleCnt.upgrader < minimumNumberOfUpgraders) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'upgrader');
       if (name) {
-        console.log(roleCnt.upgrader + 1, "/", minimumNumberOfUpgraders, "Spawning new upgrader!", name);
+        return console.log(roleCnt.upgrader + 1, "/", minimumNumberOfUpgraders, "Spawning new upgrader!", name);
       }
     } else if (energy >= 200 && spawnLowPriorityAttack) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'fighter', 1, 1, 1, "0", Game.spawns.Spawn1.room.name);
       if (name) {
-        console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
+        return console.log(roleCnt.fighter + 1, "/", "Spawning new fighter!", name);
       }
     }
   }
-
-  return exports;
-
-})();
+};
 
 
 /*
