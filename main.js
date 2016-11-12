@@ -358,6 +358,7 @@ module.exports.loop = function() {
       return results;
     })()).length
   };
+  console.log(roleCnt.sourceMiner, roleCnt.energyRefiller, roleCnt.energyTransporter, roleCnt.builder, roleCnt.repairer);
   combinedTicksEnergyRefiller = 0;
   ref8 = Game.creeps;
   for (name in ref8) {
