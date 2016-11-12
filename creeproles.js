@@ -295,7 +295,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.sourceMiner = function(creep) {
+  creeproles.sourceMiner = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     if (!creep.memory.energySource) {
@@ -364,7 +364,7 @@ creeproles = (function() {
     }
   };
 
-  creeproles.prototype.energyRefiller = function(creep) {
+  creeproles.energyRefiller = function(creep) {
     var target;
     this.loadDefaultValues(creep);
     if (creep.memory.target) {

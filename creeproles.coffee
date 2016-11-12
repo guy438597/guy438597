@@ -180,7 +180,7 @@ class creeproles
         else
             @moveOutOfTheWay(creep)
 
-    sourceMiner: (creep)->
+    @sourceMiner: (creep)->
         #the miner creep: retreats if enemys are in the room, else goes mining if inventory not full, else transfers inventory to nearby container, if there is no container: build one, if there is a container but is full: drop energy to the ground, after trying to drop energy: find nearby dropped energy and pick it up before it expires (this can happen when the miner mines too much or if the container was full)
         @loadDefaultValues(creep)
         creep.memory.energySource = creep.pos.findClosestByRange(FIND_SOURCES).id if !creep.memory.energySource
@@ -228,7 +228,7 @@ class creeproles
             else
                 creep.memory.state = "mining"
 
-    energyRefiller: (creep) ->
+    @energyRefiller: (creep) ->
         #the refiller creep: picks up energy from either a storage / container nearby, or from dropped energy source, then goes to EXTENSION or SPAWN or TOWER to refill their energy state - he doesnt have to flee because he will always be near a spawn i think
         @loadDefaultValues(creep)
         #creep.memory.state = "mining" if !creep.memory.state
