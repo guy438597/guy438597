@@ -377,9 +377,11 @@ sourceMiner = function(creep) {
   if (creep.memory.state === "puttingEnergyInContainer") {
     console.log(target, creep.memory.target);
     if (!target) {
-      console.log("MINER DOWN BELOW:", creep.name);
-      target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1);
-      console.log("new found structure:", target);
+      target = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+        filter: function(s) {
+          return s.structureType === STRUCTURE_CONTAINER && s.pos.getRangeTo(creep) <= 1;
+        }
+      });
     }
     if (target && !target.progress) {
       if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
@@ -394,7 +396,7 @@ sourceMiner = function(creep) {
       }
     } else {
       if (!target) {
-        target = findConstructionSite(creep, 2);
+        target = findConstructionSite(creep, 1);
       }
       if (target) {
         goBuild(creep, target);
@@ -807,7 +809,7 @@ warrior = function(creep) {
         }
       } else {
         target = creep.pos.findClosestByPath(FIND_SOURCES);
-        if (getdistance(creep, target) >= 5) {
+        if (getDistance(creep, target) >= 5) {
           return costEfficientMove(creep, target);
         } else {
           return moveOutOfTheWay(creep, 2);
