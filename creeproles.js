@@ -309,6 +309,7 @@ creeproles = (function() {
     if (!creep.memory.state) {
       creep.memory.state = "mining";
     }
+    creep.memory.state = creep.carryCapacity === creep.carry.energy && creep.memory.state !== "lookingForNearbyEnergy" ? "puttingEnergyInContainer" : "mining";
     if (!creep.memory.target && creep.memory.state === "mining") {
       creep.memory.target = creep.memory.energySource;
     }
@@ -474,6 +475,7 @@ creeproles = (function() {
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
     }
+    creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "repairing";
     if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
       return retreat(creep);
     } else if (creep.memory.state === "pickupEnergy") {
@@ -504,6 +506,7 @@ creeproles = (function() {
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
     }
+    creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "building";
     if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
       return this.retreat(creep);
     } else if (creep.memory.state === "pickupEnergy") {
@@ -575,6 +578,7 @@ creeproles = (function() {
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
     }
+    creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "upgrading";
     if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
       return this.retreat(creep);
     } else if (creep.memory.state === "pickupEnergy") {
@@ -615,7 +619,12 @@ creeproles = (function() {
       target = Game.getObjectById(creep.memory.target);
     }
     if (creep.carry.state === "mine") {
-      target = this.findMiningSite(creep);
+      if (creep.memory.state === creep.carry.energy) {
+        creep.carry.state = "work";
+      }
+      if (!target) {
+        target = this.findMiningSite(creep);
+      }
       if (target) {
         return this.goMine(creep, target);
       }
