@@ -16,57 +16,57 @@ getDistanceInTicks = calculations.getDistanceInTicks;
 
 runRoles = require("./creeproles");
 
-loadDefaultValues = loadDefaultValues.runRoles;
+loadDefaultValues = runRoles.loadDefaultValues;
 
-findConstructionSite = findConstructionSite.runRoles;
+findConstructionSite = runRoles.findConstructionSite;
 
-findRepairSite = findRepairSite.runRoles;
+findRepairSite = runRoles.findRepairSite;
 
-findNearbyDroppedEnergy = findNearbyDroppedEnergy.runRoles;
+findNearbyDroppedEnergy = runRoles.findNearbyDroppedEnergy;
 
-findStructureToWithdraw = findStructureToWithdraw.runRoles;
+findStructureToWithdraw = runRoles.findStructureToWithdraw;
 
-findStructureToDeposit = findStructureToDeposit.runRoles;
+findStructureToDeposit = runRoles.findStructureToDeposit;
 
-findMiningSite = findMiningSite.runRoles;
+findMiningSite = runRoles.findMiningSite;
 
-goBuild = goBuild.runRoles;
+goBuild = runRoles.goBuild;
 
-goRepair = goRepair.runRoles;
+goRepair = runRoles.goRepair;
 
-goTransferEnergy = goTransferEnergy.runRoles;
+goTransferEnergy = runRoles.goTransferEnergy;
 
-goWithdrawEnergy = goWithdrawEnergy.runRoles;
+goWithdrawEnergy = runRoles.goWithdrawEnergy;
 
-goPickUpEnergy = goPickUpEnergy.runRoles;
+goPickUpEnergy = runRoles.goPickUpEnergy;
 
-retreat = retreat.runRoles;
+retreat = runRoles.retreat;
 
-costEfficientMove = costEfficientMove.runRoles;
+costEfficientMove = runRoles.costEfficientMove;
 
-moveOutOfTheWay = moveOutOfTheWay.runRoles;
+moveOutOfTheWay = runRoles.moveOutOfTheWay;
 
-goMine = goMine.runRoles;
+goMine = runRoles.goMine;
 
-dying = dying.runRoles;
+dying = runRoles.dying;
 
-sourceMiner = sourceMiner.runRoles;
+sourceMiner = runRoles.sourceMiner;
 
-energyRefiller = energyRefiller.runRoles;
+energyRefiller = runRoles.energyRefiller;
 
-energyTransporter = energyTransporter.runRoles;
+energyTransporter = runRoles.energyTransporter;
 
-repairer = repairer.runRoles;
+repairer = runRoles.repairer;
 
-builder = builder.runRoles;
+builder = runRoles.builder;
 
-claimer = claimer.runRoles;
+claimer = runRoles.claimer;
 
-upgrader = upgrader.runRoles;
+upgrader = runRoles.upgrader;
 
-fighter = fighter.runRoles;
+fighter = runRoles.fighter;
 
-harvester = harvester.runRoles;
+harvester = runRoles.harvester;
 
 module.exports.loop = (function() {
   var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
