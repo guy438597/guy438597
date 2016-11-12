@@ -145,8 +145,10 @@ module.exports = (function() {
           countWalkableTiles = lookAtArea(c.y - 1, c.x - 1, c.y + 1, c.x + 1, true).filter(function(s) {
             return s.type === "terrain" && (s.terrain === "swamp" || s.terrain === "normal");
           });
-          if (Memory.claims.claimClaimers[i].length < countWalkableTiles.length) {
-            newClaimerRequired = true;
+          if (countWalkableTiles) {
+            if (Memory.claims.claimClaimers[i].length < countWalkableTiles.length) {
+              newClaimerRequired = true;
+            }
           }
         }
       }
