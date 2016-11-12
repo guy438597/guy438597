@@ -143,7 +143,7 @@ module.exports = (function() {
       if (Game.rooms[roomName].controller.my) {
         if (!Game.rooms[roomName].controller.reservation || Game.rooms[roomName].controller.reservation.username === "Burny" && Game.rooms[roomName].controller.reservation.ticksToEnd < 200) {
           c = Game.rooms[roomName].controller.pos;
-          countWalkableTiles = lookAtArea(c.y - 1, c.x - 1, c.y + 1, c.x + 1, true).filter(function(s) {
+          countWalkableTiles = Game.rooms[roomName].lookAtArea(c.y - 1, c.x - 1, c.y + 1, c.x + 1, true).filter(function(s) {
             return s.type === "terrain" && (s.terrain === "swamp" || s.terrain === "normal");
           });
           if (countWalkableTiles) {
