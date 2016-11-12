@@ -221,6 +221,7 @@ goTransferEnergy = function(creep, target) {
 };
 
 goWithdrawEnergy = function(creep, target) {
+  console.log(creep, target);
   if (target) {
     creep.memory.target = target.id;
     if (!target.storeCapacity) {
