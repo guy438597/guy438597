@@ -23,7 +23,7 @@ findConstructionSite = function(creep, distance) {
     distance = 10000;
   }
   if (Memory.structures.buildingSites) {
-    console.log((function() {
+    console.log("finding constr. site", (function() {
       var i, len, ref, results;
       ref = Memory.structures.buildingSites;
       results = [];

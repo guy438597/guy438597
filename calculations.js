@@ -14,6 +14,7 @@ chooseClosest = function(creep, targets) {
   sortedTargets = _.sortBy(targets, function(s) {
     return getDistance(creep, s);
   });
+  console.log("choose closest", creep, creep.pos, sortedTargets);
   if (sortedTargets.length > 0) {
     target = sortedTargets[0];
     if (target) {
