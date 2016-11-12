@@ -43,6 +43,12 @@ module.exports.loop = function() {
     Memory.claims = {};
   }
   Memory.claims.claimLocations = [["E61S49", "r"]];
+  if (Game.creeps["hans"]) {
+    console.log("hansoo");
+  }
+  if (Game.creeps["Avery"]) {
+    console.log("averooo");
+  }
   if (Memory.energy.energySourceMiners) {
     Memory.energy.energySourceMiners = [];
   }
@@ -53,7 +59,7 @@ module.exports.loop = function() {
   for (i = k = 0, len = ref1.length; k < len; i = ++k) {
     name = ref1[i];
     Memory.energy.energySourceMiners[i] = Memory.energy.energySourceMiners[i].filter(function(name) {
-      return Game.creeps[name] !== void 0;
+      return name !== [] && Game.creeps[name];
     });
   }
   if (Memory.structures.buildingSites === void 0) {
