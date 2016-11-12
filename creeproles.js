@@ -321,7 +321,7 @@ creeproles = (function() {
     } else if (creep.memory.state === "mining") {
       if (!target) {
         if (creep.room.name !== creep.memory.energySourceRoomName) {
-          costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
+          this.costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
         } else {
           console.log("minerscript ???????? wat");
         }
