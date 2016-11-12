@@ -368,11 +368,11 @@ sourceMiner = function(creep) {
     if (!target) {
       target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
     }
-    if (target) {
-      if (!target.progress && indexOf.call(Memory.energy.miningContainers, target) < 0) {
+    if (target && !target.progress) {
+      if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
         Memory.energy.miningContainers.push(target.id);
       }
-      if (!target.progress && _.sum(target.store) < target.storeCapacity) {
+      if (_.sum(target.store) < target.storeCapacity) {
         goTransferEnergy(creep, target);
         creep.say("PUT CNTR");
         return creep.memory.state = "lookingForNearbyEnergy";
@@ -386,7 +386,10 @@ sourceMiner = function(creep) {
       }
       if (target) {
         goBuild(creep, target);
-        return creep.say("BLD CNTR");
+        creep.say("BLD CNTR");
+        if (creep.carry.energy === 0) {
+          return creep.memory.state = "lookingForNearbyEnergy";
+        }
       } else {
         creep.say("NO CNTR");
         return creep.drop(RESOURCE_ENERGY);
