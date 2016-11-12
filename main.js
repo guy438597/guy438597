@@ -1,66 +1,20 @@
-var builder, chooseClosest, claimer, costEfficientMove, dying, energyRefiller, energyTransporter, fighter, findConstructionSite, findEnergy, findMiningSite, findNearbyDroppedEnergy, findRepairSite, findStructureToDeposit, findStructureToWithdraw, getDistance, getDistanceInTicks, goBuild, goMine, goPickUpEnergy, goRepair, goTransferEnergy, goWithdrawEnergy, harvester, loadDefaultValues, moveOutOfTheWay, repairer, retreat, sourceMiner, upgrader;
+var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles;
+
+console.log("hii");
 
 require('./spawnV2')();
 
-chooseClosest = require("./calculations").chooseClosest;
+calculations = require("./calculations");
 
-findEnergy = require("./calculations").findEnergy;
+chooseClosest = calculations.chooseClosest;
 
-getDistance = require("./calculations").getDistance;
+findEnergy = calculations.findEnergy;
 
-getDistanceInTicks = require("./calculations").getDistanceInTicks;
+getDistance = calculations.getDistance;
 
-loadDefaultValues = require("./creeproles").loadDefaultValues;
+getDistanceInTicks = calculations.getDistanceInTicks;
 
-findConstructionSite = require("./creeproles").findConstructionSite;
-
-findRepairSite = require("./creeproles").findRepairSite;
-
-findNearbyDroppedEnergy = require("./creeproles").findNearbyDroppedEnergy;
-
-findStructureToWithdraw = require("./creeproles").findStructureToWithdraw;
-
-findStructureToDeposit = require("./creeproles").findStructureToDeposit;
-
-findMiningSite = require("./creeproles").findMiningSite;
-
-goBuild = require("./creeproles").goBuild;
-
-goRepair = require("./creeproles").goRepair;
-
-goTransferEnergy = require("./creeproles").goTransferEnergy;
-
-goWithdrawEnergy = require("./creeproles").goWithdrawEnergy;
-
-goPickUpEnergy = require("./creeproles").goPickUpEnergy;
-
-retreat = require("./creeproles").retreat;
-
-costEfficientMove = require("./creeproles").costEfficientMove;
-
-moveOutOfTheWay = require("./creeproles").moveOutOfTheWay;
-
-goMine = require("./creeproles").goMine;
-
-dying = require("./creeproles").dying;
-
-sourceMiner = require("./creeproles").sourceMiner;
-
-energyRefiller = require("./creeproles").energyRefiller;
-
-energyTransporter = require("./creeproles").energyTransporter;
-
-repairer = require("./creeproles").repairer;
-
-builder = require("./creeproles").builder;
-
-claimer = require("./creeproles").claimer;
-
-upgrader = require("./creeproles").upgrader;
-
-fighter = require("./creeproles").fighter;
-
-harvester = require("./creeproles").harvester;
+runRoles = require("./creeproles");
 
 module.exports.loop = (function() {
   var aa, attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len15, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref15, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, v, w, x, y, z;
@@ -422,13 +376,12 @@ module.exports.loop = (function() {
     })()).length
   };
 
-  runRoles[creep.memory.role](creep);
-
   combinedTicksEnergyRefiller = 0;
 
   ref8 = Game.creeps;
   for (name in ref8) {
     creep = ref8[name];
+    console.log("testooo435", creep.memory.role);
     if (creep.spawning) {
       continue;
     }
@@ -442,7 +395,6 @@ module.exports.loop = (function() {
       combinedTicksEnergyRefiller += creep.ticksToLive;
     }
     runRoles[creep.memory.role](creep);
-    console.log("ran role!", creep.memory.role);
   }
 
   if (!Memory.energy.totalEnergyTransportersRequired) {
