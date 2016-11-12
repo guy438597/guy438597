@@ -413,12 +413,7 @@ creeproles = (function() {
         }
       }
       if (target) {
-        this.goTransferEnergy(creep, target);
-        if (target) {
-          if (target.storeCapacity - target.store[RESOURCE_ENERGY] < creep.carry.energy) {
-            return creep.memory.target = void 0;
-          }
-        }
+        return this.goTransferEnergy(creep, target);
       } else {
         return this.moveOutOfTheWay(creep);
       }
