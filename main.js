@@ -1,4 +1,4 @@
-var calculations, chooseClosest, creeproles, findEnergy, getDistance, getDistanceInTicks,
+var calculations, chooseClosest, findEnergy, getDistance, getDistanceInTicks, runRoles,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 require('./spawnV2')();
@@ -13,7 +13,7 @@ getDistance = calculations.getDistance;
 
 getDistanceInTicks = calculations.getDistanceInTicks;
 
-creeproles = require("./creeproles");
+runRoles = require("./creeproles");
 
 module.exports.loop = function() {
   var attackTarget, basicEconomyRunning, c, closestSpawn, combinedTicksEnergyRefiller, countBodyParts, countWalkableTiles, creep, energy, energyMax, energySource, energyTransporterConstant, healTarget, i, item, j, k, key, l, len, len1, len10, len11, len12, len13, len14, len2, len3, len4, len5, len6, len7, len8, len9, location, m, maxBodyParts, maxMiners, miner, minimumNumberOfBuilders, minimumNumberOfEnergyRefillers, minimumNumberOfRepairers, minimumNumberOfUpgraders, moreMinersRequired, n, name, newClaimerRequired, newbuildingSites, newrepairTargets, o, p, q, r, ref, ref1, ref10, ref11, ref12, ref13, ref14, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, repairTarget, results, results1, roleCnt, room, roomName, s, source, sourceID, sourceRoomName, spawn, spawnHighPriorityDefense, spawnLowPriorityAttack, spawnName, spawning, t, tempDistance, totalEnergyTransportersRequired, tower, towers, u, username, v, w, x, y, z;
@@ -369,7 +369,7 @@ module.exports.loop = function() {
     } else if (creep.memory.role === "energyRefiller") {
       combinedTicksEnergyRefiller += creep.ticksToLive;
     }
-    creeproles[creep.memory.role](creep);
+    runRoles[creep.memory.role](creep);
   }
   if (!Memory.energy.energySourceTransporters) {
     Memory.energy.energySourceTransporters = [];
