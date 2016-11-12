@@ -161,8 +161,6 @@ module.exports.loop = (function() {
     }
   }
 
-  runRoles[creep.memory.role](creep);
-
   if (!Memory.claims.claimClaimers) {
     Memory.claims.claimClaimers = [];
   }
@@ -205,6 +203,8 @@ module.exports.loop = (function() {
       newClaimerRequired = true;
     }
   }
+
+  runRoles[creep.memory.role](creep);
 
   spawning = Game.spawns.Spawn1.spawning !== null;
 
