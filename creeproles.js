@@ -22,14 +22,13 @@ findConstructionSite = function(creep, distance) {
   if (distance == null) {
     distance = 10000;
   }
-  console.log("findconstr", Memory.structures.buildingSites);
   if (Memory.structures.buildingSites) {
     ref = Memory.structures.buildingSites;
     for (i = 0, len = ref.length; i < len; i++) {
       site = ref[i];
       sites = Game.getObjectById(site);
     }
-    console.log(sites, Memory.structures.buildingSites);
+    console.log("findconstr", sites, Memory.structures.buildingSites);
     if (sites) {
       target = chooseClosest(creep, sites);
     }
