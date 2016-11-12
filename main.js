@@ -57,14 +57,6 @@ module.exports.loop = function() {
       return Game.creeps[name];
     });
   }
-  if (!Memory.structures.buildingSites) {
-    Memory.structures.buildingSites = [];
-  }
-  if (!Memory.structures.repairTargets) {
-    Memory.structures.repairTargets = [];
-  }
-  minimumNumberOfBuilders = Math.min(Math.floor((Memory.structures.buildingSites.length + 4) / 5), 3);
-  minimumNumberOfRepairers = Math.min(Math.floor((Memory.structures.repairTargets.length + 9) / 10), 3);
 
   /*
   console.log Memory.structures.buildingSites.length
@@ -181,6 +173,12 @@ module.exports.loop = function() {
         }
       }
     }
+  }
+  if (!Memory.structures.buildingSites) {
+    Memory.structures.buildingSites = [];
+  }
+  if (!Memory.structures.repairTargets) {
+    Memory.structures.repairTargets = [];
   }
   if (modulo(Game.time, 30) === 0) {
     Memory.structures.repairTargets = [];
@@ -351,6 +349,9 @@ module.exports.loop = function() {
       return results;
     })()).length
   };
+  minimumNumberOfBuilders = Math.min(Math.floor((Memory.structures.buildingSites.length + 4) / 5), 3);
+  minimumNumberOfRepairers = Math.min(Math.floor((Memory.structures.repairTargets.length + 9) / 10), 3);
+  console.log(Memory.structures.buildingSites.length, minimumNumberOfBuilders, roleCnt.builder);
   combinedTicksEnergyRefiller = 0;
   ref7 = Game.creeps;
   for (name in ref7) {
