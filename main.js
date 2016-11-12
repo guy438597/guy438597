@@ -401,6 +401,7 @@ module.exports.loop = function() {
     }
     Memory.energy.totalTransportersRequired = totalEnergyTransportersRequired;
   }
+  console.log(energy, energyMax, spawning, moreMinersRequired, Memory.structures.buildingSites.length);
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
   if (!spawning && (energy >= 300 && !basicEconomyRunning || energy >= energyMax)) {
     if (!basicEconomyRunning && roleCnt.harvester < 2) {

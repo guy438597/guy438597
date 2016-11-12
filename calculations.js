@@ -52,6 +52,7 @@ getDistance = function(creep, target) {
   var distance;
   if (!creep || !target) {
     console.log("Warning, undefined in getDistance functionn", creep, target);
+    100000;
   }
   if (!target) {
     100000;
