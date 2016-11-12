@@ -187,7 +187,6 @@ module.exports.loop = function() {
     ref6 = Game.rooms;
     for (name in ref6) {
       room = ref6[name];
-      console.log(room.find(FIND_MY_CONSTRUCTION_SITES));
       Memory.structures.repairTargets = Memory.structures.repairTargets.concat(room.find(FIND_STRUCTURES, {
         filter: function(s) {
           return (s.structureType === STRUCTURE_ROAD || s.structureType === STRUCTURE_CONTAINER || s.my) && s.hits < s.hitsMax * Memory.structures.repairFactor;
@@ -201,6 +200,7 @@ module.exports.loop = function() {
         return Game.getObjectById(s) !== null;
       });
     }
+    console.log(Memory.structures.buildingSites);
     if (Memory.structures.buildingSites) {
       Memory.structures.buildingSites = Memory.structures.buildingSites.filter(function(s) {
         return Game.getObjectById(s) !== null;
