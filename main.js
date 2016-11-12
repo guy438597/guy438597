@@ -403,7 +403,7 @@ module.exports.loop = function() {
   }
   basicEconomyRunning = roleCnt.energyMiner > 1 && roleCnt.energyRefiller > 1 && roleCnt.energyTransporter > 1;
   if (!spawning && (energy >= 200 && !basicEconomyRunning || energy >= energyMax)) {
-    if (!basicEconomyRunning && energy >= 150 && roleCnt.harvester < 2) {
+    if (!basicEconomyRunning && roleCnt.harvester < 2) {
       name = Game.spawns.Spawn1.createCustomCreepV2(energy, 'harvester');
       if (name) {
         console.log(roleCnt.harvester + 1, "/", "Spawning new harvester!", name);
