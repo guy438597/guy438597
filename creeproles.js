@@ -648,70 +648,67 @@ creeproles = (function() {
     return console.log("testerinoo");
   };
 
-
-  /*
-  @harvester: (creep) ->
-      @loadDefaultValues(creep)
-      creep.carry.state = if !creep.memory.state and creep.carry.energy == 0 then "mine" else "work"
-      target = Game.getObjectById(creep.memory.target) if creep.memory.target
-  
-      if creep.carry.state is "mine"
-          if creep.memory.state is creep.carry.energy
-              creep.carry.state = "work"
-          if !target
-              target = @findMiningSite(creep)
-          if target
-              @goMine(creep, target)
-      else if creep.carry.state is "work"
-          if !target
-              target = @findStructureToDeposit(creep, STRUCTURE_TOWER)
-          if !target
-              target = @findStructureToDeposit(creep, STRUCTURE_EXTENSION)
-              if !target
-                  target = @findStructureToDeposit(creep, STRUCTURE_SPAWN)
-          if target
-              @goTransferEnergy(creep, target)
-          else
-              @moveOutOfTheWay(creep)
-   */
-
   creeproles.harvester = function(creep) {
     var target;
     this.loadDefaultValues(creep);
-    if (!creep.memory.state) {
-      creep.memory.state = "mining";
-    }
-    creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : void 0;
-    creep.memory.state = creep.carry.energy === 0 ? "mining" : void 0;
+    creep.carry.state = !creep.memory.state && creep.carry.energy === 0 ? "mine" : "work";
     if (creep.memory.target) {
       target = Game.getObjectById(creep.memory.target);
     }
-    if (creep.memory.state === "mining") {
-      if (!target) {
-        target = this.findNearbyDroppedEnergy(creep, 5);
-      }
-      if (target && target.amount) {
-        this.pickupEnergy(creep, target);
+    if (creep.carry.state === "mine") {
+      if (creep.memory.state === creep.carry.energy) {
+        creep.carry.state = "work";
       }
       if (!target) {
         target = this.findMiningSite(creep);
       }
-      if (target && !target.amount) {
+      if (target) {
         return this.goMine(creep, target);
       }
-    } else if (creep.memory.state === "deliverEnergy") {
+    } else if (creep.carry.state === "work") {
       if (!target) {
-        target = creep.room.find(FIND_STRUCTURES, {
-          filter: function(s) {
-            return s.structureType === STRUCTURE_SPAWN;
-          }
-        });
+        target = this.findStructureToDeposit(creep, STRUCTURE_TOWER);
+      }
+      if (!target) {
+        target = this.findStructureToDeposit(creep, STRUCTURE_EXTENSION);
+        if (!target) {
+          target = this.findStructureToDeposit(creep, STRUCTURE_SPAWN);
+        }
       }
       if (target) {
         return this.goTransferEnergy(creep, target);
+      } else {
+        return this.moveOutOfTheWay(creep);
       }
     }
   };
+
+
+  /*
+  
+  
+  @harvester: (creep)->
+      @loadDefaultValues(creep)
+      creep.memory.state = "mining" if !creep.memory.state
+      creep.memory.state = if creep.carry.energy is creep.carryCapacity then "deliverEnergy"
+      creep.memory.state = if creep.carry.energy is 0 then "mining"
+      target = Game.getObjectById(creep.memory.target) if creep.memory.target
+  
+      if creep.memory.state is "mining"
+          if !target
+              target = @findNearbyDroppedEnergy(creep, 5)
+          if target and target.amount
+              @pickupEnergy(creep, target)
+          if !target
+              target = @findMiningSite(creep)
+          if target and !target.amount
+              @goMine(creep, target)
+      else if creep.memory.state is "deliverEnergy"
+          if !target
+              target = creep.room.find(FIND_STRUCTURES, filter: (s) -> s.structureType is STRUCTURE_SPAWN)
+          if target
+              @goTransferEnergy(creep, target)
+   */
 
   return creeproles;
 
