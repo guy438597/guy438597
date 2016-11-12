@@ -387,12 +387,12 @@ creeproles = (function() {
       }
       if (!target) {
         target = this.findStructureToWithdraw(creep);
-        if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
-          creep.memory.target = void 0;
-        }
       }
       if (target) {
-        return this.goWithdrawEnergy(creep, target);
+        this.goWithdrawEnergy(creep, target);
+        if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
+          return creep.memory.target = void 0;
+        }
       }
     } else if (creep.memory.state === "deliverEnergy") {
       if (!target) {
