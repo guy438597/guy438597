@@ -37,8 +37,10 @@ module.exports = function() {
       numberOfParts = Math.min(5, numberOfParts);
       body.push(CARRY);
       body.push(MOVE);
-      for (i = j = 1, ref = numberOfParts; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
-        body.push(WORK);
+      if (numberOfParts) {
+        for (i = j = 1, ref = numberOfParts; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {
+          body.push(WORK);
+        }
       }
       return this.createCreep(body, void 0, {
         role: roleName,
@@ -53,8 +55,10 @@ module.exports = function() {
       body.push(MOVE);
       body.push(MOVE);
       body.push(WORK);
-      for (i = k = 1, ref1 = numberOfParts; 1 <= ref1 ? k <= ref1 : k >= ref1; i = 1 <= ref1 ? ++k : --k) {
-        body.push(CARRY);
+      if (numberOfParts) {
+        for (i = k = 1, ref1 = numberOfParts; 1 <= ref1 ? k <= ref1 : k >= ref1; i = 1 <= ref1 ? ++k : --k) {
+          body.push(CARRY);
+        }
       }
       return this.createCreep(body, void 0, {
         role: roleName
@@ -64,8 +68,10 @@ module.exports = function() {
       numberOfParts = Math.min(4, numberOfParts);
       body.push(MOVE);
       body.push(CARRY);
-      for (i = l = 1, ref2 = numberOfParts; 1 <= ref2 ? l <= ref2 : l >= ref2; i = 1 <= ref2 ? ++l : --l) {
-        body.push(WORK);
+      if (numberOfParts) {
+        for (i = l = 1, ref2 = numberOfParts; 1 <= ref2 ? l <= ref2 : l >= ref2; i = 1 <= ref2 ? ++l : --l) {
+          body.push(WORK);
+        }
       }
       return this.createCreep(body, void 0, {
         role: roleName
@@ -78,10 +84,12 @@ module.exports = function() {
       body.push(MOVE);
       body.push(CARRY);
       body.push(CARRY);
-      for (i = m = 1, ref3 = numberOfParts; 1 <= ref3 ? m <= ref3 : m >= ref3; i = 1 <= ref3 ? ++m : --m) {
-        body.push(MOVE);
-        body.push(CARRY);
-        body.push(CARRY);
+      if (numberOfParts) {
+        for (i = m = 1, ref3 = numberOfParts; 1 <= ref3 ? m <= ref3 : m >= ref3; i = 1 <= ref3 ? ++m : --m) {
+          body.push(MOVE);
+          body.push(CARRY);
+          body.push(CARRY);
+        }
       }
       console.log(body, energy, numberOfParts);
       return this.createCreep(body, void 0, {
@@ -93,10 +101,12 @@ module.exports = function() {
       body.push(MOVE);
       body.push(CARRY);
       body.push(CARRY);
-      for (i = n = 1, ref4 = numberOfParts; 1 <= ref4 ? n <= ref4 : n >= ref4; i = 1 <= ref4 ? ++n : --n) {
-        body.push(MOVE);
-        body.push(CARRY);
-        body.push(CARRY);
+      if (numberOfParts) {
+        for (i = n = 1, ref4 = numberOfParts; 1 <= ref4 ? n <= ref4 : n >= ref4; i = 1 <= ref4 ? ++n : --n) {
+          body.push(MOVE);
+          body.push(CARRY);
+          body.push(CARRY);
+        }
       }
       return this.createCreep(body, void 0, {
         role: roleName,
@@ -111,21 +121,27 @@ module.exports = function() {
       body.push(MOVE);
       body.push(MOVE);
       body.push(WORK);
-      for (i = o = 1, ref5 = numberOfParts; 1 <= ref5 ? o <= ref5 : o >= ref5; i = 1 <= ref5 ? ++o : --o) {
-        body.push(CARRY);
+      if (numberOfParts) {
+        for (i = o = 1, ref5 = numberOfParts; 1 <= ref5 ? o <= ref5 : o >= ref5; i = 1 <= ref5 ? ++o : --o) {
+          body.push(CARRY);
+        }
       }
       return this.createCreep(body, void 0, {
         role: roleName
       });
     } else if (roleName === "fighter" && energy >= 380) {
       numberOfParts = Math.floor((energy - 0) / 190);
-      for (i = p = 1, ref6 = numberOfParts; 1 <= ref6 ? p <= ref6 : p >= ref6; i = 1 <= ref6 ? ++p : --p) {
-        body.push(TOUGH);
+      if (numberOfParts) {
+        for (i = p = 1, ref6 = numberOfParts; 1 <= ref6 ? p <= ref6 : p >= ref6; i = 1 <= ref6 ? ++p : --p) {
+          body.push(TOUGH);
+        }
       }
-      for (i = q = 1, ref7 = numberOfParts; 1 <= ref7 ? q <= ref7 : q >= ref7; i = 1 <= ref7 ? ++q : --q) {
-        body.push(MOVE);
-        body.push(ATTACK);
-        body.push(MOVE);
+      if (numberOfParts) {
+        for (i = q = 1, ref7 = numberOfParts; 1 <= ref7 ? q <= ref7 : q >= ref7; i = 1 <= ref7 ? ++q : --q) {
+          body.push(MOVE);
+          body.push(ATTACK);
+          body.push(MOVE);
+        }
       }
       return this.createCreep(body, void 0, {
         role: roleName,
