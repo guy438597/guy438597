@@ -3,9 +3,6 @@ var chooseClosest, findEnergy, getDistance, getDistanceInTicks,
 
 chooseClosest = function(creep, targets) {
   var distance, i, j, len, t, target, tempDistance;
-  if (creep.memory.role) {
-    console.log("choose closest", creep, creep.pos, creep.memory.role, targets);
-  }
   if (!targets) {
     void 0;
   }
@@ -113,7 +110,6 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   }
   distanceFromEdge = Math.min(creep.pos.x, creep.pos.y, 49 - creep.pos.x, 49 - creep.pos.y);
   distanceFromEdge = Math.min(distanceFromEdge, maxRange);
-  console.log("findenergy", creep, minEnergyInObject, maxRange, type, withdrawOrTransfer, excludeListIDs.length);
   if (type === "pickupEnergy") {
     if (distanceFromEdge <= 10) {
       targets = creep.room.lookForAtArea(LOOK_RESOURCES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
@@ -154,7 +150,6 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       }
     }
     if (targets.length > 0) {
-      console.log("withdrawtargets found and given to the chooseClosest function:", targets);
       target = chooseClosest(creep, targets);
     }
     if (target) {
@@ -163,7 +158,6 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   } else if (withdrawOrTransfer === "transfer") {
     targets = [];
     if (distanceFromEdge <= 10) {
-      console.log(creep.pos, distanceFromEdge, creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true));
       targets = creep.room.lookForAtArea(LOOK_STRUCTURES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
         var ref1;
         return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0) && s.pos.getRangeTo(creep) <= maxRange;
@@ -183,7 +177,6 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       }
     }
     if (targets.length > 0) {
-      console.log("transfertargets found and given to the chooseClosest function:", targets);
       target = chooseClosest(creep, targets);
     }
     if (target) {
