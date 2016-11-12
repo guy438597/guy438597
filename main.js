@@ -367,14 +367,14 @@ module.exports.loop = function() {
   if (!Memory.energy.energySourceTransporters) {
     Memory.energy.energySourceTransporters = [];
   }
-  while (Memory.energy.energySourceTransporters.length <= Memory.energy.energySources.length) {
+  while (Memory.energy.energySourceTransporters.length < Memory.energy.energySources.length) {
     Memory.energy.energySourceTransporters.push([]);
   }
   ref8 = Memory.energy.energySourceTransporters[i];
   for (i = t = 0, len8 = ref8.length; t < len8; i = ++t) {
     name = ref8[i];
     Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(name) {
-      return Game.creeps[name] !== void 0;
+      return Game.creeps[name];
     });
   }
   if (Memory.energy.totalEnergyTransportersRequired === void 0) {

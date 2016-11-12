@@ -395,9 +395,7 @@ creeproles = (function() {
       creep.memory.state = "pickupEnergy";
     }
     creep.memory.state = 0 === creep.carry.energy ? "pickupEnergy" : "deliverEnergy";
-    if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.safeMode) {
-      return this.retreat(creep);
-    } else if (creep.memory.state === "pickupEnergy") {
+    if (creep.memory.state === "pickupEnergy") {
       if (!target) {
         target = this.findNearbyDroppedEnergy(creep, 5);
       }
@@ -414,9 +412,16 @@ creeproles = (function() {
         this.goWithdrawEnergy(creep, target);
         if (target && !target.amount) {
           if (target.store[RESOURCE_ENERGY] < creep.carryCapacity - creep.carry.energy) {
-            return creep.memory.target = void 0;
+            creep.memory.target = void 0;
           }
+          1;
         }
+      }
+      if (!target) {
+        target = this.findMiningSite(creep);
+      }
+      if (target) {
+        return this.goMine(creep, target);
       }
     } else if (creep.memory.state === "deliverEnergy") {
       if (!target) {
