@@ -397,6 +397,9 @@ creeproles = (function() {
       if (!target) {
         target = this.findStructureToWithdraw(creep);
       }
+      if (!target) {
+        target = this.findNearbyDroppedEnergy(creep, 30);
+      }
       if (target) {
         this.goWithdrawEnergy(creep, target);
         if (target && !target.amount) {
