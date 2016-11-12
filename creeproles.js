@@ -23,17 +23,22 @@ creeproles = (function() {
   };
 
   creeproles.findConstructionSite = function(creep, distance) {
-    var target;
+    var i, len, ref, target;
     if (!distance) {
       distance = 10000;
     }
     if (Memory.structures.buildingSites) {
+      ref = Memory.structures.buildingSites;
+      for (i = 0, len = ref.length; i < len; i++) {
+        target = ref[i];
+        console.log(Game.getObjectById(target));
+      }
       target = chooseClosest((function() {
-        var i, len, ref, results;
-        ref = Memory.structures.buildingSites;
+        var j, len1, ref1, results;
+        ref1 = Memory.structures.buildingSites;
         results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          target = ref[i];
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          target = ref1[j];
           results.push(Game.getObjectById(target));
         }
         return results;
