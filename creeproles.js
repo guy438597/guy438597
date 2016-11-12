@@ -128,7 +128,6 @@ findStructureToDeposit = function(creep, structureType, distance, minEnergyInObj
   if (!structureType) {
     structureType = STRUCTURE_CONTAINER;
   }
-  console.log("findStructureToDeposit", structureType);
   if (structureType === STRUCTURE_TOWER || structureType === STRUCTURE_SPAWN || structureType === STRUCTURE_EXTENSION) {
     target = chooseClosest(creep, creep.room.find(FIND_STRUCTURES, {
       filter: function(s) {
