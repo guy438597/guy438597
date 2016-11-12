@@ -14,10 +14,10 @@ chooseClosest = function(creep, targets) {
     while (targets.length > 0) {
       if (!target && targets[0]) {
         target = targets;
-        distance = getdistance(creep, target);
+        distance = getDistance(creep, target);
         targets.splice(0, 1);
       } else {
-        tempDistance = getdistance(creep, targets[0]);
+        tempDistance = getDistance(creep, targets[0]);
         if (tempDistance < distance) {
           target = targets[0];
           distance = tempDistance;
@@ -28,7 +28,7 @@ chooseClosest = function(creep, targets) {
   }
   return target;
 
-  /*    
+  /*
   target = targets[0]
   distance = getDistance(creep, target)
   for t,i in targets
