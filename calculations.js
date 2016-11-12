@@ -34,6 +34,7 @@ chooseClosest = function(creep, targets) {
   sortedTargets = _.sortBy(targets, function(s) {
     return getDistance(creep, s);
   });
+  console.log("choose closest", creep, creep.pos, sortedTargets);
   if (sortedTargets.length > 0) {
     target = sortedTargets[0];
     if (target) {
@@ -104,6 +105,7 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
   }
   distanceFromEdge = Math.min(creep.pos.x, creep.pos.y, 49 - creep.pos.x, 49 - creep.pos.y);
   distanceFromEdge = Math.min(distanceFromEdge, maxRange);
+  console.log("findenergy", creep, minEnergyInObject, maxRange, type, withdrawOrTransfer, excludeListIDs.length);
   if (type === "pickupEnergy") {
     if (distanceFromEdge <= 10) {
       targets = creep.room.lookForAtArea(LOOK_RESOURCES, creep.pos.y - distanceFromEdge, creep.pos.x - distanceFromEdge, creep.pos.y + distanceFromEdge, creep.pos.x + distanceFromEdge, true).filter(function(s) {
@@ -141,7 +143,7 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       ref = Game.rooms;
       for (name in ref) {
         room = ref[name];
-        targets = targets.concat(room.find(FIND_STRUCTURES).filter(function(s) {
+        targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES).filter(function(s) {
           var ref1;
           return s.structureType === type && s.store[RESOURCE_ENERGY] >= minEnergyInObject && (ref1 = s.id, indexOf.call(excludeListIDs, ref1) < 0);
         }));
@@ -170,13 +172,14 @@ findEnergy = function(creep, minEnergyInObject, maxRange, type, withdrawOrTransf
       ref1 = Game.rooms;
       for (name in ref1) {
         room = ref1[name];
-        targets = targets.concat(room.find(FIND_STRUCTURES).filter(function(s) {
+        targets = targets.concat(Game.rooms[name].find(FIND_STRUCTURES).filter(function(s) {
           var ref2;
           return s.structureType === type && s.storeCapacity - _.sum(s.store) >= minEnergyInObject && (ref2 = s.id, indexOf.call(excludeListIDs, ref2) < 0);
         }));
       }
     }
     if (targets.length > 0) {
+      console.log("transfertargets found and given to the chooseClosest function:", targets);
       target = chooseClosest(creep, targets);
     }
     if (target) {
