@@ -126,7 +126,7 @@ module.exports = (function() {
   for (i = o = 0, len4 = ref5.length; o < len4; i = ++o) {
     name = ref5[i];
     Memory.claims.claimClaimers = Memory.claims.claimClaimers.filter(function(s) {
-      return !Game.creeps[name];
+      return Game.creeps[name];
     });
   }
 
@@ -431,7 +431,7 @@ module.exports = (function() {
     for (i = v = 0, len10 = ref10.length; v < len10; i = ++v) {
       name = ref10[i];
       Memory.energy.energySourceTransporters[i] = Memory.energy.energySourceTransporters[i].filter(function(s) {
-        return !Game.creeps[name];
+        return Game.creeps[name];
       });
     }
   }
