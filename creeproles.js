@@ -339,6 +339,9 @@ sourceMiner = function(creep) {
     creep.memory.state = "puttingEnergyInContainer";
     creep.memory.target = void 0;
   } else if (creep.memory.state === "puttingEnergyInContainer" && creep.carry.energy === 0) {
+    creep.memory.state = "lookingForNearbyEnergy";
+    creep.memory.target = void 0;
+  } else if (creep.memory.state === "lookingForNearbyEnergy" && creep.carry.energy === 0) {
     creep.memory.state = "mining";
     creep.memory.target = void 0;
   }
@@ -352,8 +355,10 @@ sourceMiner = function(creep) {
     creep.memory.target = void 0;
   }
   if (creep.room.find(FIND_HOSTILE_CREEPS).length > 0 && !creep.room.controller.safeMode) {
-    return retreat(creep);
-  } else if (creep.memory.state === "mining") {
+    retreat(creep);
+    1;
+  }
+  if (creep.memory.state === "mining") {
     if (!target) {
       if (creep.room.name !== creep.memory.energySourceRoomName) {
         costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
@@ -362,9 +367,10 @@ sourceMiner = function(creep) {
       }
     }
     if (target) {
-      return goMine(creep, target);
+      goMine(creep, target);
     }
-  } else if (creep.memory.state === "puttingEnergyInContainer") {
+  }
+  if (creep.memory.state === "puttingEnergyInContainer") {
     if (!target) {
       target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 2);
     }
@@ -375,10 +381,9 @@ sourceMiner = function(creep) {
       if (_.sum(target.store) < target.storeCapacity) {
         goTransferEnergy(creep, target);
         creep.say("PUT CNTR");
-        return creep.memory.state = "lookingForNearbyEnergy";
       } else {
         creep.say("CNTR FULL");
-        return creep.drop(RESOURCE_ENERGY);
+        creep.drop(RESOURCE_ENERGY);
       }
     } else {
       if (!target) {
@@ -387,17 +392,15 @@ sourceMiner = function(creep) {
       if (target) {
         goBuild(creep, target);
         creep.say("BLD CNTR");
-        if (creep.carry.energy === 0) {
-          return creep.memory.state = "lookingForNearbyEnergy";
-        }
       } else {
         creep.say("NO CNTR");
-        return creep.drop(RESOURCE_ENERGY);
+        creep.drop(RESOURCE_ENERGY);
       }
     }
-  } else if (creep.memory.state === "lookingForNearbyEnergy") {
+  }
+  if (creep.memory.state === "lookingForNearbyEnergy") {
     if (findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1) || findConstructionSite(creep, 1)) {
-      findNearbyDroppedEnergy(creep, 1);
+      target = findNearbyDroppedEnergy(creep, 1);
     }
     if (target) {
       goPickUpEnergy(creep, target);
