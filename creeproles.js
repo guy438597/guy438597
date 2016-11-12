@@ -377,6 +377,7 @@ sourceMiner = function(creep) {
     console.log(target, creep.memory.target);
     if (!target) {
       target = findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1);
+      console.log("new found structure:", target);
     }
     if (target && !target.progress) {
       if (indexOf.call(Memory.energy.miningContainers, target) < 0) {
