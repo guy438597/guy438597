@@ -180,7 +180,7 @@ module.exports.loop = function() {
       }
     }
   }
-  if (Game.time % 30 === 0) {
+  if (Game.time % 2 === 0) {
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
     ref6 = Game.rooms;
@@ -210,7 +210,7 @@ module.exports.loop = function() {
         }
         return results;
       })());
-      console.log(Memory.structures.buildingSites, newbuildingSites);
+      console.log("new constr. sites:", Memory.structures.buildingSites, newbuildingSites);
     }
   } else {
     if (Memory.structures.repairTargets) {
