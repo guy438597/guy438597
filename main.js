@@ -381,7 +381,7 @@ module.exports = (function() {
   ref8 = Game.creeps;
   for (name in ref8) {
     creep = ref8[name];
-    if (creep.spawning) {
+    if (Game.creeps[name].spawning) {
       continue;
     }
     if (creep.memory.role === "harvester") {
