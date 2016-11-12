@@ -16,6 +16,7 @@ module.exports = function() {
     if (arg5 == null) {
       arg5 = "0";
     }
+    console.log("spawning!");
     costDictionary = {
       WORK: 100,
       CARRY: 50,
