@@ -444,13 +444,22 @@ energyTransporter = function(creep) {
   } else if (creep.memory.state === "pickupEnergy") {
     if (target) {
       if (creep.memory.energySourceRoomName !== creep.room.name) {
-        return costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
-      } else if (creep.pos.getRangeTo(target) <= 5) {
-        target = findNearbyDroppedEnergy(creep, 5);
-        if (!target) {
-          target = findStructureToWithdraw(creep);
+        costEfficientMove(creep, new RoomPosition(25, 25, creep.memory.energySourceRoomName));
+      }
+      if (target.id === creep.memory.energySourceID) {
+        if (creep.pos.getRangeTo(target) <= 4) {
+          target = findNearbyDroppedEnergy(creep, 5);
+          if (!target) {
+            target = findStructureToWithdraw(creep, STRUCTURE_CONTAINER, 5, void 0, Memory.energy.miningContainers);
+          }
+          if (target) {
+            return goWithdrawEnergy(creep, target);
+          }
+        } else {
+          return goWithdrawEnergy(creep, target);
         }
-        if (target && !target.amount) {
+      } else {
+        if (target) {
           return goWithdrawEnergy(creep, target);
         }
       }
