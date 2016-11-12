@@ -206,7 +206,7 @@ module.exports = (function() {
     Memory.structures = {};
   }
 
-  if (!(Game.time % 60)) {
+  if (Game.time % 30 === 0) {
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
     ref7 = Game.rooms;
@@ -219,7 +219,7 @@ module.exports = (function() {
       }, newbuildingSites = Game.rooms[name].find(FIND_MY_CONSTRUCTION_SITES));
       for (r = 0, len7 = newrepairTargets.length; r < len7; r++) {
         i = newrepairTargets[r];
-        Memory.structures.repairTargets.concat((function() {
+        Memory.structures.repairTargets = Memory.structures.repairTargets.concat((function() {
           var len8, results, t;
           results = [];
           for (t = 0, len8 = newrepairTargets.length; t < len8; t++) {
@@ -231,7 +231,7 @@ module.exports = (function() {
       }
       for (t = 0, len8 = newbuildingSites.length; t < len8; t++) {
         i = newbuildingSites[t];
-        Memory.structures.buildingSites.concat((function() {
+        Memory.structures.buildingSites = Memory.structures.buildingSites.concat((function() {
           var len9, results, u;
           results = [];
           for (u = 0, len9 = newbuildingSites.length; u < len9; u++) {
