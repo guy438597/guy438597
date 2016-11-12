@@ -2,7 +2,7 @@ var chooseClosest, findEnergy, getDistance, getDistanceInTicks,
   indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 chooseClosest = function(creep, targets) {
-  var distance, i, j, len, t, target, tempDistance;
+  var distance, target, tempDistance;
   if (!targets) {
     void 0;
   }
@@ -11,25 +11,36 @@ chooseClosest = function(creep, targets) {
   } else if (targets.length === 1) {
     target = targets[0];
   } else {
-    target = targets[0];
-    distance = getDistance(creep, target);
-    for (i = j = 0, len = targets.length; j < len; i = ++j) {
-      t = targets[i];
-      if (t) {
-        tempDistance = getDistance(creep, t);
-        if (tempDistance !== -1 && tempDistance < distance) {
+    while (targets.length > 0) {
+      if (!target && targets[0]) {
+        target = targets;
+        distance = getdistance(creep, target);
+        targets.splice(0, 1);
+      } else {
+        tempDistance = getdistance(creep, targets[0]);
+        if (tempDistance < distance) {
+          target = targets[0];
           distance = tempDistance;
-          target = t;
         }
+        targets.splice(0, 1);
       }
     }
   }
-  if (!target) {
-    void 0;
-  }
   return target;
 
-  /*
+  /*    
+  target = targets[0]
+  distance = getDistance(creep, target)
+  for t,i in targets
+      if t
+          tempDistance = getDistance(creep, t)
+          if tempDistance isnt -1 and tempDistance < distance
+              distance = tempDistance
+              target = t
+  if !target
+      undefined
+  target
+  
   if targets.length <= 0
       undefined
   if targets
