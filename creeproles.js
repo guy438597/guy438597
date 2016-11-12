@@ -669,8 +669,12 @@ harvester = function(creep) {
   if (!creep.memory.state) {
     creep.memory.state = "mining";
   }
-  creep.memory.state = creep.carry.energy === creep.carryCapacity ? "deliverEnergy" : void 0;
-  creep.memory.state = creep.carry.energy === 0 ? "mining" : void 0;
+  if (creep.carry.energy === creep.carryCapacity) {
+    creep.memory.state = "deliverEnergy";
+  }
+  if (creep.carry.energy === 0) {
+    creep.memory.state = "mining";
+  }
   if (creep.memory.target) {
     target = Game.getObjectById(creep.memory.target);
   }
