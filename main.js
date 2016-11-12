@@ -181,7 +181,7 @@ module.exports.loop = function() {
       }
     }
   }
-  if (modulo(Game.time, 2) === 0) {
+  if (modulo(Game.time, 5) === 0) {
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
     ref6 = Game.rooms;
@@ -216,12 +216,12 @@ module.exports.loop = function() {
   } else {
     if (Memory.structures.repairTargets) {
       Memory.structures.repairTargets = Memory.structures.repairTargets.filter(function(s) {
-        return s !== null;
+        return Game.getObjectById(s) !== null;
       });
     }
     if (Memory.structures.buildingSites) {
       Memory.structures.buildingSites = Memory.structures.buildingSites.filter(function(s) {
-        return s !== null;
+        return Game.getObjectById(s) !== null;
       });
     }
   }
