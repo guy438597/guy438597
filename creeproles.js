@@ -408,7 +408,11 @@ sourceMiner = function(creep) {
     }
   }
   if (creep.memory.state === "lookingForNearbyEnergy") {
-    if (findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1) || findConstructionSite(creep, 1)) {
+    if (findStructureToDeposit(creep, STRUCTURE_CONTAINER, 1) || creep.pos.findClosestByRange(FIND_STRUCTURES, {
+      filter: function(s) {
+        return s.structureType === STRUCTURE_CONTAINER && s.pos.getRangeTo(creep) <= 1;
+      }
+    })) {
       target = findNearbyDroppedEnergy(creep, 1);
     }
     if (target) {
