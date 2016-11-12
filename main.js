@@ -180,7 +180,7 @@ module.exports.loop = function() {
       }
     }
   }
-  if (Game.time % 30 === 0) {
+  if (Game.time % 3 === 0) {
     console.log(Memory.structures.buildingSites);
     Memory.structures.repairTargets = [];
     Memory.structures.buildingSites = [];
