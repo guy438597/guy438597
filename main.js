@@ -399,8 +399,13 @@ module.exports.loop = function() {
     if (source) {
       closestStorage = findEnergy(source, -1, void 0, STRUCTURE_STORAGE, "transfer");
       closestContainer = findEnergy(source, -1, void 0, STRUCTURE_CONTAINER, "transfer", Memory.energy.miningContainers);
-      if (closestStorage || closestContainer) {
-        target = chooseClosest(source, [closestStorage, closestContainer]);
+      if (closestContainer) {
+        target = closestContainer;
+      }
+      if (closestStorage) {
+        target = closestStorage;
+      }
+      if (target) {
         tempDistance = target ? getDistance(source, target) : 0;
         totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
         if (Memory.energy.energySourceTransporters[i].length < totalEnergyTransportersRequired) {
@@ -459,8 +464,13 @@ module.exports.loop = function() {
         if (source) {
           closestStorage = findEnergy(source, -1, void 0, STRUCTURE_STORAGE, "transfer");
           closestContainer = findEnergy(source, -1, void 0, STRUCTURE_CONTAINER, "transfer", Memory.energy.miningContainers);
-          if (closestStorage || closestContainer) {
-            target = chooseClosest(source, [closestStorage, closestContainer]);
+          if (closestContainer) {
+            target = closestContainer;
+          }
+          if (closestStorage) {
+            target = closestStorage;
+          }
+          if (target) {
             tempDistance = target ? getDistance(source, target) : 0;
             totalEnergyTransportersRequired = Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
             if (Memory.energy.energySourceTransporters[i].length < totalEnergyTransportersRequired) {
