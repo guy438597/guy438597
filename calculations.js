@@ -8,7 +8,7 @@ chooseClosest = function(creep, targets) {
       return s !== void 0;
     });
     if (targets.length === 0) {
-      return void 0;
+      void 0;
     }
   }
   sortedTargets = _.sortBy(targets, function(s) {
