@@ -395,7 +395,7 @@ module.exports.loop = function() {
           closestContainer = findEnergy(source, -1, void 0, STRUCTURE_CONTAINER, "transfer", Memory.energy.miningContainers);
         }
         target = chooseClosest(source, [closestStorage, closestContainer]);
-        tempDistance = getDistance(source, target);
+        tempDistance = target ? getDistance(source, target) : 0;
         totalEnergyTransportersRequired += Math.floor((tempDistance + energyTransporterConstant - 1) / energyTransporterConstant);
       }
     }
